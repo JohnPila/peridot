@@ -32,6 +32,7 @@ const firebaseConfig = {
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
+/* eslint-disable no-unused-vars */
 const analytics = getAnalytics(app);
 
 ReactDOM.render(
