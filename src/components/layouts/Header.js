@@ -32,7 +32,7 @@ function Header() {
               color="inherit"
               variant="h6"
               underline="none"
-              href="/premium-themes/onepirate/sign-in/"
+              href="/sign-in/"
               sx={rightLink}
             >
               {'Sign In'}
@@ -40,7 +40,7 @@ function Header() {
             <Link
               variant="h6"
               underline="none"
-              href="/premium-themes/onepirate/sign-up/"
+              href="/sign-up/"
               sx={{ ...rightLink, color: 'secondary.main' }}
             >
               {'Sign Up'}
