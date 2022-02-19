@@ -9,9 +9,19 @@ import RFTextField from '../../common/form/RFTextField';
 import FormButton from '../../common/form/FormButton';
 import FormFeedback from '../../common/form/FormFeedback';
 import AppForm from '../../common/AppForm';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function SignUp() {
   const [sent, setSent] = React.useState(false);
+  const navigate = useNavigate();
+  const isLoggedIn = useSelector(state => !!state.loggedUser.user);
+
+  React.useEffect(() => {
+    if (isLoggedIn && navigate) {
+      navigate("/");
+    }
+  }, [isLoggedIn, navigate]);
 
   const validate = (values) => {
     const errors = required(['firstName', 'lastName', 'email', 'password'], values);

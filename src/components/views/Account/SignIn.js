@@ -8,9 +8,21 @@ import { email, required } from '../../common/form/validation';
 import RFTextField from '../../common/form/RFTextField';
 import FormButton from '../../common/form/FormButton';
 import FormFeedback from '../../common/form/FormFeedback';
+import FirebaseConfig from '../../config/FirebaseConfig';
+import IconButtonBox from '../../common/IconButtonBox';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 function SignIn() {
   const [sent, setSent] = React.useState(false);
+  const navigate = useNavigate();
+  const isLoggedIn = useSelector(state => !!state.loggedUser.user);
+
+  React.useEffect(() => {
+    if (isLoggedIn && navigate) {
+      navigate("/");
+    }
+  }, [isLoggedIn, navigate]);
 
   const validate = (values) => {
     const errors = required(['email', 'password'], values);
@@ -27,6 +39,11 @@ function SignIn() {
 
   const handleSubmit = () => {
     setSent(true);
+  };
+
+  const loginWithFacebook = (e) => {
+    e.preventDefault();
+    FirebaseConfig.signInWithFacebook();
   };
 
   return (
@@ -98,10 +115,25 @@ function SignIn() {
           </Box>
           )}
       </Form>
-      <Typography align="center">
-          <Link underline="always" href="/forgot-password/">
+      <Typography variant="body2" align="center">
+        or sign in using
+      </Typography>
+      <div style={{
+        display: "flex",
+        alignItems: "center",
+        flexDirection: "column"
+      }}>
+        <IconButtonBox color="blue" sx={{mt: 1}} onClick={loginWithFacebook}>
+          <img
+            src="/images/appFooterFacebook.png"
+            alt="Facebook"
+          />
+        </IconButtonBox>
+      </div>
+      <Typography sx={{mt: 2}}>
+        <Link underline="always" href="/forgot-password/">
           Forgot password?
-          </Link>
+        </Link>
       </Typography>
     </AppForm>
   );

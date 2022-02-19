@@ -12,9 +12,17 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ReviewsIcon from '@mui/icons-material/Reviews';
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import LogoutIcon from '@mui/icons-material/Logout';
+import { useSelector } from 'react-redux';
+import FirebaseConfig from '../config/FirebaseConfig';
 
 export default function HeaderDrawer() {
     const [isOpen, setIsOpen] = React.useState(false);
+    const isLoggedIn = useSelector(state => !!state.loggedUser.user);
+  
+    const signOut = () => {
+      FirebaseConfig.signOut();
+    };
   
     const toggleDrawer = (open) => (event) => {
       if (event.type === 'keydown' && (event.key === 'Tab' || event.key === 'Shift')) {
@@ -23,7 +31,6 @@ export default function HeaderDrawer() {
   
       setIsOpen(open);
     };
-  
     return (
       <div>
         <IconButton
@@ -68,6 +75,19 @@ export default function HeaderDrawer() {
                 </ListItem>
               ))}
             </List>
+            {isLoggedIn && 
+              <>
+                <Divider />
+                <List>
+                  <ListItem button onClick={signOut}>
+                    <ListItemIcon>
+                      <LogoutIcon/>
+                    </ListItemIcon>
+                    <ListItemText primary="Sign Out" />
+                  </ListItem>
+                </List>
+              </>
+            }
           </Box>
         </Drawer>
       </div>

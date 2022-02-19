@@ -6,31 +6,19 @@ import Container from '@mui/material/Container';
 import Typography from '../common/Typography';
 import TextField from '../common/TextField';
 import withRoot from "../hocs/withRoot";
+import IconButtonBox from '../common/IconButtonBox';
 
 function Copyright() {
   return (
     <React.Fragment>
       {'© '}
       <Link color="inherit" href="https://mui.com/">
-        Your Website
+        John Efren Pila
       </Link>{' '}
       {new Date().getFullYear()}
     </React.Fragment>
   );
 }
-
-const iconStyle = {
-  width: 48,
-  height: 48,
-  display: 'flex',
-  justifyContent: 'center',
-  alignItems: 'center',
-  backgroundColor: 'warning.main',
-  mr: 1,
-  '&:hover': {
-    bgcolor: 'warning.dark',
-  },
-};
 
 const LANGUAGES = [
   {
@@ -60,18 +48,18 @@ function Footer() {
               sx={{ height: 120 }}
             >
               <Grid item sx={{ display: 'flex' }}>
-                <Box component="a" href="https://mui.com/" sx={iconStyle}>
+                <IconButtonBox href="https://mui.com/">
                   <img
                     src="/images/appFooterFacebook.png"
                     alt="Facebook"
                   />
-                </Box>
-                <Box component="a" href="https://twitter.com/MUI_hq" sx={iconStyle}>
+                </IconButtonBox>
+                <IconButtonBox href="https://twitter.com/MUI_hq">
                   <img
                     src="/images/appFooterTwitter.png"
                     alt="Twitter"
                   />
-                </Box>
+                </IconButtonBox>
               </Grid>
               <Grid item>
                 <Copyright />

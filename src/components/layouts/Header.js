@@ -4,6 +4,9 @@ import Link from '@mui/material/Link';
 import AppBar from '../common/AppBar';
 import Toolbar from '../common/Toolbar';
 import HeaderDrawer from './HeaderDrawer';
+import { useLocation } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { Avatar } from '@mui/material';
 
 const rightLink = {
   fontSize: 15,
@@ -12,6 +15,13 @@ const rightLink = {
 };
 
 function Header() {
+  const location = useLocation();
+  const path = React.useMemo(() => 
+    location.pathname.replaceAll(/^\/|\/$/gi, ""),
+  [location]);
+  const loggedUser = useSelector(state => state.loggedUser.user);
+  const isLoggedIn = !!loggedUser;
+  const initializedLoggedUser = loggedUser !== undefined;
   return (
     <div>
       <AppBar position="fixed">
@@ -22,29 +32,40 @@ function Header() {
             variant="h6"
             underline="none"
             color="inherit"
-            href="/premium-themes/onepirate/"
+            href="/"
             sx={{ fontSize: 24 }}
           >
             {'Peridot 4ever Travel and Tours inc'}
           </Link>
           <Box sx={{ flex: 1, display: 'flex', justifyContent: 'flex-end' }}>
-            <Link
-              color="inherit"
-              variant="h6"
-              underline="none"
-              href="/sign-in/"
-              sx={rightLink}
-            >
-              {'Sign In'}
-            </Link>
-            <Link
-              variant="h6"
-              underline="none"
-              href="/sign-up/"
-              sx={{ ...rightLink, color: 'secondary.main' }}
-            >
-              {'Sign Up'}
-            </Link>
+            {initializedLoggedUser && 
+              <>
+                {!isLoggedIn && path !== "sign-in" &&
+                  <Link
+                    color="inherit"
+                    variant="h6"
+                    underline="none"
+                    href="/sign-in/"
+                    sx={rightLink}
+                  >
+                    {'Sign In'}
+                  </Link>
+                }
+                {!isLoggedIn && path !== "sign-up" &&
+                  <Link
+                    variant="h6"
+                    underline="none"
+                    href="/sign-up/"
+                    sx={{ ...rightLink, color: 'secondary.main' }}
+                  >
+                    {'Sign Up'}
+                  </Link>
+                }
+                {isLoggedIn && 
+                  <Avatar alt={loggedUser.displayName} src={loggedUser.photoURL} />
+                }
+              </>
+            }
           </Box>
         </Toolbar>
       </AppBar>
