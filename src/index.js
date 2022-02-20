@@ -11,7 +11,7 @@ import '@fontsource/work-sans/700.css';
 import '@fontsource/roboto-condensed/300.css';
 import '@fontsource/roboto-condensed/400.css';
 import '@fontsource/roboto-condensed/700.css';
-import FirebaseConfig from './components/config/FirebaseConfig';
+import FirebaseConfig from './config/FirebaseConfig';
 import { Provider } from 'react-redux';
 import store from "./store";
 

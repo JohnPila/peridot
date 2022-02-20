@@ -8,7 +8,7 @@ import { email, required } from '../../common/form/validation';
 import RFTextField from '../../common/form/RFTextField';
 import FormButton from '../../common/form/FormButton';
 import FormFeedback from '../../common/form/FormFeedback';
-import FirebaseConfig from '../../config/FirebaseConfig';
+import FirebaseConfig from '../../../config/FirebaseConfig';
 import IconButtonBox from '../../common/IconButtonBox';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -37,8 +37,11 @@ function SignIn() {
     return errors;
   };
 
-  const handleSubmit = () => {
-    setSent(true);
+  const handleSubmit = (e) => {
+    FirebaseConfig.signInWithEmail(e.email, e.password)
+      .then(() => {
+        setSent(true);
+      });
   };
 
   const loginWithFacebook = (e) => {

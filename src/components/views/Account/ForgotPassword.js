@@ -7,6 +7,7 @@ import { email, required } from '../../common/form/validation';
 import RFTextField from '../../common/form/RFTextField';
 import FormButton from '../../common/form/FormButton';
 import FormFeedback from '../../common/form/FormFeedback';
+import FirebaseConfig from '../../../config/FirebaseConfig';
 
 function ForgotPassword() {
   const [sent, setSent] = React.useState(false);
@@ -24,8 +25,11 @@ function ForgotPassword() {
     return errors;
   };
 
-  const handleSubmit = () => {
-    setSent(true);
+  const handleSubmit = (e) => {
+    FirebaseConfig.sendPasswordResetEmail(e.email)
+      .then(() => {
+        setSent(true);
+      });
   };
 
   return (

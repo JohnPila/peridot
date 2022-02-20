@@ -11,6 +11,7 @@ import FormFeedback from '../../common/form/FormFeedback';
 import AppForm from '../../common/AppForm';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import FirebaseConfig from '../../../config/FirebaseConfig';
 
 function SignUp() {
   const [sent, setSent] = React.useState(false);
@@ -36,8 +37,11 @@ function SignUp() {
     return errors;
   };
 
-  const handleSubmit = () => {
-    setSent(true);
+  const handleSubmit = (e) => {
+    FirebaseConfig.registerWithEmail(e)
+      .then(() => {
+        setSent(true);
+      });
   };
 
   return (

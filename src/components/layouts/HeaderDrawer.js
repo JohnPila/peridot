@@ -14,7 +14,7 @@ import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useSelector } from 'react-redux';
-import FirebaseConfig from '../config/FirebaseConfig';
+import FirebaseConfig from '../../config/FirebaseConfig';
 
 export default function HeaderDrawer() {
     const [isOpen, setIsOpen] = React.useState(false);

@@ -6,7 +6,10 @@ import Toolbar from '../common/Toolbar';
 import HeaderDrawer from './HeaderDrawer';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Avatar } from '@mui/material';
+import { Avatar, Badge } from '@mui/material';
+import { ROLES } from '../../utils/constants';
+import HeaderBanner from './HeaderBanner';
+import VerifiedIcon from '@mui/icons-material/Verified';
 
 const rightLink = {
   fontSize: 15,
@@ -22,9 +25,14 @@ function Header() {
   const loggedUser = useSelector(state => state.loggedUser.user);
   const isLoggedIn = !!loggedUser;
   const initializedLoggedUser = loggedUser !== undefined;
+  const isAdmin = isLoggedIn && ROLES.ADMIN === loggedUser.role;
+  const isEmailVerified = isLoggedIn && loggedUser.emailVerified;
   return (
     <div>
       <AppBar position="fixed">
+        {isLoggedIn && 
+          <HeaderBanner/>
+        }
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <HeaderDrawer/>
           <Box sx={{ flex: 1 }} />
@@ -62,7 +70,20 @@ function Header() {
                   </Link>
                 }
                 {isLoggedIn && 
-                  <Avatar alt={loggedUser.displayName} src={loggedUser.photoURL} />
+                  <>
+                    {isAdmin ?
+                      <Avatar alt={loggedUser.displayName} sx={{ bgcolor: "blue.main" }}>A</Avatar>:
+                      <Badge
+                        overlap="circular"
+                        anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                        badgeContent={isEmailVerified &&
+                          <VerifiedIcon color="success" fontSize="small"/>
+                        }
+                      >
+                        <Avatar alt={loggedUser.displayName} src={loggedUser.photoURL} />
+                      </Badge>
+                    }
+                  </>
                 }
               </>
             }
