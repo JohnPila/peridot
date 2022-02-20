@@ -50,7 +50,8 @@ function SignIn() {
   };
 
   return (
-    <AppForm>
+    <AppForm sx={{backgroundImage: "url(https://wallpaperaccess.com/full/2075115.jpg)"}}
+      paperSx={{backgroundColor: "rgba(255, 245, 248, 0.8)"}}>
       <>
           <Typography variant="h3" gutterBottom marked="center" align="center">
           Sign In

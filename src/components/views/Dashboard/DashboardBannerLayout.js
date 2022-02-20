@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
+import { useSelector } from 'react-redux';
 
 const DashboardBannerLayoutRoot = styled('section')(({ theme }) => ({
   color: theme.palette.common.white,
@@ -30,12 +31,14 @@ const Background = styled(Box)({
 
 function DashboardBannerLayout(props) {
   const { sxBackground, children } = props;
+  
+  const showBanner = useSelector(state => state.common.showBanner);
 
   return (
     <DashboardBannerLayoutRoot>
       <Container
         sx={{
-          mt: 3,
+          mt: showBanner ? 14 : 3,
           mb: 14,
           display: 'flex',
           flexDirection: 'column',

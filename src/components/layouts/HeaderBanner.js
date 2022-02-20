@@ -2,12 +2,20 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import { Alert, Collapse, IconButton, Link } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import FirebaseConfig from '../../config/FirebaseConfig';
+import { setShowBanner } from '../../store/reducers/common';
 
 export default function HeaderBanner() {
   const isEmailVerified = useSelector(state => state.loggedUser.user?.emailVerified);
-  const [isOpen, setIsOpen] = React.useState(!isEmailVerified);
+  const showBanner = useSelector(state => state.common.showBanner);
+  const dispatch = useDispatch();
+
+  React.useEffect(() => {
+    if (dispatch) {
+      dispatch(setShowBanner(!isEmailVerified));
+    }
+  }, [isEmailVerified, dispatch]);
 
   const resendEmailConfirmation = (e) => {
     e.preventDefault();
@@ -16,7 +24,7 @@ export default function HeaderBanner() {
 
   return (
     <Box sx={{ width: '100%' }}>
-      <Collapse in={isOpen}>
+      <Collapse in={showBanner}>
         <Alert
           variant="filled"
           severity="error"
@@ -27,7 +35,7 @@ export default function HeaderBanner() {
               color="default"
               size="small"
               onClick={() => {
-                setIsOpen(false);
+                dispatch(setShowBanner(false));
               }}
             >
               <CloseIcon fontSize="inherit" />
