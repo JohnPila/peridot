@@ -18,11 +18,12 @@ function SignUp() {
   const navigate = useNavigate();
   const isLoggedIn = useSelector(state => !!state.loggedUser.user);
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   React.useEffect(() => {
-    if (isLoggedIn && navigate) {
-      navigate("/");
+    if (isLoggedIn) {
+      navigate("/", {replace: true});
     }
-  }, [isLoggedIn, navigate]);
+  }, [isLoggedIn]);
 
   const validate = (values) => {
     const errors = required(['firstName', 'lastName', 'email', 'password'], values);

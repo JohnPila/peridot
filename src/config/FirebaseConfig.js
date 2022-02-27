@@ -42,9 +42,8 @@ class FirebaseConfig {
     this._storage = getStorage(this._app);
     // listen to auth change
     onAuthStateChanged(this.auth, async (user) => {
-      console.log("onAuthStateChanged", user);
       if (!this._checkLoggedState) {
-        return false;
+        return;
       }
       this._checkLoggedState = false;
       if (user) {
