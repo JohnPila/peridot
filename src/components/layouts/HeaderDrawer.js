@@ -9,16 +9,16 @@ import ListItemText from '@mui/material/ListItemText';
 import MailIcon from '@mui/icons-material/Mail';
 import { IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import ReviewsIcon from '@mui/icons-material/Reviews';
-import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useSelector } from 'react-redux';
 import FirebaseConfig from '../../config/FirebaseConfig';
+import { ADMIN_ROUTES, ROLES, USER_ROUTES } from '../../utils/constants';
+import { Link } from 'react-router-dom';
 
 export default function HeaderDrawer() {
     const [isOpen, setIsOpen] = React.useState(false);
-    const isLoggedIn = useSelector(state => !!state.loggedUser.user);
+    const loggedUser = useSelector(state => state.loggedUser.user);
   
     const signOut = () => {
       FirebaseConfig.signOut();
@@ -31,6 +31,10 @@ export default function HeaderDrawer() {
   
       setIsOpen(open);
     };
+    
+    const isLoggedIn = !!loggedUser;
+    const isAdmin = isLoggedIn && ROLES.ADMIN === loggedUser.role;
+    const paths = isAdmin ? ADMIN_ROUTES : USER_ROUTES;
     return (
       <div>
         <IconButton
@@ -55,12 +59,12 @@ export default function HeaderDrawer() {
             onKeyDown={toggleDrawer(false)}
           >
             <List>
-              {['Packages', 'Reviews'].map((text, index) => (
-                <ListItem button key={text}>
+              {paths.map((path) => (
+                <ListItem button component={Link} key={path.name} to={path.path}>
                   <ListItemIcon>
-                    {index % 2 === 0 ? <TravelExploreIcon /> : <ReviewsIcon />}
+                    {path.icon}
                   </ListItemIcon>
-                  <ListItemText primary={text} />
+                  <ListItemText primary={path.name} />
                 </ListItem>
               ))}
             </List>

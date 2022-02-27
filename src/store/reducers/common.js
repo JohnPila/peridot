@@ -13,7 +13,7 @@ export const commonSlice = createSlice({
 });
 
 export const {
-    setShowBanner,
+  setShowBanner,
 } = commonSlice.actions;
 
 export default commonSlice.reducer;

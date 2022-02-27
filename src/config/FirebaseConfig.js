@@ -1,12 +1,13 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
+import { getStorage, ref } from "firebase/storage";
 import { getAnalytics } from "firebase/analytics";
 import { createUserWithEmailAndPassword, FacebookAuthProvider, getAuth, onAuthStateChanged, sendEmailVerification, sendPasswordResetEmail, signInWithEmailAndPassword, signInWithPopup, signOut } from "firebase/auth";
 import store from "../store";
 import { setUser } from "../store/reducers/loggedUser";
 import RoleService from "../services/RoleService";
 import { collection, doc, getFirestore } from "firebase/firestore";
-import { ROLES, ROLE_IDS } from "../utils/constants";
+import { ROLES, ROLE_IDS, STORAGE_FOLDERS } from "../utils/constants";
 import UserService from "../services/UserService";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -27,6 +28,7 @@ export const COLLECTIONS = {
   ROLES: "Roles",
   USER_ROLES: "UserRoles",
   USERS: "Users",
+  PACKAGES: "Packages",
 };
 
 class FirebaseConfig {
@@ -37,6 +39,7 @@ class FirebaseConfig {
     /* eslint-disable no-unused-vars */
     this._analytics = getAnalytics(this._app);
     this._db = getFirestore(this._app);
+    this._storage = getStorage(this._app);
     // listen to auth change
     onAuthStateChanged(this.auth, async (user) => {
       console.log("onAuthStateChanged", user);
@@ -74,6 +77,10 @@ class FirebaseConfig {
 
   getDocRef(name, id) {
     return doc(this._db, name, id);
+  }
+
+  getStorageRef(name, path = STORAGE_FOLDERS.GLOBALS) {
+    return ref(this._storage, `${path}/${name}`);
   }
 
   async registerWithEmail({firstName, lastName, email, password}) {

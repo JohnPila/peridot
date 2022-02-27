@@ -6,6 +6,9 @@ import Dashboard from './components/views/Dashboard/Dashboard';
 import SignUp from './components/views/Account/SignUp';
 import SignIn from './components/views/Account/SignIn';
 import ForgotPassword from './components/views/Account/ForgotPassword';
+import Packages from './components/views/Admin/Packages/Packages';
+import SavePackage from './components/views/Admin/Packages/SavePackage';
+import ViewPackages from './components/views/Admin/Packages/ViewPackages';
 
 function App() {
   return (
@@ -16,6 +19,10 @@ function App() {
         <Route path="/sign-up" element={<SignUp />}/>
         <Route path="/sign-in" element={<SignIn />}/>
         <Route path="/forgot-password" element={<ForgotPassword />}/>
+        <Route path="/admin/packages" element={<Packages/>}>
+          <Route path="" element={<ViewPackages/>}/>
+          <Route path="add" element={<SavePackage/>}/>
+        </Route>
       </Routes>
       <Footer/>
     </div>
