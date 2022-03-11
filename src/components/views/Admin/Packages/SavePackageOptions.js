@@ -26,9 +26,9 @@ function SavePackageOptions(props) {
     onChange([...options]);
   };
 
-  const removePerPerson = (optIndex, index) => {
+  const removeSubOption = (optIndex, index) => {
     const option = {...options[optIndex]};
-    option.perPersons.splice(index, 1);
+    option.subOptions.splice(index, 1);
     options.splice(optIndex, 1, option);
     onChange([...options]);
   };
@@ -39,10 +39,10 @@ function SavePackageOptions(props) {
         <Grid container spacing={1} sx={{mb: index === options.length - 1 ? 0 : 1}} key={index}>
           <Grid item xs>
             <TextField fullWidth label="Group Size" disabled={disabled} 
-              variant="outlined" value={option.groupSize}
+              variant="outlined" value={option.name}
               InputProps={{readOnly: true}} />
           </Grid>
-          {!option.perPersons &&
+          {!option.subOptions &&
             <Grid item xs={2}>
               <TextField fullWidth label="Price" disabled={disabled} 
                 variant="outlined" type="number" value={option.price} 
@@ -55,25 +55,25 @@ function SavePackageOptions(props) {
               <RemoveCircleIcon htmlColor="white"/>
             </FormButton>
           </Grid>
-          {option.perPersons?.length > 0 && 
+          {option.subOptions?.length > 0 && 
             <Grid item xs={12}>
               <InputLabel sx={{mb: 1}}>Per Persons</InputLabel>
-              {option.perPersons.map((per, ppIndex) => (
-                <Grid container spacing={1} sx={{mb: ppIndex === option.perPersons.length - 1 ? 0 : 1}} key={`${index}-${[ppIndex]}`}>
+              {option.subOptions.map((subOption, ppIndex) => (
+                <Grid container spacing={1} sx={{mb: ppIndex === option.subOptions.length - 1 ? 0 : 1}} key={`${index}-${ppIndex}`}>
                   <Grid item xs={9}>
-                    <TextField autoFocus fullWidth label="Per Person" 
-                      variant="outlined" value={per.perPerson}
+                    <TextField autoFocus fullWidth label="Sub option" 
+                      variant="outlined" value={subOption.name}
                       InputProps={{readOnly: true}} />
                   </Grid>
                   <Grid item xs={2}>
                     <TextField fullWidth label="Price" 
-                      variant="outlined" type="number" value={per.price} 
+                      variant="outlined" type="number" value={subOption.price} 
                       InputProps={{readOnly: true}} />
                   </Grid>
                   <Grid item xs={1} sx={{textAlign: "center"}}>
-                    <FormButton aria-label="delete" title="Remove per person" color="error"
-                      disabled={1 === option.perPersons.length || disabled}
-                      onClick={() => removePerPerson(index, ppIndex)}>
+                    <FormButton aria-label="delete" title="Remove sub option" color="error"
+                      disabled={1 === option.subOptions.length || disabled}
+                      onClick={() => removeSubOption(index, ppIndex)}>
                       <RemoveCircleIcon htmlColor="white" />
                     </FormButton>
                   </Grid>

@@ -1,10 +1,10 @@
 import { FormControlLabel, FormHelperText, Grid, InputLabel, Switch, TextField } from "@mui/material";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import RemoveCircleIcon from '@mui/icons-material/RemoveCircle';
-import SavePackageAddOptionPerPerson from "./SavePackageAddOptionPerPerson";
 import { useState } from "react";
 import PropTypes from 'prop-types';
 import FormButton from "../../../common/form/FormButton";
+import SavePackageAddSubOption from "./SavePackageAddSubOption";
 
 function SavePackageAddOption(props) {
     const {
@@ -12,24 +12,26 @@ function SavePackageAddOption(props) {
       disabled = false,
     } = props;
   
-    const [groupSize, setGroupSize] = useState("");
-    const [perPersons, setPerPersons] = useState([]);
+    const [name, setName] = useState("");
+    const [subOptions, setSubOptions] = useState([]);
     const [price, setPrice] = useState(0);
-    const [usePerPerson, setUsePerPerson] = useState(false);
-    const [showPerPerson, setShowPerPerson] = useState(false);
+    const [useSubOption, setUseSubOption] = useState(false);
+    const [showSubOption, setShowSubOption] = useState(false);
     const [error, setError] = useState({
-      groupSize: "",
+      name: "",
       price: "",
-      perPersons: "",
+      subOptions: "",
     });
   
     const confirm = () => {
       if (isValid()) {
         const data = {
-          groupSize,
+          name,
+          isSubOption: false,
+          hasSubOptions: useSubOption,
         };
-        if (usePerPerson) {
-          data.perPersons = perPersons;
+        if (useSubOption) {
+          data.subOptions = subOptions;
         } else {
           data.price = price;
         }
@@ -39,14 +41,14 @@ function SavePackageAddOption(props) {
   
     const isValid = () => {
       const errMsg = {};
-      if (!groupSize) {
-        errMsg.groupSize = "Group size is required.";
+      if (!name) {
+        errMsg.name = "Name is required.";
       }
-      if (!usePerPerson && !price) {
+      if (!useSubOption && !price) {
         errMsg.price = "Price is required.";
       }
-      if (usePerPerson && 0 === perPersons.length) {
-        errMsg.perPersons = "Per person is required.";
+      if (useSubOption && 0 === subOptions.length) {
+        errMsg.subOptions = "Sub option is required.";
       }
       if (Object.keys(errMsg).length > 0) {
         setError(errMsg);
@@ -58,14 +60,14 @@ function SavePackageAddOption(props) {
     const setValue = (field, event) => {
       const value = null != event?.target?.value ? event.target.value : event;
       switch (field) {
-        case "groupSize":
-          setGroupSize(value);
-          setError((err) => ({...err, groupSize: ""}));
+        case "name":
+          setName(value);
+          setError((err) => ({...err, name: ""}));
           break;
-        case "perPerson":
-          setPerPersons((val) => ([...val, value]));
-          setShowPerPerson(false);
-          setError((err) => ({...err, perPersons: ""}));
+        case "subOption":
+          setSubOptions((val) => ([...val, value]));
+          setShowSubOption(false);
+          setError((err) => ({...err, subOptions: ""}));
           break;
         case "price":
           setPrice(parseInt(value));
@@ -76,22 +78,22 @@ function SavePackageAddOption(props) {
       }
     };
     
-    const removePerPerson = (index) => {
-      setPerPersons((per) => {
-        per.splice(index, 1);
-        return [...per];
+    const removeSubOption = (index) => {
+      setSubOptions((option) => {
+        option.splice(index, 1);
+        return [...option];
       });
     };
   
     return (
       <Grid container spacing={1} sx={{mt: 0}}>
         <Grid item xs>
-          <TextField error={!!error.groupSize} autoFocus fullWidth disabled={disabled} label="Group Size" 
-            variant="outlined" value={groupSize}
-            helperText={error.groupSize}
-            onChange={(e) => setValue("groupSize", e)} />
+          <TextField error={!!error.name} autoFocus fullWidth disabled={disabled} label="Name" 
+            variant="outlined" value={name}
+            helperText={error.name}
+            onChange={(e) => setValue("name", e)} />
         </Grid>
-        {!usePerPerson && 
+        {!useSubOption && 
           <Grid item xs={2}>
             <TextField error={!!error.price} fullWidth disabled={disabled} label="Price" 
               variant="outlined" type="number" value={price} 
@@ -107,33 +109,33 @@ function SavePackageAddOption(props) {
         </Grid>
         <Grid item xs={12}>
           <FormControlLabel control={
-            <Switch checked={usePerPerson} color="blue" disabled={disabled}
-              onChange={(e) => setUsePerPerson(e.target.checked)}
+            <Switch checked={useSubOption} color="blue" disabled={disabled}
+              onChange={(e) => setUseSubOption(e.target.checked)}
               inputProps={{ 'aria-label': 'controlled' }} />
           } label={<InputLabel sx={{mt: 1, mb: 1}}>Per Person</InputLabel>}/>
-          {error.perPersons && 
+          {error.subOptions && 
             <FormHelperText error>
-              {error.perPersons}
+              {error.subOptions}
             </FormHelperText> 
           }
         </Grid>
-        {usePerPerson &&
+        {useSubOption &&
           <>
-            {perPersons.length > 0 &&
+            {subOptions.length > 0 &&
               <Grid item xs={12}>
-                {perPersons.map((per, index) => (
-                  <Grid container spacing={1} sx={{mb: index === perPersons.length - 1 ? 0 : 1}}>
+                {subOptions.map((subOption, index) => (
+                  <Grid container spacing={1} sx={{mb: index === subOptions.length - 1 ? 0 : 1}} key={index}>
                     <Grid item xs>
-                      <TextField fullWidth label="Per Person" variant="outlined" value={per.perPerson}
+                      <TextField fullWidth label="Name" variant="outlined" value={subOption.name}
                         InputProps={{readOnly: true}} />
                     </Grid>
                     <Grid item xs={2}>
-                      <TextField fullWidth label="Price" variant="outlined" type="number" value={per.price} 
+                      <TextField fullWidth label="Price" variant="outlined" type="number" value={subOption.price} 
                         InputProps={{readOnly: true}} />
                     </Grid>
                     <Grid item xs={1} sx={{textAlign: "center"}}>
                       <FormButton aria-label="delete" title="Remove option" color="error" disabled={disabled}
-                        onClick={() => removePerPerson(index)}>
+                        onClick={() => removeSubOption(index)}>
                         <RemoveCircleIcon htmlColor="white"/>
                       </FormButton>
                     </Grid>
@@ -142,10 +144,10 @@ function SavePackageAddOption(props) {
               </Grid>
             }
             <Grid item xs={12}>
-              <SavePackageAddOptionPerPerson 
-                show={showPerPerson} 
-                setShow={setShowPerPerson} 
-                onConfirm={(v) => setValue("perPerson", v)} 
+              <SavePackageAddSubOption 
+                show={showSubOption} 
+                setShow={setShowSubOption} 
+                onConfirm={(v) => setValue("subOption", v)} 
                 disabled={disabled}
               />
             </Grid>

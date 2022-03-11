@@ -6,8 +6,12 @@ import { useEffect, useState } from "react";
 import { getAllPackages } from "../../../../services/PackageService";
 import ViewPackagesItem from "./ViewPackagesItem";
 import ViewPackagesSkeletonItem from "./ViewPackagesSkeletonItem";
+import withLoggedUser from "../../../hocs/withLoggedUser";
 
-function ViewPackages() {
+function ViewPackages(props) {
+  const {
+    isAdmin,
+  } = props;
   const [packages, setPackages] = useState(null);
 
   useEffect(() => {
@@ -16,9 +20,11 @@ function ViewPackages() {
 
   return (
     <>
-      <Button component={Link} color="warning" sx={{mb: 2}} variant="contained" to="/admin/packages/add">
-        <AddIcon sx={{mr: 1}}/> Add new package
-      </Button>
+      {isAdmin && 
+        <Button component={Link} color="warning" sx={{mb: 2}} variant="contained" to="/admin/packages/add">
+          <AddIcon sx={{mr: 1}}/> Add new package
+        </Button>
+      }
       <Grid
         container
         direction="row"
@@ -34,4 +40,4 @@ function ViewPackages() {
   ); 
 }
 
-export default ViewPackages;
+export default withLoggedUser(ViewPackages);

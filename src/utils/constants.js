@@ -32,3 +32,11 @@ export const DEFAULT_PACKAGE_DESCRIPTION = `
 
 // https://psgc.gitlab.io/api/ or https://ph-locations-api.buonzz.com/v1/
 export const LOCATION_BASE_URL = "https://psgc.gitlab.io/api";
+
+export const DIALOG_TYPE = {
+  CONFIRM: 1,
+};
+
+export const PAYMENT_METHOD = {
+  GCASH: 1,
+};

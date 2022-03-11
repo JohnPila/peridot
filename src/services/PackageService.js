@@ -1,21 +1,23 @@
-import { addDoc, getDocs, query } from "firebase/firestore";
+import { getDoc, getDocs, query } from "firebase/firestore";
 import FirebaseConfig, { COLLECTIONS } from "../config/FirebaseConfig";
 import { getAuditFields } from "./BaseService";
+import { addPackageOptionsUsingBatch } from "./PackageOptionService";
 
 export async function addPackage(data) {
   try {
-    const q = FirebaseConfig.getCollectionRef(COLLECTIONS.PACKAGES);
-    return await addDoc(q, {
-      "name": data.name,
-      "description": data.description,
-      "city": data.city,
-      "barangay": data.barangay,
-      "options": data.options,
-      ...getAuditFields(true),
+    return await FirebaseConfig.writeTransaction((batch) => {
+      const {options, ...packageData} = data; 
+      const newRef = FirebaseConfig.createRef(COLLECTIONS.PACKAGES);
+      batch.set(newRef, {
+        ...packageData,
+        ...getAuditFields(true),
+      });
+      addPackageOptionsUsingBatch(batch, newRef, options);
+      return newRef;
     });
-  } catch (error) {
-    console.error("Failed to save package.", error);
-    throw error;
+  } catch (err) {
+    console.error("Failed to save package.", err.message);
+    throw err;
   }
 }
 
@@ -30,8 +32,22 @@ export async function getAllPackages() {
   }
 }
 
+export async function getPackage(id) {
+  try {
+    const result = await getDoc(FirebaseConfig.getDocRef(COLLECTIONS.PACKAGES, id));
+    if (!result.exists()) {
+      throw new Error("Package does not exist.");
+    }
+    return {id: result.id, ...result.data()};
+  } catch(err) {
+    console.error("Failed to get package details.", err.message);
+    throw err;
+  }
+}
+
 const defaults = {
   addPackage,
   getAllPackages,
+  getPackage,
 };
 export default defaults;

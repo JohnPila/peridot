@@ -5,7 +5,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import { useEffect, useState } from 'react';
 import FormButton from '../../../common/form/FormButton';
 
-function SavePackageAddOptionPerPerson(props) {
+function SavePackageAddSubOption(props) {
     const {
       show = false,
       setShow,
@@ -13,30 +13,30 @@ function SavePackageAddOptionPerPerson(props) {
       disabled = false,
     } = props;
     
-    const [perPerson, setPerPerson] = useState("");
+    const [name, setName] = useState("");
     const [price, setPrice] = useState(0);
     const [error, setError] = useState({
-      perPerson: "",
+      name: "",
       price: "",
     });
   
     useEffect(() => {
       if (!show) {
-        setPerPerson("");
+        setName("");
         setPrice(0);
       }
     }, [show]);
   
     const confirm = () => {
       if (isValid()) {
-        onConfirm({perPerson, price});
+        onConfirm({name, price, isSubOption: true});
       }
     };
   
     const isValid = () => {
       const errMsg = {};
-      if (!perPerson) {
-        errMsg.perPerson = "Per person is required.";
+      if (!name) {
+        errMsg.name = "Name is required.";
       }
       if (!price) {
         errMsg.price = "Price is required.";
@@ -51,9 +51,9 @@ function SavePackageAddOptionPerPerson(props) {
     const setValue = (field, event) => {
       const value = event.target.value;
       switch (field) {
-        case "perPerson":
-          setPerPerson(value);
-          setError((err) => ({...err, perPerson: ""}));
+        case "name":
+          setName(value);
+          setError((err) => ({...err, name: ""}));
           break;
         case "price":
           setPrice(parseInt(value));
@@ -69,10 +69,10 @@ function SavePackageAddOptionPerPerson(props) {
         {show && 
           <>
             <Grid item xs>
-              <TextField error={!!error.perPerson} autoFocus fullWidth disabled={disabled} label="Per Person" 
-                variant="outlined" value={perPerson}
-                helperText={error.perPerson}
-                onChange={(e) => setValue("perPerson", e)} />
+              <TextField error={!!error.name} autoFocus fullWidth disabled={disabled} label="Sub option" 
+                variant="outlined" value={name}
+                helperText={error.name}
+                onChange={(e) => setValue("name", e)} />
             </Grid>
             <Grid item xs={2}>
               <TextField error={!!error.price} fullWidth disabled={disabled} label="Price" 
@@ -81,7 +81,7 @@ function SavePackageAddOptionPerPerson(props) {
                 onChange={(e) => setValue("price", e)} />
             </Grid>
             <Grid item xs={1} sx={{textAlign: "center"}}>
-              <FormButton aria-label="save" title="Save per person" color="success" type="button" disabled={disabled}
+              <FormButton aria-label="save" title="Save sub option" color="success" type="button" disabled={disabled}
                 onClick={confirm}>
                 <CheckCircleIcon htmlColor="white" />
               </FormButton>
@@ -92,18 +92,18 @@ function SavePackageAddOptionPerPerson(props) {
           <FormButton color="warning" sx={{mb: 1, mt: 1}} 
             onClick={() => setShow(true)}
             disabled={show || disabled}>
-            <AddBoxIcon sx={{mr: 1}} /> Add per person
+            <AddBoxIcon sx={{mr: 1}} /> Add sub option
           </FormButton>
         </Grid>
       </Grid>
     );
   }
   
-  SavePackageAddOptionPerPerson.propTypes = {
+  SavePackageAddSubOption.propTypes = {
     show: PropTypes.bool,
     setShow: PropTypes.func.isRequired,
     onConfirm: PropTypes.func.isRequired,
     disabled: PropTypes.bool,
   };
   
-  export default SavePackageAddOptionPerPerson;
+  export default SavePackageAddSubOption;

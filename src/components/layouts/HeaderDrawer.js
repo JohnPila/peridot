@@ -11,15 +11,18 @@ import { IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { useSelector } from 'react-redux';
 import FirebaseConfig from '../../config/FirebaseConfig';
-import { ADMIN_ROUTES, ROLES, USER_ROUTES } from '../../utils/constants';
+import { ADMIN_ROUTES, USER_ROUTES } from '../../utils/constants';
 import { Link, useNavigate } from 'react-router-dom';
+import withLoggedUser from '../hocs/withLoggedUser';
 
-export default function HeaderDrawer() {
+function HeaderDrawer(props) {
+  const {
+    isLoggedIn,
+    isAdmin,
+  } = props;
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = React.useState(false);
-  const loggedUser = useSelector(state => state.loggedUser.user);
 
   const signOut = () => {
     FirebaseConfig.signOut()
@@ -36,8 +39,6 @@ export default function HeaderDrawer() {
     setIsOpen(open);
   };
   
-  const isLoggedIn = !!loggedUser;
-  const isAdmin = isLoggedIn && ROLES.ADMIN === loggedUser.role;
   const paths = isAdmin ? ADMIN_ROUTES : USER_ROUTES;
   return (
     <div>
@@ -101,3 +102,5 @@ export default function HeaderDrawer() {
     </div>
   );
 }
+
+export default withLoggedUser(HeaderDrawer);

@@ -16,8 +16,8 @@ function SavePackage() {
   const navigate  = useNavigate();
   const [name, setName] = useState("");
   const [description, setDescription] = useState(DEFAULT_PACKAGE_DESCRIPTION);
-  const [city, setCity] = useState("");
-  const [barangay, setBarangay] = useState("");
+  const [city, setCity] = useState(null);
+  const [barangay, setBarangay] = useState(null);
   const [packageOptions, setPackageOptions] = useState([]);
   const [images, setImages] = useState([]);
   const [submitting, setSubmitting] = useState(false);

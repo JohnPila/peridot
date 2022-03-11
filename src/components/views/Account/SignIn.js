@@ -128,7 +128,7 @@ function SignIn() {
         alignItems: "center",
         flexDirection: "column"
       }}>
-        <IconButtonBox color="blue" sx={{mt: 1}} onClick={loginWithFacebook}>
+        <IconButtonBox color="blue" sx={{mt: 1}} onClick={loginWithFacebook} type="button">
           <img
             src="/images/appFooterFacebook.png"
             alt="Facebook"

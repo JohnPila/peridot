@@ -6,7 +6,7 @@ import { createUserWithEmailAndPassword, FacebookAuthProvider, getAuth, onAuthSt
 import store from "../store";
 import { setUser } from "../store/reducers/loggedUser";
 import RoleService from "../services/RoleService";
-import { collection, doc, getFirestore } from "firebase/firestore";
+import { collection, doc, getFirestore, runTransaction, writeBatch } from "firebase/firestore";
 import { ROLES, ROLE_IDS, STORAGE_FOLDERS } from "../utils/constants";
 import UserService from "../services/UserService";
 // TODO: Add SDKs for Firebase products that you want to use
@@ -29,6 +29,7 @@ export const COLLECTIONS = {
   USER_ROLES: "UserRoles",
   USERS: "Users",
   PACKAGES: "Packages",
+  PACKAGE_OPTIONS: "PackageOptions",
 };
 
 class FirebaseConfig {
@@ -80,6 +81,21 @@ class FirebaseConfig {
 
   getStorageRef(name, path = STORAGE_FOLDERS.GLOBALS) {
     return ref(this._storage, `${path}/${name}`);
+  }
+
+  createRef(name) {
+    return doc(collection(this._db, name));
+  }
+
+  async runTransaction(cb = () => {}) {
+    return await runTransaction(this._db, cb);
+  }
+
+  async writeTransaction(cb = () => {}) {
+    const batch = writeBatch(this._db);
+    const result = cb(batch);
+    await batch.commit();
+    return result;
   }
 
   async registerWithEmail({firstName, lastName, email, password}) {
