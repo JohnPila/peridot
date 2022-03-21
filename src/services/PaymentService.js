@@ -1,12 +1,12 @@
 import axios from "axios";
 import GCashConfig from "../config/GCashConfig";
 
-export async function getGcashPaymentLink(amount, additionalData = {}) {
+export async function getGcashPaymentLink(paymentDetailsId, amount, additionalData = {}) {
   try {
     const result = await axios({
       method: "POST",
       url: GCashConfig.url, 
-      data: GCashConfig.createFormData(amount, additionalData),
+      data: GCashConfig.createFormData(paymentDetailsId, amount, additionalData),
       headers: { "Content-Type": "multipart/form-data" },
     });
     return result.data;

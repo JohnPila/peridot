@@ -1,17 +1,12 @@
-import { Button, Card, CardActionArea, CardActions, CardContent, CardHeader, CardMedia, Grid, IconButton, Skeleton } from '@mui/material';
+import { Button, Card, CardActionArea, CardActions, CardContent, CardHeader, CardMedia, Grid, Skeleton } from '@mui/material';
 import PropTypes from 'prop-types';
 import Typography from '../../../common/Typography';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
 import Carousel from 'react-material-ui-carousel'
 import { useEffect, useState } from 'react';
 import { getImages } from '../../../../services/FileService';
 import { STORAGE_FOLDERS } from '../../../../utils/constants';
-import { formatDate } from '../../../../utils/HelperUtils';
-import DropdownMenu from './ViewPackagesItemDropdownMenu';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
-import ReadMoreIcon from '@mui/icons-material/ReadMore';
 import { useNavigate } from 'react-router-dom';
 import { getSmallestPackageOptionPrice } from '../../../../services/PackageOptionService';
 
@@ -30,16 +25,16 @@ function ViewPackagesItem(props) {
     getImages(data.id, STORAGE_FOLDERS.PACKAGES).then(setImages);
   }, []);
 
-  const selectMenu = (action) => {
-    switch(action) {
-      case "update":
-        break;
-      case "delete":
-        break;
-      default:
-        break;
-    }
-  };
+  // const selectMenu = (action) => {
+  //   switch(action) {
+  //     case "update":
+  //       break;
+  //     case "delete":
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
 
   const onSelectPackage = (e) => {
     if ("circle" === e.target.tagName) {

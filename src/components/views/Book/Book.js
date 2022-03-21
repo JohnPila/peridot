@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import BookInfo from "./BookInfo";
 import BookReview from "./BookReview";
 import BookPay from "./BookPay";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 
 const QontoConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -81,8 +82,19 @@ QontoStepIcon.propTypes = {
 };
 
 export default function Book() {
+  const {id: packageId} = useParams();
+  const navigate = useNavigate();
+  const location = useLocation();
   const [activeStep, setActiveStep] = useState(1);
   const [info, setInfo] = useState(null);
+  const [isWaiting, setIsWaiting] = useState(false);
+
+  /* eslint-disable react-hooks/exhaustive-deps */
+  useEffect(() => {
+    if (!location.state) {
+      navigate("/packages", {replace: true});
+    }
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -93,6 +105,14 @@ export default function Book() {
       case 1:
         setInfo(data);
         break;
+      case 3:
+        navigate("result", {
+          replace: true,
+          state: {
+            ...data,
+          },
+        });
+        return;
       default:
         break;
     }
@@ -113,12 +133,20 @@ export default function Book() {
       case 2:
         return <BookReview
           info={info} 
+          packageId={packageId}
+          bookingDate={bookingDate}
+          packageOption={packageOption}
           onPrevious={handlePrevious} 
           onNext={handleNext} 
         />;
       case 3:
         return <BookPay
           info={info} 
+          packageId={packageId}
+          bookingDate={bookingDate}
+          packageOption={packageOption}
+          isWaiting={isWaiting}
+          setIsWaiting={setIsWaiting}
           onPrevious={handlePrevious} 
           onNext={handleNext} 
         />
@@ -127,24 +155,31 @@ export default function Book() {
     }
   };
 
+  if (!location.state) {
+    return null;
+  }
+
+  const {state: {bookingDate, packageOption}} = location;
   return (
     <>
-      <Stack sx={{ width: '100%' }} spacing={4}>
-        <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector />}>
-          <Step>
-            <StepLabel StepIconComponent={QontoStepIcon}>Choose package</StepLabel>
-          </Step>
-          <Step>
-            <StepLabel StepIconComponent={QontoStepIcon}>Enter info</StepLabel>
-          </Step>
-          <Step>
-            <StepLabel StepIconComponent={QontoStepIcon}>Review</StepLabel>
-          </Step>
-          <Step>
-            <StepLabel StepIconComponent={QontoStepIcon}>Pay</StepLabel>
-          </Step>
-        </Stepper>
-      </Stack>
+      {!isWaiting && 
+        <Stack sx={{ width: '100%' }} spacing={4}>
+          <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector />}>
+            <Step>
+              <StepLabel StepIconComponent={QontoStepIcon}>Choose package</StepLabel>
+            </Step>
+            <Step>
+              <StepLabel StepIconComponent={QontoStepIcon}>Enter info</StepLabel>
+            </Step>
+            <Step>
+              <StepLabel StepIconComponent={QontoStepIcon}>Review</StepLabel>
+            </Step>
+            <Step>
+              <StepLabel StepIconComponent={QontoStepIcon}>Pay</StepLabel>
+            </Step>
+          </Stepper>
+        </Stack>
+      }
       {renderStep()}
     </>
   );

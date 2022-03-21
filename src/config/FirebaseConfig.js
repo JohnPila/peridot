@@ -30,6 +30,8 @@ export const COLLECTIONS = {
   USERS: "Users",
   PACKAGES: "Packages",
   PACKAGE_OPTIONS: "PackageOptions",
+  PAYMENT_DETAILS: "PaymentDetails",
+  BOOKINGS: "Bookings",
 };
 
 class FirebaseConfig {
@@ -91,9 +93,9 @@ class FirebaseConfig {
     return await runTransaction(this._db, cb);
   }
 
-  async writeTransaction(cb = () => {}) {
+  async writeTransaction(cb = async () => {}) {
     const batch = writeBatch(this._db);
-    const result = cb(batch);
+    const result = await cb(batch);
     await batch.commit();
     return result;
   }

@@ -23,8 +23,13 @@ export async function getBarangay(code) {
   }
 }
 
+export function getBaseUrl() {
+  return window.location.protocol + '//' + window.location.host;
+}
+
 const defaults = {
   getCity,
   getBarangay,
+  getBaseUrl,
 };
 export default defaults;

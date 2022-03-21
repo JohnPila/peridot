@@ -40,3 +40,21 @@ export const DIALOG_TYPE = {
 export const PAYMENT_METHOD = {
   GCASH: 1,
 };
+export const PAYMENT_METHOD_LABEL = {
+  [PAYMENT_METHOD.GCASH]: "GCash",
+};
+
+export const BOOKING_STATUS = {
+  PENDING_PAYMENT: 1,
+  PAID: 2,
+  PAYMENT_FAILED: 3,
+  CANCELLED: 4,
+  DECLINED: 5,
+};
+export const BOOKING_STATUS_LABEL = {
+  [BOOKING_STATUS.PENDING_PAYMENT]: "Pending payment",
+  [BOOKING_STATUS.PAID]: "Paid",
+  [BOOKING_STATUS.PAYMENT_FAILED]: "Payment failed",
+  [BOOKING_STATUS.CANCELLED]: "Cancelled",
+  [BOOKING_STATUS.DECLINED]: "Declined",
+}

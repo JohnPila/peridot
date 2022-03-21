@@ -6,7 +6,7 @@ import Typography from '../../common/Typography';
 import { Box } from '@mui/system';
 import { CardContent, CardMedia, Divider, Grid, Skeleton } from '@mui/material';
 import FormButton from '../../common/form/FormButton';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { formatDate } from '../../../utils/HelperUtils';
 import { getPackage } from '../../../services/PackageService';
 import { getImages } from '../../../services/FileService';
@@ -18,12 +18,13 @@ import { getPackageOption } from '../../../services/PackageOptionService';
 function BookReview(props) {
   const {
     info,
+    packageId,
+    bookingDate,
+    packageOption,
     onPrevious,
     onNext,
   } = props;
   
-  const {id: packageId} = useParams();
-  const {state: {bookingDate, packageOption}} = useLocation();
   const navigate = useNavigate();
   const [data, setData] = useState(null);
   const totalCost = useMemo(() => data ? 
@@ -125,6 +126,17 @@ function BookReview(props) {
               </Grid>
             </Grid>
             <Typography variant="h4" gutterBottom sx={{ mt: 4 }}>
+              Additional info
+            </Typography>
+            <Grid container>
+              <Grid item xs={2}>
+                <Typography variant="body1" color="text.secondary">Special requests</Typography>
+              </Grid>
+              <Grid item xs textAlign="right">
+                <Typography variant="body1">{info.specialRequests}</Typography>
+              </Grid>
+            </Grid>
+            <Typography variant="h4" gutterBottom sx={{ mt: 4 }}>
               Summary
             </Typography>
             <Grid container>
@@ -209,6 +221,9 @@ function BookReview(props) {
 
 BookReview.propTypes = {
   info: PropTypes.object.isRequired,
+  packageId: PropTypes.string.isRequired,
+  bookingDate: PropTypes.instanceOf(Date).isRequired,
+  packageOption: PropTypes.object.isRequired,
   onPrevious: PropTypes.func.isRequired,
   onNext: PropTypes.func.isRequired,
 };

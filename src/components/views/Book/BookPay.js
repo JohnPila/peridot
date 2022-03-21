@@ -5,31 +5,38 @@ import FormButton from '../../common/form/FormButton';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import CheckIcon from '@mui/icons-material/Check';
 import Typography from '../../common/Typography';
-import { getGcashPaymentLink } from '../../../services/PaymentService';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useEffect, useRef, useState } from 'react';
 import { getPackage } from '../../../services/PackageService';
 import { getPackageOption } from '../../../services/PackageOptionService';
 import PackageDetailsOptionSkeleton from '../Admin/Packages/PackageDetailsOptionSkeleton';
 import withLoggedUser from '../../hocs/withLoggedUser';
-import { PAYMENT_METHOD } from '../../../utils/constants';
+import { BOOKING_STATUS, PAYMENT_METHOD, PAYMENT_METHOD_LABEL } from '../../../utils/constants';
 import GCashConfig from '../../../config/GCashConfig';
+import { addPaymentDetailsForGCashUsingBatch, waitForPaymentTransaction } from '../../../services/PaymentDetailsService';
+import { addBooking, saveBooking } from '../../../services/BookingsService';
+import InfoIcon from '@mui/icons-material/Info';
 
 function BookPay(props) {
   const {
     loggedUser,
     info,
+    packageId,
+    bookingDate,
+    packageOption,
+    isWaiting = false,
+    setIsWaiting,
     onPrevious,
     onNext,
   } = props;
 
-  const {id: packageId} = useParams();
-  const {state: {packageOption}} = useLocation();
   const navigate = useNavigate();
+  const unsubscribeRef = useRef(null);
   const [data, setData] = useState(null);
   const [totalCost, setTotalCost] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState(PAYMENT_METHOD.GCASH);
+  const [paymentLink, setPaymentLink] = useState(null);
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
@@ -39,6 +46,7 @@ function BookPay(props) {
         const options = [];
         if (!packageOpt.hasSubOptions) {
           options.push({
+            id: packageOption.id,
             name: packageOpt.name,
             price: packageOpt.price,
             quantity: packageOption.options[0].quantity,
@@ -47,41 +55,112 @@ function BookPay(props) {
           for (const opt of packageOption.options) {
             const subPackageOpt = await getPackageOption(opt.id);
             options.push({
+              id: opt.id,
               name: subPackageOpt.name,
               price: subPackageOpt.price,
               quantity: opt.quantity,
             });
           }
         }
+        packageOpt.options = options;
         setData(packageOpt);
         setTotalCost(options.reduce((acc, opt) => acc + (opt.quantity * opt.price), 0));
       } catch (error) {
         console.error("Failed to get booking info.", error);
       }
     }).catch(() => navigate("/errors/404", {replace: true}));
+    return () => {
+      if (unsubscribeRef.current) {
+        unsubscribeRef.current();
+      }
+    };
   }, []);
 
-  const handlePay = (e) => {
+  const handlePay = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    const addData = {
-      description: `Payment for "${data.name}" package.`,
-      customername: `${info.firstName} ${info.lastName}`,
-      customermobile: info.phoneNumber,
-      customeremail: loggedUser.email,
-      fee: totalCost * 0.02,
-      merchantname: "Peridot 4Ever Travel and Tours Inc.",
-      merchantlogourl: "https://scontent.fceb2-2.fna.fbcdn.net/v/t1.6435-9/51249905_2253490094906677_1858257204507836416_n.jpg?stp=cp0_dst-jpg_e15_fr_q65&_nc_cat=105&ccb=1-5&_nc_sid=85a577&efg=eyJpIjoidCJ9&_nc_ohc=5rev06IJlvAAX-zXfiP&_nc_ht=scontent.fceb2-2.fna&oh=00_AT9Wlv8rpypftDXjRGq9diKMV9_50sb4bgyrvxejeCPIhA&oe=624F95DE",
-    };
-    getGcashPaymentLink(totalCost, addData)
-      .then(d => {
+    try {
+      const {booking, paymentDetails, otherData} = await addBooking({
+        date: bookingDate,
+        full_name: `${info.firstName} ${info.lastName}`,
+        address: info.address,
+        phone_number: info.phoneNumber,
+        special_requests: info.specialRequests,
+        status: BOOKING_STATUS.PENDING_PAYMENT,
+        package_options: data.options,
+      }, startPayment);
+      handlePostBooking(booking.id, paymentDetails.id, otherData);
+    } catch (error) {
+      console.log("Failed!!!", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const startPayment = async (batch, bookingRef) => {
+    switch (paymentMethod) {
+      case PAYMENT_METHOD.GCASH: {
+        const addData = {
+          description: `Payment for "${data.name}" package.`,
+          customername: `${info.firstName} ${info.lastName}`,
+          customermobile: info.phoneNumber,
+          customeremail: loggedUser.email,
+          fee: totalCost * GCashConfig.fee,
+          merchantname: "Peridot 4Ever Travel and Tours Inc.",
+          merchantlogourl: "https://scontent.fceb2-2.fna.fbcdn.net/v/t1.6435-9/51249905_2253490094906677_1858257204507836416_n.jpg?stp=cp0_dst-jpg_e15_fr_q65&_nc_cat=105&ccb=1-5&_nc_sid=85a577&efg=eyJpIjoidCJ9&_nc_ohc=5rev06IJlvAAX-zXfiP&_nc_ht=scontent.fceb2-2.fna&oh=00_AT9Wlv8rpypftDXjRGq9diKMV9_50sb4bgyrvxejeCPIhA&oe=624F95DE",
+        };
+        return await addPaymentDetailsForGCashUsingBatch(batch, bookingRef, paymentMethod, totalCost, addData);
+      }
+      default:
+        break;
+    }
+    throw new Error(`Unsupported payment method [${paymentMethod}].`);
+  }
+
+  const handlePostBooking = (bookingId, paymentDetailsId, otherData) => {
+    switch (paymentMethod) {
+      case PAYMENT_METHOD.GCASH:
+        waitForPaymentStatus(bookingId, paymentDetailsId);
         window.open(
-          d.data.checkouturl,
+          otherData.data.checkouturl,
           "_blank",
         );
-        onNext();
-      })
-      .finally(() => setIsLoading(false));
+        setPaymentLink(otherData.data.checkouturl);
+        setIsWaiting(true);
+        break;
+      default:
+        break;
+    }
+  };
+
+  const waitForPaymentStatus = (bookingId, id) => {
+    if (unsubscribeRef.current) {
+      unsubscribeRef.current();
+    }
+    unsubscribeRef.current = waitForPaymentTransaction(id, async (details) => {
+      if (details.result) {
+        if (unsubscribeRef.current) {
+          unsubscribeRef.current();
+        }
+        let result;
+        switch (paymentMethod) {
+          case PAYMENT_METHOD.GCASH:
+            result = GCashConfig.parseResult(details.result);
+            break;
+          default:
+            break;
+        }
+        await saveBooking(bookingId, {
+          status: result.success ? BOOKING_STATUS.PAID : 
+            BOOKING_STATUS.PAYMENT_FAILED,
+        });
+        onNext({
+          id: bookingId,
+          method: paymentMethod,
+          result,
+        });
+      }
+    });
   };
 
   const computeTotal = () => {
@@ -103,6 +182,24 @@ function BookPay(props) {
   }
 
   return (
+    isWaiting ? 
+    <Grid container>
+      <Grid item xs={12} textAlign="center">
+        <InfoIcon sx={{fontSize: 150}} color="info" />
+        <Typography variant="h3">Waiting for your payment</Typography>
+        <Typography variant="h6" color="text.secondary">
+          Kindly pay the amount of <Typography component="big" variant="h6" fontSize={30} sx={{fontWeight: "bold"}} color="secondary">₱{computeTotal()}</Typography> via {PAYMENT_METHOD_LABEL[paymentMethod]}
+        </Typography>
+        {paymentLink && 
+          <>
+            <br/>
+            <Typography variant="body2">
+              Or you can also click this <a href={paymentLink} target="_blank" rel="noreferrer">link</a> to pay if you were not redirected automatically.
+            </Typography>
+          </>
+        }
+      </Grid>
+    </Grid> :
     <AppForm containerProps={{maxWidth: "xl"}}>
       <Typography variant="h3" gutterBottom marked="center" align="center">
         Pay
@@ -180,6 +277,11 @@ function BookPay(props) {
 
 BookPay.propTypes = {
   info: PropTypes.object.isRequired,
+  packageId: PropTypes.string.isRequired,
+  bookingDate: PropTypes.instanceOf(Date).isRequired,
+  packageOption: PropTypes.object.isRequired,
+  isWaiting: PropTypes.bool,
+  setIsWaiting: PropTypes.func.isRequired,
   onPrevious: PropTypes.func.isRequired,
   onNext: PropTypes.func.isRequired,
 };

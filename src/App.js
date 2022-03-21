@@ -15,6 +15,7 @@ import PageNotFound from './components/views/Errors/PageNotFound';
 import DialogGroup from './components/common/dialog/DialogGroup';
 import Book from './components/views/Book/Book';
 import ScrollToTop from './components/common/ScrollToTop';
+import BookResult from './components/views/Book/BookResult';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
           <Route path="" element={<ViewPackages/>}/>
           <Route path=":id" element={<PackageDetails/>}/>
           <Route path=":id/book" element={<Book/>}/>
+          <Route path=":id/book/result" element={<BookResult/>}/>
         </Route>
         <Route path="/errors" element={<Errors/>}>
           <Route path="404" element={<PageNotFound/>}/>
