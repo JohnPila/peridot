@@ -36,7 +36,9 @@ function BookPay(props) {
   const [totalCost, setTotalCost] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [paymentMethod, setPaymentMethod] = useState(PAYMENT_METHOD.GCASH);
+  const [bookingId, setBookingId] = useState(null);
   const [paymentLink, setPaymentLink] = useState(null);
+  const [isSaving, setIsSaving] = useState(false);
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
@@ -89,6 +91,7 @@ function BookPay(props) {
         status: BOOKING_STATUS.PENDING_PAYMENT,
         package_options: data.options,
       }, startPayment);
+      setBookingId(booking.id);
       handlePostBooking(booking.id, paymentDetails.id, otherData);
     } catch (error) {
       console.log("Failed!!!", error);
@@ -150,9 +153,10 @@ function BookPay(props) {
           default:
             break;
         }
+        result.status = result.success ? BOOKING_STATUS.PAID : 
+          BOOKING_STATUS.PAYMENT_FAILED;
         await saveBooking(bookingId, {
-          status: result.success ? BOOKING_STATUS.PAID : 
-            BOOKING_STATUS.PAYMENT_FAILED,
+          status: result.status,
         });
         onNext({
           id: bookingId,
@@ -181,6 +185,26 @@ function BookPay(props) {
     }
   }
 
+  const handlePaid = async () => {
+    try {
+      setIsSaving(true);
+      await saveBooking(bookingId, {
+        status: BOOKING_STATUS.PAYMENT_VERIFICATION,
+      });
+      onNext({
+        id: bookingId,
+        method: paymentMethod,
+        result: {
+          status: BOOKING_STATUS.PAYMENT_VERIFICATION,
+        },
+      });
+    } catch (error) {
+      console.error("Failed to set paid.", error);
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
   return (
     isWaiting ? 
     <Grid container>
@@ -191,13 +215,18 @@ function BookPay(props) {
           Kindly pay the amount of <Typography component="big" variant="h6" fontSize={30} sx={{fontWeight: "bold"}} color="secondary">₱{computeTotal()}</Typography> via {PAYMENT_METHOD_LABEL[paymentMethod]}
         </Typography>
         {paymentLink && 
-          <>
-            <br/>
-            <Typography variant="body2">
-              Or you can also click this <a href={paymentLink} target="_blank" rel="noreferrer">link</a> to pay if you were not redirected automatically.
-            </Typography>
-          </>
+          <Typography variant="body2">
+            Or you can also click this <a href={paymentLink} target="_blank" rel="noreferrer">link</a> to pay if you were not redirected automatically.
+          </Typography>
         }
+        <FormButton
+          sx={{ mt: 3, color: "white" }}
+          color="success"
+          onClick={handlePaid}
+          disabled={isSaving}
+        >
+          Paid
+        </FormButton>
       </Grid>
     </Grid> :
     <AppForm containerProps={{maxWidth: "xl"}}>

@@ -2,8 +2,10 @@ import { Chip, Grid } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
+import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
 import Typography from "../../common/Typography";
 import { useEffect } from "react";
+import { BOOKING_STATUS } from "../../../utils/constants";
 
 export default function BookResult() {
   const location = useLocation();
@@ -28,6 +30,7 @@ export default function BookResult() {
     id,
     // method,
     result: {
+      status,
       success,
       message,
       amount,
@@ -38,7 +41,7 @@ export default function BookResult() {
   return (
     <Grid container>
       <Grid item xs={12} textAlign="center">
-        {success ? 
+        {BOOKING_STATUS.PAID === status && 
           <>
             <CheckCircleIcon sx={{fontSize: 150}} color="success" />
             <Typography variant="h3">Thank you for your payment</Typography>
@@ -47,7 +50,9 @@ export default function BookResult() {
             </Typography>
             <br/>
             <Typography variant="body2">You will receive your booking confirmation via email.</Typography>
-          </> : 
+          </>
+        }
+        {BOOKING_STATUS.PAYMENT_FAILED === status && 
           <>
             <CancelIcon sx={{fontSize: 150}} color="error" />
             <Typography variant="h3">Payment failed</Typography>
@@ -58,9 +63,21 @@ export default function BookResult() {
               {message}
             </Typography>
             <br/>
-            <Typography variant="body2">Kindly contact our customer support for assistance.</Typography>
+            <Typography variant="body2">You can also contact our customer support for assistance.</Typography>
           </>
-        } 
+        }
+        {BOOKING_STATUS.PAYMENT_VERIFICATION === status && 
+          <>
+            <HourglassBottomIcon sx={{fontSize: 150}} color="info" />
+            <Typography variant="h3">Payment verification</Typography>
+            <Typography variant="h6" color="text.secondary">
+              Your booking ID is <Chip label={id} color="secondary" size="small" onClick={goToBookingDetails} />
+            </Typography>
+            <Typography variant="body1">Kindly wait while we verify your payment.</Typography>
+            <br/>
+            <Typography variant="body2">You can also contact our customer support for assistance.</Typography>
+          </>
+        }
       </Grid>
     </Grid>
   );

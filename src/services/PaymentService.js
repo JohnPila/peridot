@@ -9,6 +9,9 @@ export async function getGcashPaymentLink(paymentDetailsId, amount, additionalDa
       data: GCashConfig.createFormData(paymentDetailsId, amount, additionalData),
       headers: { "Content-Type": "multipart/form-data" },
     });
+    if (result.data.error) {
+      throw new Error(result.data.error);
+    }
     return result.data;
   } catch (error) {
     console.error("Failed to GCash payment link.", error);

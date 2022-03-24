@@ -26,8 +26,8 @@ class GCashConfig {
     form.append("x-public-key", PUBLIC_KEY);
     form.append("amount", amount);
     form.append("expiry", PAYMENT_EXPIRY);
-    form.append("webhooksuccessurl", webhookUrl);
-    form.append("webhookfailurl", webhookUrl);
+    // form.append("webhooksuccessurl", webhookUrl);
+    // form.append("webhookfailurl", webhookUrl);
     for (const key in additionalData) {
       form.append(key, additionalData[key]);
     }
