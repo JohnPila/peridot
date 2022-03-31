@@ -1,5 +1,5 @@
-import { getBaseUrl } from "../services/LocationService";
-import { PAYMENT_METHOD } from "../utils/constants";
+// import { getBaseUrl } from "../services/LocationService";
+// import { PAYMENT_METHOD } from "../utils/constants";
 
 const PUBLIC_KEY = "pk_13ae9814cb5debb7727dbcccc9fd2193";
 const URL = "https://g.payx.ph/payment_request";
