@@ -7,6 +7,7 @@ import { useEffect, useState } from 'react';
 import { FormHelperText, Skeleton } from '@mui/material';
 import Typography from './Typography';
 import { formatDate } from '../../utils/HelperUtils';
+import { getAllBookingsByPackageAndDateRange } from '../../services/BookingsService';
 
 const AvailabilityLayout = styled('div')(({ theme }) => ({
   "> div > div, > div > div > div, .MuiCalendarPicker-root": {
@@ -38,16 +39,22 @@ function AvailabilityCalendar(props) {
 
   const [isDisabled, setIsDisabled] = useState(!!packageId);
   const [isLoading, setIsLoading] = useState(!!packageId);
+  const [bookings, setBookings] = useState([]);
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (packageId) {
-      setTimeout(() => {
-        setIsDisabled(false);
-        setIsLoading(false);
-      }, 2000);
+      const today = new Date();
+      const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+      const lastDay = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+      getAllBookingsByPackageAndDateRange(packageId, firstDay, lastDay)
+        .then(setBookings)
+        .finally(() => {
+          setIsLoading(false);
+          setIsDisabled(false);
+        });
     }
-  }, []);
+  }, [packageId]);
 
   return (
     <AvailabilityLayout {...otherProps}>
@@ -67,6 +74,7 @@ function AvailabilityCalendar(props) {
           variant="rectangular" /> :
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <StaticDatePicker
+            loading={isDisabled}
             disabled={isDisabled}
             renderLoading={() => (
               <div className="loader">
@@ -75,10 +83,10 @@ function AvailabilityCalendar(props) {
             )}
             value={value}
             onChange={onChange}
-            // shouldDisableDate={(date) => {
-            //   console.log(date);
-            //   return date.getDate() % 2 === 0;
-            // }}
+            shouldDisableDate={(date) => {
+              return bookings.some(booking => 
+                date.getDate() === booking.date.toDate().getDate());
+            }}
             displayStaticWrapperAs="desktop"
             {...datePickerProps}
           />

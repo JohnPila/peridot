@@ -1,8 +1,12 @@
 import { serverTimestamp } from "firebase/firestore";
 import store from "../store";
 
+export function getCurrentUserId() {
+  return store.getState().loggedUser.user?.uid;
+}
+
 export function getAuditFields(isCreated) {
-  const userId = store.getState().loggedUser.user?.uid;
+  const userId = getCurrentUserId();
   return {
     [isCreated ? "createdDate" : "modifiedDate"]: serverTimestamp(),
     [isCreated ? "createdBy" : "modifiedBy"]: userId,
@@ -10,6 +14,7 @@ export function getAuditFields(isCreated) {
 }
 
 const defaults = {
+  getCurrentUserId,
   getAuditFields,
 };
 export default defaults;

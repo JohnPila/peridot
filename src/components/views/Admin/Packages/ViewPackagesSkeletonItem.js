@@ -4,7 +4,7 @@ export default function ViewPackagesSkeletonItem() {
   return (
     <Grid item xs={12} sm={6} md={4}>
       <Card sx={{ maxWidth: 345 }}>
-        <Skeleton sx={{ height: 190 }} animation="wave" variant="rectangular" />
+        <Skeleton sx={{ height: 200 }} animation="wave" variant="rectangular" />
         <CardHeader
           title={<Skeleton animation="wave" width="80%" />}
           subheader={<Skeleton animation="wave" width="40%" />}

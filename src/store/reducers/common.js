@@ -7,6 +7,7 @@ export const commonSlice = createSlice({
     showBanner: false,
     dialog: {
       type: null,
+      options: {},
       isOpen: false,
       title: "",
       content: "",
@@ -19,26 +20,29 @@ export const commonSlice = createSlice({
     },
     confirmDialog: {
       reducer: (state, action) => {
-        const {title, content, callback} = action.payload;
+        const {title, content, callback, options} = action.payload;
         state.dialog = {
           type: DIALOG_TYPE.CONFIRM,
+          options: options || {},
           isOpen: true,
           title,
           content,
           callback,
         };
       },
-      prepare: (title, content, callback) => ({
+      prepare: (title, content, callback, options) => ({
         payload: {
           title,
           content,
           callback,
+          options,
         },
       })
     },
     closeDialog: (state) => {
       state.dialog = {
         type: null,
+        variant: null,
         isOpen: false,
         title: "",
         content: "",

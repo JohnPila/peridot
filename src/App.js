@@ -16,6 +16,9 @@ import DialogGroup from './components/common/dialog/DialogGroup';
 import Book from './components/views/Book/Book';
 import ScrollToTop from './components/common/ScrollToTop';
 import BookResult from './components/views/Book/BookResult';
+import Bookings from './components/views/Bookings/Bookings';
+import ViewBookings from './components/views/Bookings/ViewBookings';
+import BookingDetails from './components/views/Bookings/BookingDetails';
 
 function App() {
   return (
@@ -36,6 +39,10 @@ function App() {
           <Route path=":id" element={<PackageDetails/>}/>
           <Route path=":id/book" element={<Book/>}/>
           <Route path=":id/book/result" element={<BookResult/>}/>
+        </Route>
+        <Route path="/bookings" element={<Bookings/>}>
+          <Route path="" element={<ViewBookings/>}/>
+          <Route path=":id" element={<BookingDetails/>}/>
         </Route>
         <Route path="/errors" element={<Errors/>}>
           <Route path="404" element={<PageNotFound/>}/>

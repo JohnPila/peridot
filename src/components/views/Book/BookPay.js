@@ -82,14 +82,14 @@ function BookPay(props) {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const {booking, paymentDetails, otherData} = await addBooking({
+      const {booking, paymentDetails, otherData} = await addBooking(packageId, {
         date: bookingDate,
-        full_name: `${info.firstName} ${info.lastName}`,
+        fullName: `${info.firstName} ${info.lastName}`,
         address: info.address,
-        phone_number: info.phoneNumber,
-        special_requests: info.specialRequests,
+        phoneNumber: info.phoneNumber,
+        specialRequests: info.specialRequests,
         status: BOOKING_STATUS.PENDING_PAYMENT,
-        package_options: data.options,
+        packageOptions: data.options,
       }, startPayment);
       setBookingId(booking.id);
       handlePostBooking(booking.id, paymentDetails.id, otherData);

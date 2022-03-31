@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 export default function withPage(Component) {
   function WithPage(props) {
     const showBanner = useSelector(state => state.common.showBanner);
+    const isInitializedLoggedUser = useSelector(state => undefined !== state.loggedUser.user);
 
     return (
       <Container
@@ -13,7 +14,7 @@ export default function withPage(Component) {
           mb: 14,
         }}
       >
-        <Component {...props} />
+        {isInitializedLoggedUser && <Component {...props} />}
       </Container>
     );
   }

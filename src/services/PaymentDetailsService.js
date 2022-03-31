@@ -1,7 +1,26 @@
-import { onSnapshot } from "firebase/firestore";
+import { getDocs, limit, onSnapshot, orderBy, query, where } from "firebase/firestore";
 import FirebaseConfig, { COLLECTIONS } from "../config/FirebaseConfig";
 import { getAuditFields } from "./BaseService";
 import { getGcashPaymentLink } from "./PaymentService";
+
+export async function getPaymentDetailsByBooking(refOrId) {
+  try {
+    const bookingRef = "document" === refOrId?.type ? refOrId : 
+      FirebaseConfig.getDocRef(COLLECTIONS.BOOKINGS, refOrId);
+    const q = query(FirebaseConfig.getCollectionRef(COLLECTIONS.PAYMENT_DETAILS), 
+      where("booking", "==", bookingRef),
+      orderBy("createdDate", "desc"),
+      limit(1));
+    const result = await getDocs(q);
+    if (result.empty) {
+      throw new Error("Payment details not found.");
+    }
+    return result.docs.map(d => ({id: d.id, ...d.data()}))[0];
+  } catch(err) {
+    console.error("Failed to get payment details by booking.", err.message);
+    throw err;
+  }
+}
 
 export function waitForPaymentTransaction(id, callback = () => {}) {
   return onSnapshot(FirebaseConfig.getDocRef(COLLECTIONS.PAYMENT_DETAILS, id), 
@@ -25,5 +44,6 @@ export async function addPaymentDetailsForGCashUsingBatch(batch, ref, method, am
 const defaults = {
   waitForPaymentTransaction,
   addPaymentDetailsForGCashUsingBatch,
+  getPaymentDetailsByBooking,
 };
 export default defaults;

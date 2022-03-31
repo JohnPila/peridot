@@ -1,5 +1,6 @@
 import ReviewsIcon from '@mui/icons-material/Reviews';
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
+import BookIcon from '@mui/icons-material/Book';
 
 export const ROLES = {
   ADMIN: "admin",
@@ -18,12 +19,12 @@ export const STORAGE_FOLDERS = {
 
 export const ADMIN_ROUTES = [
   {name: "Packages", path: "/admin/packages", icon: <TravelExploreIcon/>},
-  {name: "Reviews", path: "/admin/reviews", icon: <ReviewsIcon/>},
+  {name: "Bookings", path: "/bookings", icon: <ReviewsIcon/>},
 ];
 
 export const USER_ROUTES = [
   {name: "Packages", path: "/packages", icon: <TravelExploreIcon/>},
-  {name: "Reviews", path: "/reviews", icon: <ReviewsIcon/>},
+  {name: "Bookings", path: "/bookings", icon: <BookIcon/>},
 ];
 
 export const DEFAULT_PACKAGE_DESCRIPTION = `
@@ -35,6 +36,13 @@ export const LOCATION_BASE_URL = "https://psgc.gitlab.io/api";
 
 export const DIALOG_TYPE = {
   CONFIRM: 1,
+};
+
+export const DIALOG_TYPE_VARIANT = {
+  INFO: 1,
+  WARNING: 2,
+  ERROR: 3,
+  SUCCESS: 4,
 };
 
 export const PAYMENT_METHOD = {
@@ -51,11 +59,14 @@ export const BOOKING_STATUS = {
   PAYMENT_VERIFICATION: 4,
   CANCELLED: 5,
   DECLINED: 6,
+  PENDING_CANCELLATION: 7,
 };
 export const BOOKING_STATUS_LABEL = {
   [BOOKING_STATUS.PENDING_PAYMENT]: "Pending payment",
   [BOOKING_STATUS.PAID]: "Paid",
   [BOOKING_STATUS.PAYMENT_FAILED]: "Payment failed",
+  [BOOKING_STATUS.PAYMENT_VERIFICATION]: "Payment verification",
   [BOOKING_STATUS.CANCELLED]: "Cancelled",
   [BOOKING_STATUS.DECLINED]: "Declined",
+  [BOOKING_STATUS.PENDING_CANCELLATION]: "Pending cancellation",
 }

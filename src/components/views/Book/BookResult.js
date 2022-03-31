@@ -2,7 +2,7 @@ import { Chip, Grid } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
-import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
+import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import Typography from "../../common/Typography";
 import { useEffect } from "react";
 import { BOOKING_STATUS } from "../../../utils/constants";
@@ -31,7 +31,7 @@ export default function BookResult() {
     // method,
     result: {
       status,
-      success,
+      // success,
       message,
       amount,
       // referenceNumber,
@@ -68,7 +68,7 @@ export default function BookResult() {
         }
         {BOOKING_STATUS.PAYMENT_VERIFICATION === status && 
           <>
-            <HourglassBottomIcon sx={{fontSize: 150}} color="info" />
+            <HourglassTopIcon sx={{fontSize: 150}} color="info" />
             <Typography variant="h3">Payment verification</Typography>
             <Typography variant="h6" color="text.secondary">
               Your booking ID is <Chip label={id} color="secondary" size="small" onClick={goToBookingDetails} />

@@ -32,9 +32,10 @@ export async function getAllPackages() {
   }
 }
 
-export async function getPackage(id) {
+export async function getPackage(refOrId) {
   try {
-    const result = await getDoc(FirebaseConfig.getDocRef(COLLECTIONS.PACKAGES, id));
+    const result = await getDoc("document" === refOrId?.type ? refOrId : 
+      FirebaseConfig.getDocRef(COLLECTIONS.PACKAGES, refOrId));
     if (!result.exists()) {
       throw new Error("Package does not exist.");
     }
