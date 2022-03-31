@@ -16,9 +16,9 @@ class GCashConfig {
   }
 
   createFormData(paymentDetailsId, amount, additionalData = {}) {
-    const webhookUrl = getBaseUrl() + "/rest/api/payment-status?" + 
-      "method=" + PAYMENT_METHOD.GCASH + 
-      "&paymentDetailsId=" + paymentDetailsId;
+    // const webhookUrl = getBaseUrl() + "/rest/api/payment-status?" + 
+    //   "method=" + PAYMENT_METHOD.GCASH + 
+    //   "&paymentDetailsId=" + paymentDetailsId;
     // const webhookUrl = "https://2058-49-147-194-204.ngrok.io/peridot-2b1d5/us-central1/paymentStatus?" + 
     //   "method=" + PAYMENT_METHOD.GCASH + 
     //   "&paymentDetailsId=" + paymentDetailsId;
