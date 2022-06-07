@@ -4,7 +4,7 @@ import Typography from '../../common/Typography';
 import DashboardBannerLayout from './DashboardBannerLayout';
 
 const backgroundImage =
-  'https://www.travelingcebu.com/images/kawasan-falls-aerial-view.jpg';
+  'https://images.pexels.com/photos/1435752/pexels-photo-1435752.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
 
 export default function DashboardBanner() {
   return (

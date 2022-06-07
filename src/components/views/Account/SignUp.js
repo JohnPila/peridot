@@ -46,7 +46,7 @@ function SignUp() {
   };
 
   return (
-    <AppForm sx={{backgroundImage: "url(https://wp-assets.dotproperty-kh.com/wp-content/uploads/sites/2/2021/04/20122454/SM-Seaside-Cebu.jpg)"}}
+    <AppForm sx={{backgroundImage: "url(https://images.pexels.com/photos/129731/pexels-photo-129731.jpeg)"}}
       paperSx={{backgroundColor: "rgba(255, 245, 248, 0.8)"}}>
       <>
         <Typography variant="h3" gutterBottom marked="center" align="center">
