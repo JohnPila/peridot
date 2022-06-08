@@ -19,6 +19,7 @@ import BookResult from './components/views/Book/BookResult';
 import Bookings from './components/views/Bookings/Bookings';
 import ViewBookings from './components/views/Bookings/ViewBookings';
 import BookingDetails from './components/views/Bookings/BookingDetails';
+import AboutUs from './components/views/About/AboutUs';
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
         <Route path="/" element={<Dashboard />}/>
         <Route path="/sign-up" element={<SignUp />}/>
         <Route path="/sign-in" element={<SignIn />}/>
+        <Route path="/about-us" element={<AboutUs />}/>
         <Route path="/forgot-password" element={<ForgotPassword />}/>
         <Route path="/admin/packages" element={<Packages/>}>
           <Route path="" element={<ViewPackages/>}/>
@@ -44,6 +46,7 @@ function App() {
           <Route path="" element={<ViewBookings/>}/>
           <Route path=":id" element={<BookingDetails/>}/>
         </Route>
+        <Route path="/aiport-transfer" element={<>Airport Transfer</>}/>
         <Route path="/errors" element={<Errors/>}>
           <Route path="404" element={<PageNotFound/>}/>
         </Route>

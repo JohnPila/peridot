@@ -6,13 +6,11 @@ import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import MailIcon from '@mui/icons-material/Mail';
 import { IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import LogoutIcon from '@mui/icons-material/Logout';
 import FirebaseConfig from '../../config/FirebaseConfig';
-import { ADMIN_ROUTES, USER_ROUTES } from '../../utils/constants';
+import { ADMIN_ROUTES, GENERAL_ROUTES, USER_ROUTES } from '../../utils/constants';
 import { Link, useNavigate } from 'react-router-dom';
 import withLoggedUser from '../hocs/withLoggedUser';
 
@@ -75,12 +73,12 @@ function HeaderDrawer(props) {
           </List>
           <Divider />
           <List>
-            {['Contact Us', 'About Us'].map((text, index) => (
-              <ListItem button key={text}>
+            {GENERAL_ROUTES.map(path => (
+              <ListItem button component={Link} key={path.name} to={path.path}>
                 <ListItemIcon>
-                  {index % 2 === 0 ? <MailIcon /> : <PeopleAltIcon />}
+                  {path.icon}
                 </ListItemIcon>
-                <ListItemText primary={text} />
+                <ListItemText primary={path.name} />
               </ListItem>
             ))}
           </List>

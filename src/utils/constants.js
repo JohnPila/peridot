@@ -1,6 +1,9 @@
 import ReviewsIcon from '@mui/icons-material/Reviews';
 import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import BookIcon from '@mui/icons-material/Book';
+import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
+import MailIcon from '@mui/icons-material/Mail';
+import { Airlines } from '@mui/icons-material';
 
 export const ROLES = {
   ADMIN: "admin",
@@ -20,11 +23,18 @@ export const STORAGE_FOLDERS = {
 export const ADMIN_ROUTES = [
   {name: "Packages", path: "/admin/packages", icon: <TravelExploreIcon/>},
   {name: "Bookings", path: "/bookings", icon: <ReviewsIcon/>},
+  {name: "Airport Transfer", path: "/aiport-transfer", icon: <Airlines/>},
 ];
 
 export const USER_ROUTES = [
   {name: "Packages", path: "/packages", icon: <TravelExploreIcon/>},
   {name: "Bookings", path: "/bookings", icon: <BookIcon/>},
+  {name: "Airport Transfer", path: "/aiport-transfer", icon: <Airlines/>},
+];
+
+export const GENERAL_ROUTES = [
+  {name: "Contact Us", path: "/contact-us", icon: <MailIcon />},
+  {name: "About Us", path: "/about-us", icon: <PeopleAltIcon />},
 ];
 
 export const DEFAULT_PACKAGE_DESCRIPTION = `
