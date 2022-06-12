@@ -20,6 +20,7 @@ import Bookings from './components/views/Bookings/Bookings';
 import ViewBookings from './components/views/Bookings/ViewBookings';
 import BookingDetails from './components/views/Bookings/BookingDetails';
 import AboutUs from './components/views/About/AboutUs';
+import CarRental from './components/views/Carrental/CarRental';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
         <Route path="/sign-up" element={<SignUp />}/>
         <Route path="/sign-in" element={<SignIn />}/>
         <Route path="/about-us" element={<AboutUs />}/>
+        <Route path="/car-rental" element={<CarRental />}/>
         <Route path="/forgot-password" element={<ForgotPassword />}/>
         <Route path="/admin/packages" element={<Packages/>}>
           <Route path="" element={<ViewPackages/>}/>
