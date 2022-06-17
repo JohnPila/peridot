@@ -21,6 +21,7 @@ import ViewBookings from './components/views/Bookings/ViewBookings';
 import BookingDetails from './components/views/Bookings/BookingDetails';
 import AboutUs from './components/views/About/AboutUs';
 import CarRental from './components/views/Carrental/CarRental';
+import AirportTransfer from './components/views/AirportTransfer/AirportTransfer';
 
 function App() {
   return (
@@ -48,7 +49,7 @@ function App() {
           <Route path="" element={<ViewBookings/>}/>
           <Route path=":id" element={<BookingDetails/>}/>
         </Route>
-        <Route path="/aiport-transfer" element={<>Airport Transfer</>}/>
+        <Route path="/aiport-transfer" element={<AirportTransfer/>}/>
         <Route path="/errors" element={<Errors/>}>
           <Route path="404" element={<PageNotFound/>}/>
         </Route>
