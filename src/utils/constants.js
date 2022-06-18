@@ -4,6 +4,7 @@ import BookIcon from '@mui/icons-material/Book';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import MailIcon from '@mui/icons-material/Mail';
 import { Airlines } from '@mui/icons-material';
+import { CarRental } from '@mui/icons-material';
 
 export const ROLES = {
   ADMIN: "admin",
@@ -30,6 +31,7 @@ export const USER_ROUTES = [
   {name: "Packages", path: "/packages", icon: <TravelExploreIcon/>},
   {name: "Bookings", path: "/bookings", icon: <BookIcon/>},
   {name: "Airport Transfer", path: "/aiport-transfer", icon: <Airlines/>},
+  {name: "Car Rental", path: "/car-rental", icon: <CarRental/>},
 ];
 
 export const GENERAL_ROUTES = [

@@ -1,5 +1,5 @@
 import * as React from 'react';
-//import { Field, Form, FormSpy } from 'react-final-form';
+//import { Field, Form } from 'react-final-form';
 //import Box from '@mui/material/Box';
 //import Link from '@mui/material/Link';
 import Typography from '../../common/Typography';
@@ -23,6 +23,7 @@ export default function CarRental(){
             <Typography variant="h3" gutterBottom marked="center" align="center">
             Car Rental Booking
             </Typography>
+
         </>
         
            
