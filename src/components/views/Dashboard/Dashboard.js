@@ -3,7 +3,6 @@ import DashboardCategories from "./DashboardCategories";
 import DashboardValues from "./DashboardValues";
 import DashboardGuide from "./DashboardGuide";
 import DashboardOffers from "./DashboardOffers";
-import DashboardContact from "./DashboardContact";
 
 export default function Dashboard() {
   return (
@@ -13,7 +12,6 @@ export default function Dashboard() {
       <DashboardCategories/>
       <DashboardGuide/>
       <DashboardOffers/>
-      <DashboardContact/>
     </>
   );
 }
