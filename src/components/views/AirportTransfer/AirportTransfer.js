@@ -73,7 +73,7 @@ function AirportTransfer() {
 
   const isValid = () => {
     const errMsg = {};
-    if (!name) {
+    if (!error.name) {
       errMsg.name = "Name is required.";
     }
     if (Object.keys(errMsg).length > 0) {
