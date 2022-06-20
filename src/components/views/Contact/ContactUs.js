@@ -5,7 +5,7 @@ import Container from '@mui/material/Container';
 import Typography from '../../common/Typography';
 import TextField from '../../common/TextField'; 
 
-function DashboardContact() {
+function ContactUs() {
   return (
     <Container
       component="section"
@@ -68,4 +68,4 @@ function DashboardContact() {
   );
 }
 
-export default DashboardContact;
+export default ContactUs;

@@ -22,6 +22,7 @@ import BookingDetails from './components/views/Bookings/BookingDetails';
 import AboutUs from './components/views/About/AboutUs';
 import CarRental from './components/views/Carrental/CarRental';
 import AirportTransfer from './components/views/AirportTransfer/AirportTransfer';
+import ContactUs from './components/views/Contact/ContactUs';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
         <Route path="/" element={<Dashboard />}/>
         <Route path="/sign-up" element={<SignUp />}/>
         <Route path="/sign-in" element={<SignIn />}/>
+        <Route path="/contact-us" element={<ContactUs />}/>
         <Route path="/about-us" element={<AboutUs />}/>
         <Route path="/car-rental" element={<CarRental />}/>
         <Route path="/forgot-password" element={<ForgotPassword />}/>
