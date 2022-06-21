@@ -23,6 +23,7 @@ import AboutUs from './components/views/About/AboutUs';
 import CarRental from './components/views/Carrental/CarRental';
 import AirportTransfer from './components/views/AirportTransfer/AirportTransfer';
 import ContactUs from './components/views/Contact/ContactUs';
+import EnterDetails from './components/views/EnterDetails/Enterdetails';
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         <Route path="/contact-us" element={<ContactUs />}/>
         <Route path="/about-us" element={<AboutUs />}/>
         <Route path="/car-rental" element={<CarRental />}/>
+        <Route path="/enter-details" element={<EnterDetails />}/>
         <Route path="/forgot-password" element={<ForgotPassword />}/>
         <Route path="/admin/packages" element={<Packages/>}>
           <Route path="" element={<ViewPackages/>}/>
