@@ -3,7 +3,6 @@ import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import BookIcon from '@mui/icons-material/Book';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import MailIcon from '@mui/icons-material/Mail';
-import PieChartIcon from '@mui/icons-material/PieChart';
 import { Airlines } from '@mui/icons-material';
 import { CarRental } from '@mui/icons-material';
 
@@ -23,7 +22,6 @@ export const STORAGE_FOLDERS = {
 };
 
 export const ADMIN_ROUTES = [
-  {name: "Dashboard", path: "/admin/dashboard", icon: <PieChartIcon/>},
   {name: "Packages", path: "/admin/packages", icon: <TravelExploreIcon/>},
   {name: "Bookings", path: "/bookings", icon: <ReviewsIcon/>},
   {name: "Airport Transfer", path: "/aiport-transfer", icon: <Airlines/>},
