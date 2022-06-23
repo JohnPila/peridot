@@ -10,18 +10,19 @@ import FormButton from '../../common/form/FormButton';
 import FormFeedback from '../../common/form/FormFeedback';
 import FirebaseConfig from '../../../config/FirebaseConfig';
 import IconButtonBox from '../../common/IconButtonBox';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 function SignIn() {
   const [sent, setSent] = React.useState(false);
   const navigate = useNavigate();
+  const [search] = useSearchParams();
   const isLoggedIn = useSelector(state => !!state.loggedUser.user);
 
   /* eslint-disable react-hooks/exhaustive-deps */
   React.useEffect(() => {
     if (isLoggedIn) {
-      navigate("/", {replace: true});
+      navigate(search.get("redirectTo") || "/", {replace: true});
     }
   }, [isLoggedIn]);
 
@@ -60,7 +61,7 @@ function SignIn() {
           <Typography variant="body2" align="center">
           {'Not a member yet? '}
           <Link
-              href="/sign-up/"
+              href={"/sign-up" + (search.toString() && `?${search.toString()}`)}
               align="center"
               underline="always"
           >

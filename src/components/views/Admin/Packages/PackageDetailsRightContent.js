@@ -6,7 +6,7 @@ import PackageDetailsOptions from "./PackageDetailsOptions";
 import PropTypes from 'prop-types';
 import withDialog from "../../../hocs/withDialog";
 import withLoggedUser from "../../../hocs/withLoggedUser";
-import { useNavigate } from "react-router-dom";
+import { createSearchParams, useNavigate } from "react-router-dom";
 
 function PackageDetailsRightContent(props) {
   const {
@@ -28,9 +28,15 @@ function PackageDetailsRightContent(props) {
     if (isValid()) {
       // book now...
       if (isLoggedIn && !isEmailVerified) {
-        confirmDialog("Email not verified", "Your email is not verified yet. Do you still want to proceed with  your booking?", (ok) => {
+        confirmDialog("Email not verified", "Your email is not verified yet. Do you still want to proceed with your booking?", (ok) => {
           if (ok) {
             goToBookPage();
+          }
+        });
+      } else if (!isLoggedIn) {
+        confirmDialog("You are not signed in", "You need to sign in first before you can make a booking. Go to sign in page?", (ok) => {
+          if (ok) {
+            goToSignInPage();
           }
         });
       } else {
@@ -38,6 +44,13 @@ function PackageDetailsRightContent(props) {
       }
     }
   };
+
+  const goToSignInPage = () => {
+    navigate({
+      pathname: "/sign-in",
+      search: `?${createSearchParams({redirectTo: "/packages/" + packageId})}`
+    });
+  }
 
   const goToBookPage = () => {
     navigate("book", {

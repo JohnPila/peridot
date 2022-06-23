@@ -9,19 +9,20 @@ import RFTextField from '../../common/form/RFTextField';
 import FormButton from '../../common/form/FormButton';
 import FormFeedback from '../../common/form/FormFeedback';
 import AppForm from '../../common/AppForm';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import FirebaseConfig from '../../../config/FirebaseConfig';
 
 function SignUp() {
   const [sent, setSent] = React.useState(false);
   const navigate = useNavigate();
+  const [search] = useSearchParams();
   const isLoggedIn = useSelector(state => !!state.loggedUser.user);
 
   /* eslint-disable react-hooks/exhaustive-deps */
   React.useEffect(() => {
     if (isLoggedIn) {
-      navigate("/", {replace: true});
+      navigate(search.get("redirectTo") || "/", {replace: true});
     }
   }, [isLoggedIn]);
 
