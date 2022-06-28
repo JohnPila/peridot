@@ -209,6 +209,7 @@ function CarRental() {
           size="large"
           color="secondary"
           fullWidth
+          href="/enter-details/"
         >
           {submitting ? 'Booking...' : 'Book Now'}
         </FormButton>
