@@ -1,4 +1,5 @@
 import axios from "axios";
+import GeoapifyConfig from "../config/GeoapifyConfig";
 import { LOCATION_BASE_URL } from "../utils/constants";
 
 export async function getCity(code) {
@@ -28,13 +29,35 @@ export function getBaseUrl() {
 }
 
 export async function searchPlacesByText(text) {
-  const API_KEY = "4687a77640a44100b4740e60780ffe5b";
   try {
     const result = await axios.get(`https://api.geoapify.com/v1/geocode/autocomplete?` + 
-      `text=${text}&apiKey=${API_KEY}`);
+      `text=${text}&apiKey=${GeoapifyConfig.apiKey}`);
     return result.data;
   } catch (error) {
     console.error("Failed to search for places.", error);
+    throw error;
+  }
+}
+
+export async function getPlaceDetails(placeId) {
+  try {
+    const result = await axios.get(`https://api.geoapify.com/v2/place-details?` + 
+      `id=${placeId}&apiKey=${GeoapifyConfig.apiKey}`);
+    return result.data;
+  } catch (error) {
+    console.error("Failed to get place details.", error);
+    throw error;
+  }
+}
+
+export async function getRoute(from, to) {
+  try {
+    const result = await axios.get(`https://api.geoapify.com/v1/routing?` + 
+      `waypoints=lonlat:${from.join(",")}|lonlat:${to.join(",")}&` + 
+      `mode=drive&details=route_details&apiKey=${GeoapifyConfig.apiKey}`);
+    return result.data;
+  } catch (error) {
+    console.error("Failed to get place details.", error);
     throw error;
   }
 }
@@ -44,5 +67,7 @@ const defaults = {
   getBarangay,
   getBaseUrl,
   searchPlacesByText,
+  getPlaceDetails,
+  getRoute,
 };
 export default defaults;

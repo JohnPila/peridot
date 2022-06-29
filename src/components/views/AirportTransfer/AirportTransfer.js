@@ -1,49 +1,25 @@
-import { Autocomplete, Box, CircularProgress, debounce, Grid, InputLabel, TextField, Typography } from "@mui/material";
-import { Fragment, useCallback, useState } from "react";
+import { Box, Grid, InputLabel, TextField, Typography } from "@mui/material";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AppForm from "../../common/AppForm";
 import FormButton from "../../common/form/FormButton";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import { LocalizationProvider, TimePicker } from "@mui/lab";
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { searchPlacesByText } from "../../../services/LocationService";
-import parse from "autosuggest-highlight/parse";
-import match from "autosuggest-highlight/match";
+import MapLocationPicker from "../../common/picker/MapLocationPicker";
+import MapRoute from "../../common/MapRoute";
 
+const MACTAIN_AIRPORT_PLACE_ID = "51e0e44b08b8fe5e4059597fc0e9d79e2440f00101f901a8a53d00000000009203234d616374616ee280934365627520496e7465726e6174696f6e616c20416972706f7274";
 function AirportTransfer() {
   const navigate  = useNavigate();
   const [pickupDate, setPickupDate] = useState(new Date());
   const [pickupTime, setPickupTime] = useState(new Date());
-  const [pickupLocation, setPickupLocation] = useState();
-  const [pickupLoading, setPickupLoading] = useState(false);
-  const [pickupOptions, setPickupOptions] = useState([]);
+  const [pickupLocation, setPickupLocation] = useState(MACTAIN_AIRPORT_PLACE_ID);
   const [dropoffLocation, setDropoffLocation] = useState();
-  const [dropoffLoading, setDropoffLoading] = useState(false);
-  const [dropoffOptions, setDropoffOptions] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState({
     name: "",
   });
-  /* eslint-disable react-hooks/exhaustive-deps */
-  const getPickupLocationsDebounce = useCallback(debounce((text) => {
-    getLocations(text, setPickupOptions, setPickupLoading);
-  }, 200), []);
-  const getDropoffLocationsDebounce = useCallback(debounce((text) => {
-    getLocations(text, setDropoffOptions, setDropoffLoading);
-  }, 200), []);
-
-  const getLocations = async (text, setOptionsFn, setLoadingFn) => {
-    try {
-      setLoadingFn(true);
-      setOptionsFn([]);
-      const data = await searchPlacesByText(text);
-      if (data?.features?.length > 0) {
-        setOptionsFn(data.features);
-      }
-    } finally {
-      setLoadingFn(false);
-    }
-  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -83,27 +59,6 @@ function AirportTransfer() {
     return true;
   };
 
-  const handleRenderOption = (option, data, { inputValue }) => {
-    const matches = match(data.properties.formatted, inputValue);
-    const parts = parse(data.properties.formatted, matches);
-  
-    const highlightStyle = {
-      fontWeight: 700,
-      backgroundColor: "lightyellow",
-      padding: "5px 2px"
-    };
-  
-    return (
-      <div {...option} style={{padding: "10px 15px"}}>
-        {parts.map((part, index) => (
-          <span key={index} style={part.highlight ? highlightStyle : {}}>
-            {part.text}
-          </span>
-        ))}
-      </div>
-    );
-  };
-
   return (
     <AppForm containerProps={{maxWidth: "xl"}}>
       <Typography variant="h3" gutterBottom marked="center" align="center">
@@ -113,70 +68,17 @@ function AirportTransfer() {
         <Grid container spacing={4}>
           <Grid item xs={6}>
             <InputLabel sx={{mt: 1, mb: 1}}>Pick up location *</InputLabel>
-            <Autocomplete
-              fullWidth
-              size="large"
-              filterOptions={(x) => x}
-              isOptionEqualToValue={(option, value) => option.properties.place_id === value.properties.place_id}
-              getOptionLabel={(option) => option.properties.formatted}
-              options={pickupOptions}
-              loading={pickupLoading}
-              value={pickupLocation}
-              onChange={(event, newValue) => {
-                setPickupLocation(newValue);
-              }}
-              onInputChange={(event, newInputValue) => {
-                getPickupLocationsDebounce(newInputValue);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  InputProps={{
-                    ...params.InputProps,
-                    endAdornment: (
-                      <Fragment>
-                        {pickupLoading ? <CircularProgress color="inherit" size={20} /> : null}
-                        {params.InputProps.endAdornment}
-                      </Fragment>
-                    ),
-                  }}
-                />
-              )}
-              renderOption={handleRenderOption}
+            <MapLocationPicker 
+              otherProps={{readOnly: true}}
+              value={pickupLocation} 
+              onChange={setPickupLocation} 
             />
           </Grid>
           <Grid item xs={6}>
             <InputLabel sx={{mt: 1, mb: 1}}>Drop off location *</InputLabel>
-            <Autocomplete
-              fullWidth
-              size="large"
-              filterOptions={(x) => x}
-              isOptionEqualToValue={(option, value) => option.properties.place_id === value.properties.place_id}
-              getOptionLabel={(option) => option.properties.formatted}
-              options={dropoffOptions}
-              loading={dropoffLoading}
-              value={dropoffLocation}
-              onChange={(event, newValue) => {
-                setDropoffLocation(newValue);
-              }}
-              onInputChange={(event, newInputValue) => {
-                getDropoffLocationsDebounce(newInputValue);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  InputProps={{
-                    ...params.InputProps,
-                    endAdornment: (
-                      <Fragment>
-                        {pickupLoading ? <CircularProgress color="inherit" size={20} /> : null}
-                        {params.InputProps.endAdornment}
-                      </Fragment>
-                    ),
-                  }}
-                />
-              )}
-              renderOption={handleRenderOption}
+            <MapLocationPicker 
+              value={dropoffLocation} 
+              onChange={setDropoffLocation} 
             />
           </Grid>
         </Grid>
@@ -201,6 +103,12 @@ function AirportTransfer() {
                 renderInput={(params) => <TextField {...params} size="large" fullWidth />}
               />
             </LocalizationProvider>
+          </Grid>
+          <Grid item xs={12} sx={{pt: 1, pb: 1}}>
+            <MapRoute 
+              fromValue={pickupLocation} 
+              toValue={dropoffLocation} 
+            />
           </Grid>
         </Grid>
         <FormButton

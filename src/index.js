@@ -15,6 +15,8 @@ import FirebaseConfig from './config/FirebaseConfig';
 import { Provider } from 'react-redux';
 import store from "./store";
 
+import 'maplibre-gl/dist/maplibre-gl.css';
+
 FirebaseConfig.init();
 
 ReactDOM.render(
