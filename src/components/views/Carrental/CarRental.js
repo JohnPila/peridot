@@ -9,6 +9,7 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { searchPlacesByText } from "../../../services/LocationService";
 import parse from "autosuggest-highlight/parse";
 import match from "autosuggest-highlight/match";
+import MapRoute from "../../common/MapRoute"; 
 
 function CarRental() {
   /* eslint-disable no-unused-vars */
@@ -204,6 +205,12 @@ function CarRental() {
             </LocalizationProvider>
           </Grid>
         </Grid>
+        <Grid item xs={12} sx={{pt: 1, pb: 1}}>
+            <MapRoute 
+              fromValue={pickupLocation} 
+              toValue={dropoffLocation} 
+            />
+          </Grid>
         <FormButton
           sx={{ mt: 3, mb: 2 }}
           disabled={submitting}
