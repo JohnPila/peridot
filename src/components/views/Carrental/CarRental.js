@@ -1,51 +1,25 @@
-import { Autocomplete, Box, CircularProgress, debounce, Grid, InputLabel, TextField, Typography } from "@mui/material";
-import { Fragment, useCallback, useState } from "react";
+import { Box, Grid, InputLabel, TextField, Typography } from "@mui/material";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AppForm from "../../common/AppForm";
 import FormButton from "../../common/form/FormButton";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import { LocalizationProvider, TimePicker } from "@mui/lab";
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { searchPlacesByText } from "../../../services/LocationService";
 import parse from "autosuggest-highlight/parse";
 import match from "autosuggest-highlight/match";
-import MapRoute from "../../common/MapRoute"; 
+
 
 function CarRental() {
   /* eslint-disable no-unused-vars */
   const navigate  = useNavigate();
   const [pickupDate, setPickupDate] = useState(new Date());
   const [pickupTime, setPickupTime] = useState(new Date());
-  const [pickupLocation, setPickupLocation] = useState();
-  const [pickupLoading, setPickupLoading] = useState(false);
-  const [pickupOptions, setPickupOptions] = useState([]);
-  const [dropoffLocation, setDropoffLocation] = useState();
-  const [dropoffLoading, setDropoffLoading] = useState(false);
-  const [dropoffOptions, setDropoffOptions] = useState([]);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState({
     name: "",
   });
   /* eslint-disable react-hooks/exhaustive-deps */
-  const getPickupLocationsDebounce = useCallback(debounce((text) => {
-    getLocations(text, setPickupOptions, setPickupLoading);
-  }, 200), []);
-  const getDropoffLocationsDebounce = useCallback(debounce((text) => {
-    getLocations(text, setDropoffOptions, setDropoffLoading);
-  }, 200), []);
-
-  const getLocations = async (text, setOptionsFn, setLoadingFn) => {
-    try {
-      setLoadingFn(true);
-      setOptionsFn([]);
-      const data = await searchPlacesByText(text);
-      if (data?.features?.length > 0) {
-        setOptionsFn(data.features);
-      }
-    } finally {
-      setLoadingFn(false);
-    }
-  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -113,78 +87,8 @@ function CarRental() {
       </Typography>
       <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 6 }}>
         <Grid container spacing={4}>
-          <Grid item xs={6}>
-            <InputLabel sx={{mt: 1, mb: 1}}>Pick up location *</InputLabel>
-            <Autocomplete
-              fullWidth
-              size="large"
-              filterOptions={(x) => x}
-              isOptionEqualToValue={(option, value) => option.properties.place_id === value.properties.place_id}
-              getOptionLabel={(option) => option.properties.formatted}
-              options={pickupOptions}
-              loading={pickupLoading}
-              value={pickupLocation}
-              onChange={(event, newValue) => {
-                setPickupLocation(newValue);
-              }}
-              onInputChange={(event, newInputValue) => {
-                getPickupLocationsDebounce(newInputValue);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  InputProps={{
-                    ...params.InputProps,
-                    endAdornment: (
-                      <Fragment>
-                        {pickupLoading ? <CircularProgress color="inherit" size={20} /> : null}
-                        {params.InputProps.endAdornment}
-                      </Fragment>
-                    ),
-                  }}
-                />
-              )}
-              renderOption={handleRenderOption}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <InputLabel sx={{mt: 1, mb: 1}}>Drop off location *</InputLabel>
-            <Autocomplete
-              fullWidth
-              size="large"
-              filterOptions={(x) => x}
-              isOptionEqualToValue={(option, value) => option.properties.place_id === value.properties.place_id}
-              getOptionLabel={(option) => option.properties.formatted}
-              options={dropoffOptions}
-              loading={dropoffLoading}
-              value={dropoffLocation}
-              onChange={(event, newValue) => {
-                setDropoffLocation(newValue);
-              }}
-              onInputChange={(event, newInputValue) => {
-                getDropoffLocationsDebounce(newInputValue);
-              }}
-              renderInput={(params) => (
-                <TextField
-                  {...params}
-                  InputProps={{
-                    ...params.InputProps,
-                    endAdornment: (
-                      <Fragment>
-                        {pickupLoading ? <CircularProgress color="inherit" size={20} /> : null}
-                        {params.InputProps.endAdornment}
-                      </Fragment>
-                    ),
-                  }}
-                />
-              )}
-              renderOption={handleRenderOption}
-            />
-          </Grid>
-        </Grid>
-        <Grid container spacing={4}>
-          <Grid item xs={6}>
-            <InputLabel sx={{mt: 1, mb: 1}}>Pick up date *</InputLabel>
+        <Grid item xs={6}>
+            <InputLabel sx={{mt: 1, mb: 1}}>Rental Date Started *</InputLabel>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DesktopDatePicker
                 inputFormat="MM/dd/yyyy"
@@ -195,7 +99,7 @@ function CarRental() {
             </LocalizationProvider>
           </Grid>
           <Grid item xs={6}>
-            <InputLabel sx={{mt: 1, mb: 1}}>Pick up time *</InputLabel>
+            <InputLabel sx={{mt: 1, mb: 1}}>Rental Time Start *</InputLabel>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <TimePicker
                 value={pickupTime}
@@ -205,12 +109,29 @@ function CarRental() {
             </LocalizationProvider>
           </Grid>
         </Grid>
-        <Grid item xs={12} sx={{pt: 1, pb: 1}}>
-            <MapRoute 
-              fromValue={pickupLocation} 
-              toValue={dropoffLocation} 
-            />
+        <Grid container spacing={4}>
+          <Grid item xs={6}>
+            <InputLabel sx={{mt: 1, mb: 1}}>Rental Date Ended *</InputLabel>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <DesktopDatePicker
+                inputFormat="MM/dd/yyyy"
+                value={pickupDate}
+                onChange={setPickupDate}
+                renderInput={(params) => <TextField {...params} size="large" fullWidth />}
+              />
+            </LocalizationProvider>
           </Grid>
+          <Grid item xs={6}>
+            <InputLabel sx={{mt: 1, mb: 1}}>Rental time end *</InputLabel>
+            <LocalizationProvider dateAdapter={AdapterDateFns}>
+              <TimePicker
+                value={pickupTime}
+                onChange={setPickupTime}
+                renderInput={(params) => <TextField {...params} size="large" fullWidth />}
+              />
+            </LocalizationProvider>
+          </Grid>
+        </Grid>
         <FormButton
           sx={{ mt: 3, mb: 2 }}
           disabled={submitting}
