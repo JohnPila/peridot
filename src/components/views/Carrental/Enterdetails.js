@@ -88,15 +88,28 @@ function EnterDetails() {
                 
             </Box>
           </Grid>
-        <FormButton
-          sx={{ mt: 2, mb: 1 }}
-          size="large"
-          color="secondary"
-          halfWidth
-          align="right"
-        >
-          {'Next'}
-        </FormButton>
+          <Grid container>
+          <Grid item xs>
+            <FormButton
+              sx={{ mt: 3, mb: 2 }}
+              color="primary"
+              type="button"
+              variant="outlined"
+              href="/car-rental"
+            >
+             <span style={{marginRight: 15}}>Back</span>
+            </FormButton>
+          </Grid>
+          <Grid item xs textAlign="right">
+            <FormButton
+              sx={{ mt: 3, mb: 2 }}
+              color="secondary"
+              href = "/payment"
+            >
+              <span style={{marginLeft: 15}}>Pay Now</span> 
+            </FormButton>
+          </Grid>
+        </Grid>
       </Box>
     </AppForm>
     );
