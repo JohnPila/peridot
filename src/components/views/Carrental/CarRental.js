@@ -12,6 +12,7 @@ import match from "autosuggest-highlight/match";
 import MapRoute from "../../common/MapRoute"; 
 
 function CarRental() {
+  /* eslint-disable no-unused-vars */
   const navigate  = useNavigate();
   const [pickupDate, setPickupDate] = useState(new Date());
   const [pickupTime, setPickupTime] = useState(new Date());
