@@ -1,4 +1,4 @@
-import { Autocomplete, CircularProgress, debounce, TextField } from '@mui/material';
+import { Autocomplete, CircularProgress, debounce, FormHelperText, TextField } from '@mui/material';
 import match from 'autosuggest-highlight/match';
 import parse from 'autosuggest-highlight/parse';
 import PropTypes from 'prop-types';
@@ -31,6 +31,7 @@ function MapLocationPicker(props) {
     value,
     onChange = () => {},
     otherProps,
+    error,
   } = props;
   const [options, setOptions] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -70,38 +71,46 @@ function MapLocationPicker(props) {
   }
 
   return (
-    <Autocomplete
-      {...otherProps}
-      fullWidth
-      size="large"
-      filterOptions={(x) => x}
-      isOptionEqualToValue={(option, value) => option?.properties?.place_id === value?.properties?.place_id}
-      getOptionLabel={(option) => option?.properties?.formatted || ""}
-      options={options}
-      loading={isLoading}
-      value={value}
-      onChange={(event, newValue) => {
-        onChange(newValue);
-      }}
-      onInputChange={(event, newInputValue) => {
-        getLocationsDebounce(newInputValue);
-      }}
-      renderInput={(params) => (
-        <TextField
-          {...params}
-          InputProps={{
-            ...params.InputProps,
-            endAdornment: (
-              <>
-                {isLoading ? <CircularProgress color="inherit" size={20} /> : null}
-                {params.InputProps.endAdornment}
-              </>
-            ),
-          }}
-        />
-      )}
-      renderOption={handleRenderOption}
-    />
+    <>
+      <Autocomplete
+        {...otherProps}
+        key={value}
+        fullWidth
+        size="large"
+        filterOptions={(x) => x}
+        isOptionEqualToValue={(option, value) => option?.properties?.place_id === value?.properties?.place_id}
+        getOptionLabel={(option) => option?.properties?.formatted || ""}
+        options={options}
+        loading={isLoading}
+        value={value}
+        onChange={(event, newValue) => {
+          onChange(newValue);
+        }}
+        onInputChange={(event, newInputValue) => {
+          getLocationsDebounce(newInputValue);
+        }}
+        renderInput={(params) => (
+          <TextField
+            {...params}
+            InputProps={{
+              ...params.InputProps,
+              endAdornment: (
+                <>
+                  {isLoading ? <CircularProgress color="inherit" size={20} /> : null}
+                  {params.InputProps.endAdornment}
+                </>
+              ),
+            }}
+          />
+        )}
+        renderOption={handleRenderOption}
+      />
+      {error && 
+        <FormHelperText error>
+          {error}
+        </FormHelperText> 
+      }
+    </>
   );
 }
 
@@ -109,6 +118,7 @@ MapLocationPicker.propTypes = {
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   onChange: PropTypes.func,
   otherProps: PropTypes.object,
+  error: PropTypes.string,
 };
   
 export default MapLocationPicker;

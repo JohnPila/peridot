@@ -31,7 +31,7 @@ export function getBaseUrl() {
 export async function searchPlacesByText(text) {
   try {
     const result = await axios.get(`https://api.geoapify.com/v1/geocode/autocomplete?` + 
-      `text=${text}&apiKey=${GeoapifyConfig.apiKey}`);
+      `text=${text}&filter=countrycode:ph&apiKey=${GeoapifyConfig.apiKey}`);
     return result.data;
   } catch (error) {
     console.error("Failed to search for places.", error);

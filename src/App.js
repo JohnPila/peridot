@@ -24,6 +24,7 @@ import CarRental from './components/views/Carrental/CarRental';
 import AirportTransfer from './components/views/AirportTransfer/AirportTransfer';
 import ContactUs from './components/views/Contact/ContactUs';
 import EnterDetails from './components/views/EnterDetails/Enterdetails';
+import BookAirportTransfer from './components/views/AirportTransfer/BookAirportTransfer';
 
 function App() {
   return (
@@ -53,7 +54,10 @@ function App() {
           <Route path="" element={<ViewBookings/>}/>
           <Route path=":id" element={<BookingDetails/>}/>
         </Route>
-        <Route path="/aiport-transfer" element={<AirportTransfer/>}/>
+        <Route path="/aiport-transfer" element={<AirportTransfer/>}>
+          <Route path="" element={<BookAirportTransfer/>}/>
+          <Route path="book" element={<Book/>}/>
+        </Route>
         <Route path="/errors" element={<Errors/>}>
           <Route path="404" element={<PageNotFound/>}/>
         </Route>
