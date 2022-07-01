@@ -27,6 +27,8 @@ import EnterDetails from './components/views/Carrental/Enterdetails';
 import Payment from './components/views/Carrental/Payment';
 import ViewAirportTransfer from './components/views/Admin/AirportTransfer/ViewAllAirportTransfer';
 import BookAirportTransfer from './components/views/AirportTransfer/BookAirportTransfer';
+import ViewAllCarRentails from './components/views/Admin/CarRental/ViewAllCarRentails';
+import CarRetails from './components/views/Admin/CarRental/CarRetails';
 
 function App() {
   return (
@@ -66,6 +68,10 @@ function App() {
         <Route path="/errors" element={<Errors/>}>
           <Route path="404" element={<PageNotFound/>}/>
         </Route>
+        <Route path="/carrentaldetails" element={<CarRetails/>}/>
+          <Route path="/ViewAllCarRentails" element={<ViewAllCarRentails/>}/>
+          <Route path="/error" element={<Errors/>}/>
+      
       </Routes>
       <Footer/>
       <DialogGroup/>
