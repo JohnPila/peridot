@@ -29,6 +29,7 @@ import ViewAirportTransfer from './components/views/Admin/AirportTransfer/ViewAl
 import BookAirportTransfer from './components/views/AirportTransfer/BookAirportTransfer';
 import ViewAllCarRentails from './components/views/Admin/CarRental/ViewAllCarRentails';
 import CarRetails from './components/views/Admin/CarRental/CarRetails';
+import DashboardApp from './components/views/Admin/AdminDashboard/DashboardApp';
 
 function App() {
   return (
@@ -46,8 +47,8 @@ function App() {
         <Route path="/payment" element={<Payment />}/>
         <Route path="/forgot-password" element={<ForgotPassword />}/>
         <Route path="admin/view-airport-transfer" element={<ViewAirportTransfer />}/>
+        <Route path="/admin/dashboard" element={<DashboardApp/>}/>
         <Route path="/admin/packages" element={<Packages/>}>
-        
           <Route path="" element={<ViewPackages/>}/>
           <Route path="add" element={<SavePackage/>}/>
         </Route>
@@ -71,7 +72,6 @@ function App() {
         <Route path="/carrentaldetails" element={<CarRetails/>}/>
           <Route path="/ViewAllCarRentails" element={<ViewAllCarRentails/>}/>
           <Route path="/error" element={<Errors/>}/>
-      
       </Routes>
       <Footer/>
       <DialogGroup/>

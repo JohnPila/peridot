@@ -5,6 +5,7 @@ import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import MailIcon from '@mui/icons-material/Mail';
 import { Airlines } from '@mui/icons-material';
 import { CarRental } from '@mui/icons-material';
+import PieChartIcon from '@mui/icons-material/PieChartRounded';
 
 export const ROLES = {
   ADMIN: "admin",
@@ -14,7 +15,7 @@ export const ROLES = {
 export const ROLE_IDS = {
   ADMIN: "1",
   USER: "2",
-};
+};    
 
 export const STORAGE_FOLDERS = {
   GLOBALS: "globals",
@@ -22,6 +23,7 @@ export const STORAGE_FOLDERS = {
 };
 
 export const ADMIN_ROUTES = [
+  {name: "Dashboard", path: "/admin/dashboard", icon: <PieChartIcon/>},
   {name: "Packages", path: "/admin/packages", icon: <TravelExploreIcon/>},
   {name: "Bookings", path: "/bookings", icon: <ReviewsIcon/>},
   {name: "Airport Transfer", path: "admin/view-airport-transfer", icon: <Airlines/>},
