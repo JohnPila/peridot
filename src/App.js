@@ -30,10 +30,11 @@ import BookAirportTransfer from './components/views/AirportTransfer/BookAirportT
 import ViewAllCarRentails from './components/views/Admin/CarRental/ViewAllCarRentails';
 import CarRetails from './components/views/Admin/CarRental/CarRetails';
 import DashboardApp from './components/views/Admin/AdminDashboard/DashboardApp';
+import { SnackbarProvider } from 'notistack';
 
 function App() {
   return (
-    <div>
+    <SnackbarProvider maxSnack={5}>
       <ScrollToTop/>
       <Header/>
       <Routes>
@@ -75,7 +76,7 @@ function App() {
       </Routes>
       <Footer/>
       <DialogGroup/>
-    </div>
+    </SnackbarProvider>
   );
 }
 

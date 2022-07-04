@@ -12,8 +12,11 @@ import FirebaseConfig from '../../../config/FirebaseConfig';
 import IconButtonBox from '../../common/IconButtonBox';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { AuthErrorCodes } from 'firebase/auth';
+import { useSnackbar } from 'notistack';
 
 function SignIn() {
+  const { enqueueSnackbar } = useSnackbar();
   const [sent, setSent] = React.useState(false);
   const navigate = useNavigate();
   const [search] = useSearchParams();
@@ -39,11 +42,24 @@ function SignIn() {
     return errors;
   };
 
-  const handleSubmit = (e) => {
-    FirebaseConfig.signInWithEmail(e.email, e.password)
-      .then(() => {
-        setSent(true);
-      });
+  const handleSubmit = async (e) => {
+    try {
+      await FirebaseConfig.signInWithEmail(e.email, e.password);
+      setSent(true);
+    } catch (error) {
+      console.log("Failed to sign in.", error);
+      switch (error?.code) {
+        case AuthErrorCodes.INVALID_PASSWORD:
+          enqueueSnackbar("Incorrect password!", {variant: "error"});
+          break;
+        case AuthErrorCodes.USER_DELETED:
+          enqueueSnackbar("Incorrect email!", {variant: "error"});
+          break;
+        default:
+          enqueueSnackbar("Failed to sign in [" + error?.code + "]!", {variant: "error"});
+          break;
+      }
+    }
   };
 
   const loginWithFacebook = (e) => {
