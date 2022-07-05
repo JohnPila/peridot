@@ -32,6 +32,7 @@ import CarRetails from './components/views/Admin/CarRental/CarRetails';
 import DashboardApp from './components/views/Admin/AdminDashboard/DashboardApp';
 import { SnackbarProvider } from 'notistack';
 
+import ViewCarRental from './components/views/Carrental/ViewCarRental';
 function App() {
   return (
     <SnackbarProvider maxSnack={5}>
@@ -71,6 +72,7 @@ function App() {
           <Route path="404" element={<PageNotFound/>}/>
         </Route>
         <Route path="/carrentaldetails" element={<CarRetails/>}/>
+        <Route path="/view-carrental" element={<ViewCarRental/>}/>
           <Route path="/ViewAllCarRentails" element={<ViewAllCarRentails/>}/>
           <Route path="/error" element={<Errors/>}/>
       </Routes>

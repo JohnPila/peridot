@@ -68,6 +68,7 @@ function Payment() {
             <FormButton
               sx={{ mt: 3, mb: 2 }}
               color="secondary"
+              href = "view-carrental"
             >
               <span style={{marginLeft: 15}}>Pay Now</span> <CheckIcon fontSize="small" 
                 sx={{mb: 0.3, ml: 0.3}}/>
