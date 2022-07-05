@@ -8,6 +8,14 @@ class GeoapifyConfig {
     return API_KEY;
   }
 
+  get baseFare() {
+    return BASE_FARE;
+  }
+
+  get farePerKilometer() {
+    return FARE_PER_KILOMETER;
+  }
+
   computeCost(distance) {
     return BASE_FARE + (Math.ceil(distance / 1000) * FARE_PER_KILOMETER);
   }

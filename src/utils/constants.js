@@ -85,3 +85,8 @@ export const BOOKING_STATUS_LABEL = {
   [BOOKING_STATUS.DECLINED]: "Declined",
   [BOOKING_STATUS.PENDING_CANCELLATION]: "Pending cancellation",
 }
+
+export const BOOKING_TYPE = {
+  PACKAGE: 1,
+  AIRPORT_TRANSFER: 2,
+}

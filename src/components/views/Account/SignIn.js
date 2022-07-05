@@ -55,6 +55,9 @@ function SignIn() {
         case AuthErrorCodes.USER_DELETED:
           enqueueSnackbar("Incorrect email!", {variant: "error"});
           break;
+        case AuthErrorCodes.TOO_MANY_ATTEMPTS_TRY_LATER:
+          enqueueSnackbar("You have reached the maximum login attempts. Try again later!", {variant: "error"});
+          break;
         default:
           enqueueSnackbar("Failed to sign in [" + error?.code + "]!", {variant: "error"});
           break;

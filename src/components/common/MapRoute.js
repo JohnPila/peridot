@@ -197,12 +197,17 @@ function MapRoute(props) {
     toValue: _toValue,
     onChange = () => {},
   } = props;
+
   let mapContainer;
   const fromValue = useMemo(() => typeof _fromValue === "object" ? _fromValue : null, [_fromValue]);
   const toValue = useMemo(() => typeof _toValue === "object" ? _toValue : null, [_toValue]);
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(async () => {
+    if (!mapContainer) {
+      return;
+    }
+
     const myAPIKey = GeoapifyConfig.apiKey; 
     const mapStyle = "https://maps.geoapify.com/v1/styles/osm-carto/style.json";
     const mapData = {

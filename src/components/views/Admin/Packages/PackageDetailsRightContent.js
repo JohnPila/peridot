@@ -7,6 +7,7 @@ import PropTypes from 'prop-types';
 import withDialog from "../../../hocs/withDialog";
 import withLoggedUser from "../../../hocs/withLoggedUser";
 import { createSearchParams, useNavigate } from "react-router-dom";
+import { BOOKING_TYPE } from "../../../../utils/constants";
 
 function PackageDetailsRightContent(props) {
   const {
@@ -55,13 +56,16 @@ function PackageDetailsRightContent(props) {
   const goToBookPage = () => {
     navigate("book", {
       state: {
-        bookingDate, 
-        packageOption: {
-          id: packageOption.id,
-          options: packageOption.options.map((opt) => ({
-            id: opt.id,
-            quantity: opt.quantity,
-          })),
+        type: BOOKING_TYPE.PACKAGE,
+        data: {
+          bookingDate, 
+          packageOption: {
+            id: packageOption.id,
+            options: packageOption.options.map((opt) => ({
+              id: opt.id,
+              quantity: opt.quantity,
+            })),
+          },
         },
       },
     });

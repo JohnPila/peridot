@@ -12,6 +12,7 @@ import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { styled } from '@mui/material/styles';
 import GeoapifyConfig from "../../../config/GeoapifyConfig";
 import Typography from "../../common/Typography";
+import { BOOKING_TYPE } from "../../../utils/constants";
 
 const RouteTotalLayout = styled('div')(({ theme }) => ({
   display: "flex",
@@ -55,15 +56,6 @@ function BookAirportTransfer() {
   const save = async () => {
     try {
       setSubmitting(true);
-      // const packageRef = await addPackage({
-      //   name,
-      //   description,
-      //   city,
-      //   barangay,
-      //   options: packageOptions,
-      // });
-      // await uploadImages(images, `${STORAGE_FOLDERS.PACKAGES}/${packageRef.id}`);
-      // navigate("/admin/packages");
       goToBookPage();
     } catch (error) {
       console.error("Failed to book airport transfer.", error);
@@ -119,14 +111,14 @@ function BookAirportTransfer() {
   const goToBookPage = () => {
     navigate("book", {
       state: {
-        // bookingDate, 
-        // packageOption: {
-        //   id: packageOption.id,
-        //   options: packageOption.options.map((opt) => ({
-        //     id: opt.id,
-        //     quantity: opt.quantity,
-        //   })),
-        // },
+        type: BOOKING_TYPE.AIRPORT_TRANSFER,
+        data: {
+          pickupDate,
+          pickupTime,
+          pickupLocation,
+          dropoffLocation,
+          routeData,
+        },
       },
     });
   };

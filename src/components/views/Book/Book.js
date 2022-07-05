@@ -7,7 +7,8 @@ import PropTypes from 'prop-types';
 import BookInfo from "./BookInfo";
 import BookReview from "./BookReview";
 import BookPay from "./BookPay";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { BOOKING_TYPE } from "../../../utils/constants";
 
 const QontoConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -82,12 +83,13 @@ QontoStepIcon.propTypes = {
 };
 
 export default function Book() {
-  const {id: packageId} = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const [activeStep, setActiveStep] = useState(1);
   const [info, setInfo] = useState(null);
   const [isWaiting, setIsWaiting] = useState(false);
+  
+  const {state: {type, data: stateData}} = location;
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
@@ -132,19 +134,19 @@ export default function Book() {
         />;
       case 2:
         return <BookReview
-          info={info} 
-          packageId={packageId}
-          bookingDate={bookingDate}
-          packageOption={packageOption}
+          info={info}
+          type={type}
+          data={stateData}
           onPrevious={handlePrevious} 
           onNext={handleNext} 
         />;
       case 3:
         return <BookPay
           info={info} 
-          packageId={packageId}
-          bookingDate={bookingDate}
-          packageOption={packageOption}
+          type={type}
+          // packageId={packageId}
+          // bookingDate={bookingDate}
+          // packageOption={packageOption}
           isWaiting={isWaiting}
           setIsWaiting={setIsWaiting}
           onPrevious={handlePrevious} 
@@ -159,14 +161,14 @@ export default function Book() {
     return null;
   }
 
-  const {state: {bookingDate, packageOption}} = location;
   return (
     <>
       {!isWaiting && 
         <Stack sx={{ width: '100%' }} spacing={4}>
           <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector />}>
             <Step>
-              <StepLabel StepIconComponent={QontoStepIcon}>Choose package</StepLabel>
+              <StepLabel StepIconComponent={QontoStepIcon}>{type === BOOKING_TYPE.PACKAGE ? 
+              "Choose package" : "Book airport transfer"}</StepLabel>
             </Step>
             <Step>
               <StepLabel StepIconComponent={QontoStepIcon}>Enter info</StepLabel>
