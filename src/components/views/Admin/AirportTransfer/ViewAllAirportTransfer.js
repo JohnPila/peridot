@@ -5,10 +5,19 @@ import withLoggedUser from "../../../hocs/withLoggedUser";
 import withDialog from "../../../hocs/withDialog";
 import FormButton from '../../../common/form/FormButton';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+import { makeStyles } from "@mui/styles";
 
+const useStyles = makeStyles(theme => ({
+  typo: {
+    flexGrow: 1,
+    textAlign: "center"
+  }
+}));
 export function ViewAllAirportTransfer() {
+  const classes = useStyles();
 	return (
+    <Grid container>
+     <Typography variant="h2"className={classes.typo}>Booking Details</Typography>
 		<Grid container spacing={2}>
 			<Grid item md={8} sm={12} xs={12}>
         <Stack spacing={2}>
@@ -165,6 +174,7 @@ export function ViewAllAirportTransfer() {
         </Grid>
 			</Grid>
 		</Grid>
+    </Grid>
 	);
 }
 
