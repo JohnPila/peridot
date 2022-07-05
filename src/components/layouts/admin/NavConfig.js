@@ -18,7 +18,7 @@ const navConfig = [
   },
   {
     title: 'Packages',
-    path: '/packages',
+    path: 'admin/packages',
     icon: getIcon('eva:shopping-bag-fill'),
   },
   {

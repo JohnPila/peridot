@@ -11,11 +11,11 @@ import shadows, { customShadows } from './shadows';
 
 // ----------------------------------------------------------------------
 
-ThemeProvider.propTypes = {
+AdminThemeProvider.propTypes = {
   children: PropTypes.node,
 };
 
-export default function ThemeProvider({ children }) {
+export default function AdminThemeProvider({ children }) {
   const themeOptions = useMemo(
     () => ({
       palette,
