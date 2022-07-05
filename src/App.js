@@ -27,8 +27,7 @@ import EnterDetails from './components/views/Carrental/Enterdetails';
 import Payment from './components/views/Carrental/Payment';
 import ViewAirportTransfer from './components/views/Admin/AirportTransfer/ViewAllAirportTransfer';
 import BookAirportTransfer from './components/views/AirportTransfer/BookAirportTransfer';
-import ViewAllCarRentails from './components/views/Admin/CarRental/ViewAllCarRentails';
-import CarRetails from './components/views/Admin/CarRental/CarRetails';
+import ViewCarRentals from './components/views/Admin/CarRental/ViewCarRentals';
 import DashboardApp from './components/views/Admin/AdminDashboard/DashboardApp';
 import { SnackbarProvider } from 'notistack';
 
@@ -47,12 +46,13 @@ function App() {
         <Route path="/enter-details" element={<EnterDetails />}/>
         <Route path="/payment" element={<Payment />}/>
         <Route path="/forgot-password" element={<ForgotPassword />}/>
-        <Route path="admin/view-airport-transfer" element={<ViewAirportTransfer />}/>
         <Route path="/admin/dashboard" element={<DashboardApp/>}/>
         <Route path="/admin/packages" element={<Packages/>}>
           <Route path="" element={<ViewPackages/>}/>
           <Route path="add" element={<SavePackage/>}/>
         </Route>
+        <Route path="/admin/airport-transfer" element={<ViewAirportTransfer />}/>
+        <Route path="/admin/car-rentals" element={<ViewCarRentals/>}/>
         <Route path="/packages" element={<Packages/>}>
           <Route path="" element={<ViewPackages/>}/>
           <Route path=":id" element={<PackageDetails/>}/>
@@ -70,9 +70,9 @@ function App() {
         <Route path="/errors" element={<Errors/>}>
           <Route path="404" element={<PageNotFound/>}/>
         </Route>
-        <Route path="/carrentaldetails" element={<CarRetails/>}/>
-          <Route path="/ViewAllCarRentails" element={<ViewAllCarRentails/>}/>
-          <Route path="/error" element={<Errors/>}/>
+        {/* <Route path="/carrentaldetails" element={<CarRentals/>}/>
+        <Route path="/view-carrental" element={<ViewCarRental/>}/>
+        <Route path="/error" element={<Errors/>}/> */}
       </Routes>
       <Footer/>
       <DialogGroup/>

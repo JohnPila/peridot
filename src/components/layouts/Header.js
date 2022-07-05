@@ -29,7 +29,7 @@ function Header() {
   const isAdmin = isLoggedIn && ROLES.ADMIN === loggedUser.role;
   const isEmailVerified = isLoggedIn && loggedUser.emailVerified;
   return (
-    <div>
+    <div sx={{mt:-10}}>
       {isLoggedIn && isAdmin &&
         <DashboardLayout/>
       }
@@ -96,7 +96,9 @@ function Header() {
           </Toolbar>
         </AppBar>
       }
-      <Toolbar />
+      {!isAdmin &&
+        <Toolbar />
+      }
     </div>
   );
 }

@@ -26,8 +26,8 @@ export const ADMIN_ROUTES = [
   {name: "Dashboard", path: "/admin/dashboard", icon: <PieChartIcon/>},
   {name: "Packages", path: "/admin/packages", icon: <TravelExploreIcon/>},
   {name: "Bookings", path: "/bookings", icon: <ReviewsIcon/>},
-  {name: "Airport Transfer", path: "admin/view-airport-transfer", icon: <Airlines/>},
-  {name: "Car Rental", path: "/carrentaldetails", icon: <CarRental/>},
+  {name: "Airport Transfer", path: "/admin/airport-transfer", icon: <Airlines/>},
+  {name: "Car Rental", path: "/admin/car-rentals", icon: <CarRental/>},
 ];
 
 export const USER_ROUTES = [

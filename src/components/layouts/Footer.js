@@ -7,6 +7,8 @@ import Typography from '../common/Typography';
 import TextField from '../common/TextField';
 import withRoot from "../hocs/withRoot";
 import IconButtonBox from '../common/IconButtonBox';
+import { useSelector } from 'react-redux';
+import { ROLES } from '../../utils/constants';
 
 function Copyright() {
   return (
@@ -32,7 +34,12 @@ const LANGUAGES = [
 ];
 
 function Footer() {
+  const loggedUser = useSelector(state => state.loggedUser.user);
+  const isLoggedIn = !!loggedUser;
+  const isAdmin = isLoggedIn && ROLES.ADMIN === loggedUser.role;
   return (
+    <div>
+    {!isAdmin &&
     <Typography
       component="footer"
       sx={{ display: 'flex', bgcolor: 'secondary.light' }}
@@ -123,6 +130,8 @@ function Footer() {
         </Grid>
       </Container>
     </Typography>
+    }
+    </div>
   );
 }
 
