@@ -25,7 +25,6 @@ export function ViewCarRentals() {
                     
                   
                 </>
-              <Skeleton animation="wave" width="80%" sx={{ height: 50 }} />
               <Divider sx={{my: 2}}/>
               <Grid container spacing={2}>
                 <Grid item>
@@ -36,7 +35,6 @@ export function ViewCarRentals() {
                       //image={data.thumbnail.url}
                      
                     /> :
-                    <Skeleton sx={{ width: 120, height: 120 }} animation="wave" variant="rectangular" />
 
                 </Grid>
                 <Grid item xs>
@@ -48,10 +46,6 @@ export function ViewCarRentals() {
                           fontSize="small" color="error" sx={{position: "relative", bottom: -2}}/>
                       </Typography>
                     </> :
-                    <>
-                      <Skeleton animation="wave" width="80%" sx={{ height: 30 }} />
-                      <Skeleton animation="wave" width="60%" sx={{ height: 30 }} />
-                    </>
                 </Grid>
               </Grid>
               <Divider sx={{my: 2}}/>
@@ -59,11 +53,9 @@ export function ViewCarRentals() {
                 <Grid item xs={2} color="text.secondary">
       
                     <Typography variant="body2">Booking date:</Typography>
-                    <Skeleton animation="wave" width="100%" />  
                 </Grid>
                 <Grid item xs={10} textAlign="right">
                     <Typography variant="body2">July 4, 2022</Typography>
-                    <Skeleton animation="wave" width="30%" sx={{ marginLeft: "auto" }} />  
                 </Grid>
               </Grid>
             </CardContent>
@@ -71,37 +63,30 @@ export function ViewCarRentals() {
           <Card variant="outlined">
             <CardContent>
                 <Typography variant="h6">Driver Information</Typography> :
-                <Skeleton animation="wave" width="30%" sx={{ height: 30 }} />  
               <Divider sx={{my: 2}}/>
               <Grid container>
                 <Grid item xs={2}>
                     <Typography variant="body2" color="text.secondary">Driver's Name: </Typography> :
-                    <Skeleton animation="wave" width="100%" />  
                 </Grid>
                 <Grid item xs textAlign="right">
                     <Typography variant="body2">Daniel Padilla</Typography> :
-                    <Skeleton animation="wave" width="60%" sx={{ marginLeft: "auto" }} />  
                 </Grid>
               </Grid>
               <Grid container>
                 <Grid item xs={2}>
                     <Typography variant="body2" color="text.secondary">Driver's Contact Number</Typography> :
-                    <Skeleton animation="wave" width="100%" />  
             
                 </Grid>
                 <Grid item xs textAlign="right">
                     <Typography variant="body2">+63 945 5879</Typography> :
-                    <Skeleton animation="wave" width="40%" sx={{ marginLeft: "auto" }} />  
                 </Grid>
               </Grid>
               <Grid container>
                 <Grid item xs={2}>
                     <Typography variant="body2" color="text.secondary">Address</Typography> :
-                    <Skeleton animation="wave" width="100%" />  
                 </Grid>
                 <Grid item xs textAlign="right">
                     <Typography variant="body2">Tabunok Talisay</Typography> :
-                    <Skeleton animation="wave" width="80%" sx={{ marginLeft: "auto" }} />
                 </Grid>
               </Grid>
             </CardContent>
@@ -109,24 +94,56 @@ export function ViewCarRentals() {
           <Card variant="outlined">
             <CardContent>
                 <Typography variant="h6">Car Selection</Typography> :
-                <Skeleton animation="wave" width="30%" sx={{ height: 30 }} />  
               <Divider sx={{my: 2}}/>
               <Grid container>
                 <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Vehicle Type: SUV</Typography> :
-                    <Skeleton animation="wave" width="100%" />
-                    <Typography variant="body2" color="text.secondary">Make: MITSUBISHI</Typography> :
-                    <Skeleton animation="wave" width="100%" />
-                    <Typography variant="body2" color="text.secondary">Model: XPANDER</Typography> :
-                    <Skeleton animation="wave" width="100%" />
-                    <Typography variant="body2" color="text.secondary">Transmission: MANUAL</Typography> :
-                    <Skeleton animation="wave" width="100%" /> 
-                    <Typography variant="body2" color="text.secondary">Fuel: UNLEADED</Typography> :
-                    <Skeleton animation="wave" width="100%" />
-                    <Typography variant="body2" color="text.secondary">Plate No. DSX 126</Typography> :
-                    <Skeleton animation="wave" width="100%" />
+                    <Typography variant="body2" color="text.secondary">Vehicle Type:</Typography> :
+                  </Grid>
+                  <Grid item xs textAlign="right">
+                    <Typography variant="body2">SUV</Typography> :
+                    </Grid>
+                  
                 </Grid>
-              </Grid>
+                <Grid container>
+                <Grid item xs={2}>
+                    <Typography variant="body2" color="text.secondary">Company :</Typography> :
+                  </Grid>
+                  <Grid item xs textAlign="right">
+                    <Typography variant="body2">MITSUBISHI</Typography> :
+                    </Grid>
+                </Grid>
+                <Grid container>
+                <Grid item xs={2}>
+                    <Typography variant="body2" color="text.secondary">Model:</Typography> :
+                  </Grid>
+                  <Grid item xs textAlign="right">
+                    <Typography variant="body2">XPANDER</Typography> :
+                    </Grid>
+                </Grid>
+                <Grid container>
+                <Grid item xs={2}>
+                    <Typography variant="body2" color="text.secondary">Transmission:</Typography> :
+                  </Grid>
+                  <Grid item xs textAlign="right">
+                    <Typography variant="body2">MANUAL</Typography> :
+                    </Grid>
+                </Grid>
+                <Grid container>
+                <Grid item xs={2}>
+                    <Typography variant="body2" color="text.secondary">Fuel Type:</Typography> :
+                  </Grid>
+                  <Grid item xs textAlign="right">
+                    <Typography variant="body2">UNLEADED</Typography> :
+                    </Grid>
+                </Grid>
+                <Grid container>
+                <Grid item xs={2}>
+                    <Typography variant="body2" color="text.secondary">Plate No.:</Typography> :
+                  </Grid>
+                  <Grid item xs textAlign="right">
+                    <Typography variant="body2">DSX 126</Typography> :
+                    </Grid>
+                </Grid>
             </CardContent>
           </Card>
         </Stack>
@@ -135,17 +152,14 @@ export function ViewCarRentals() {
 				<Card variant="outlined">
           <CardContent>
               <Typography variant="h6">User Information</Typography> :
-              <Skeleton animation="wave" width="60%" sx={{ height: 30 }} />  
 
             <Divider sx={{my: 2}}/>
             <Grid container color="text.secondary">
               <Grid item xs>
                   <Typography variant="body2">Name:</Typography> :
-                  <Skeleton animation="wave" width="70%" />  
               </Grid>
               <Grid item xs textAlign="right">
                   <Typography variant="body2">Katryn Bernardo</Typography> 
-                  <Skeleton animation="wave" width="70%" sx={{ marginLeft: "auto" }} />  
               </Grid>
             </Grid>
             <Divider sx={{my: 2}}/>
@@ -163,13 +177,10 @@ export function ViewCarRentals() {
                 </Fragment>
                 <>
                   <Grid item xs={6} textAlign="left">
-                    <Skeleton animation="wave" width="80%" />  
                   </Grid>
                   <Grid item xs={4} textAlign="right">
-                    <Skeleton animation="wave" width="70%" sx={{ marginLeft: "auto", marginRight: 1 }} />  
                   </Grid>
                   <Grid item xs={2} textAlign="right">
-                    <Skeleton animation="wave" width="100%" sx={{ marginLeft: "auto" }} />  
                   </Grid>
                 </>
             </Grid>
@@ -177,30 +188,24 @@ export function ViewCarRentals() {
             <Grid container color="text.secondary">
               <Grid item xs={4}>
                   <Typography variant="body2">Contact No.</Typography> :
-                  <Skeleton animation="wave" width="100%" />    
               </Grid>
               <Grid item xs={8} textAlign="right">
                   <Typography variant="body2"></Typography> :
-                  <Skeleton animation="wave" width="30%" sx={{ marginLeft: "auto" }} />    
               </Grid>
               <Grid item xs={4}>
                   <Typography variant="body2">People Used</Typography> :
-                  <Skeleton animation="wave" width="100%" />    
               </Grid>
               <Grid item xs={8} textAlign="right">
                   <Typography variant="body2"></Typography> :
-                  <Skeleton animation="wave" width="30%" sx={{ marginLeft: "auto" }} />    
               </Grid>
             </Grid>
             <Divider sx={{my: 2}}/>
             <Grid container>
               <Grid item xs={4}>
                   <Typography variant="body2">Booking End</Typography> :
-                  <Skeleton animation="wave" width="100%" sx={{ height: 30 }} />    
               </Grid>
               <Grid item xs={8} textAlign="right">
-                  <Typography variant="body2">July 6, 2022</Typography> :
-                  <Skeleton animation="wave" width="40%" sx={{ height: 30, marginLeft: "auto" }} />    
+                  <Typography variant="body2">July 14, 2022</Typography> :
               </Grid>
             </Grid>
               <>
