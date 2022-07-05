@@ -5,7 +5,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import withLoggedUser from "../../../hocs/withLoggedUser";
 import withDialog from "../../../hocs/withDialog";
 
-export function ViewCarRental() {
+export function ViewCarRentals() {
 	return (
 		<Grid container spacing={2}>
 			<Grid item md={8} sm={12} xs={12}>
@@ -213,4 +213,4 @@ export function ViewCarRental() {
 	);
 }
 
-export default withDialog(withLoggedUser(ViewCarRental));
+export default withDialog(withLoggedUser(ViewCarRentals));
