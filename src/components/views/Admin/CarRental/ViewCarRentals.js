@@ -4,9 +4,20 @@ import Typography from "../../../common/Typography";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import withLoggedUser from "../../../hocs/withLoggedUser";
 import withDialog from "../../../hocs/withDialog";
+import { makeStyles } from "@mui/styles";
+
+const useStyles = makeStyles(theme => ({
+  typo: {
+    flexGrow: 1,
+    textAlign: "center"
+  }
+}));
 
 export function ViewCarRentals() {
+  const classes = useStyles();
 	return (
+    <Grid container>
+      <Typography variant="h2"className={classes.typo}>Booking Details</Typography>
 		<Grid container spacing={2}>
 			<Grid item md={8} sm={12} xs={12}>
         <Stack spacing={2}>
@@ -215,6 +226,7 @@ export function ViewCarRentals() {
 				</Card>
 			</Grid>
 		</Grid>
+    </Grid>
 	);
 }
 
