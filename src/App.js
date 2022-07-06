@@ -20,7 +20,7 @@ import Bookings from './components/views/Bookings/Bookings';
 import ViewBookings from './components/views/Bookings/ViewBookings';
 import BookingDetails from './components/views/Bookings/BookingDetails';
 import AboutUs from './components/views/About/AboutUs';
-import CarRental from './components/views/Carrental/CarRental';
+import BookCarRental from './components/views/Carrental/BookCarRental';
 import AirportTransfer from './components/views/AirportTransfer/AirportTransfer';
 import ContactUs from './components/views/Contact/ContactUs';
 import EnterDetails from './components/views/Carrental/Enterdetails';
@@ -29,6 +29,7 @@ import ViewAirportTransfer from './components/views/Admin/AirportTransfer/ViewAl
 import BookAirportTransfer from './components/views/AirportTransfer/BookAirportTransfer';
 import ViewCarRentals from './components/views/Admin/CarRental/ViewCarRentals';
 import DashboardApp from './components/views/Admin/AdminDashboard/DashboardApp';
+import ViewCarRental from './components/views/Carrental/ViewCarRental'
 import { SnackbarProvider } from 'notistack';
 
 function App() {
@@ -42,7 +43,8 @@ function App() {
         <Route path="/sign-in" element={<SignIn />}/>
         <Route path="/contact-us" element={<ContactUs />}/>
         <Route path="/about-us" element={<AboutUs />}/>
-        <Route path="/car-rental" element={<CarRental />}/>
+        <Route path="/car-rental" element={<BookCarRental />}/>
+        <Route path="/view-carrental" element={<ViewCarRental />}/>
         <Route path="/enter-details" element={<EnterDetails />}/>
         <Route path="/payment" element={<Payment />}/>
         <Route path="/forgot-password" element={<ForgotPassword />}/>
