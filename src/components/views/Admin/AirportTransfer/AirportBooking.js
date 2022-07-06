@@ -13,7 +13,7 @@ const useStyles = makeStyles(theme => ({
     textAlign: "center"
   }
 }));
-export function ViewAllAirportTransfer() {
+export function AirportBooking() {
   const classes = useStyles();
 	return (
     <Grid container>
@@ -150,6 +150,7 @@ export function ViewAllAirportTransfer() {
             <Typography variant="h6" textAlign="center" >Reference  No. 2004520316614</Typography> 
           </CardContent>
 				</Card>
+
         <Grid container>
           <Grid item xs>
             <FormButton
@@ -178,4 +179,4 @@ export function ViewAllAirportTransfer() {
 	);
 }
 
-export default withDialog(withLoggedUser(ViewAllAirportTransfer));
+export default withDialog(withLoggedUser(AirportBooking));

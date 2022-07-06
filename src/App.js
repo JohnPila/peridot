@@ -25,12 +25,13 @@ import AirportTransfer from './components/views/AirportTransfer/AirportTransfer'
 import ContactUs from './components/views/Contact/ContactUs';
 import EnterDetails from './components/views/Carrental/Enterdetails';
 import Payment from './components/views/Carrental/Payment';
-import ViewAirportTransfer from './components/views/Admin/AirportTransfer/ViewAllAirportTransfer';
+import AirportBooking from './components/views/Admin/AirportTransfer/AirportBooking';
 import BookAirportTransfer from './components/views/AirportTransfer/BookAirportTransfer';
 import ViewCarRentals from './components/views/Admin/CarRental/ViewCarRentals';
 import DashboardApp from './components/views/Admin/AdminDashboard/DashboardApp';
 import ViewCarRental from './components/views/Carrental/ViewCarRental'
 import { SnackbarProvider } from 'notistack';
+import ViewAllAirport from './components/views/Admin/AirportTransfer/ViewAllAirport';
 
 function App() {
   return (
@@ -53,7 +54,8 @@ function App() {
           <Route path="" element={<ViewPackages/>}/>
           <Route path="add" element={<SavePackage/>}/>
         </Route>
-        <Route path="/admin/airport-transfer" element={<ViewAirportTransfer />}/>
+        <Route path="/admin/airport-transfer" element={<AirportBooking />}/>
+        <Route path="/admin/view-all-airport" element={<ViewAllAirport />}/>
         <Route path="/admin/car-rentals" element={<ViewCarRentals/>}/>
         <Route path="/packages" element={<Packages/>}>
           <Route path="" element={<ViewPackages/>}/>
