@@ -66,6 +66,7 @@ function App() {
         <Route path="/aiport-transfer" element={<AirportTransfer/>}>
           <Route path="" element={<BookAirportTransfer/>}/>
           <Route path="book" element={<Book/>}/>
+          <Route path="book/result" element={<BookResult/>}/>
         </Route>
         <Route path="/errors" element={<Errors/>}>
           <Route path="404" element={<PageNotFound/>}/>

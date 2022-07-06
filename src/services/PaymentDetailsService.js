@@ -41,9 +41,24 @@ export async function addPaymentDetailsForGCashUsingBatch(batch, ref, method, am
   return {paymentDetails: newRef, otherData: request};
 }
 
+export async function addPaymentDetailsForCashUsingBatch(batch, ref, method, amount) {
+  const newRef = FirebaseConfig.createRef(COLLECTIONS.PAYMENT_DETAILS);
+  const request = {
+    amount,
+  };
+  batch.set(newRef, {
+    booking: ref,
+    request,
+    method,
+    ...getAuditFields(true),
+  });
+  return {paymentDetails: newRef, otherData: request};
+}
+
 const defaults = {
   waitForPaymentTransaction,
   addPaymentDetailsForGCashUsingBatch,
+  addPaymentDetailsForCashUsingBatch,
   getPaymentDetailsByBooking,
 };
 export default defaults;

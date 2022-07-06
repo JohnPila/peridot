@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import BookInfo from "./BookInfo";
 import BookReview from "./BookReview";
 import BookPay from "./BookPay";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
 import { BOOKING_TYPE } from "../../../utils/constants";
 
 const QontoConnector = styled(StepConnector)(({ theme }) => ({
@@ -84,6 +84,7 @@ QontoStepIcon.propTypes = {
 
 export default function Book() {
   const navigate = useNavigate();
+  const {id: packageId} = useParams();
   const location = useLocation();
   const [activeStep, setActiveStep] = useState(1);
   const [info, setInfo] = useState(null);
@@ -142,11 +143,9 @@ export default function Book() {
         />;
       case 3:
         return <BookPay
-          info={info} 
+          info={info}
           type={type}
-          // packageId={packageId}
-          // bookingDate={bookingDate}
-          // packageOption={packageOption}
+          data={{...stateData, packageId}}
           isWaiting={isWaiting}
           setIsWaiting={setIsWaiting}
           onPrevious={handlePrevious} 

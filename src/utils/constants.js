@@ -62,9 +62,11 @@ export const DIALOG_TYPE_VARIANT = {
 
 export const PAYMENT_METHOD = {
   GCASH: 1,
+  CASH: 2,
 };
 export const PAYMENT_METHOD_LABEL = {
   [PAYMENT_METHOD.GCASH]: "GCash",
+  [PAYMENT_METHOD.CASH]: "Cash",
 };
 
 export const BOOKING_STATUS = {
@@ -75,6 +77,7 @@ export const BOOKING_STATUS = {
   CANCELLED: 5,
   DECLINED: 6,
   PENDING_CANCELLATION: 7,
+  CASH_PAYMENT: 8,
 };
 export const BOOKING_STATUS_LABEL = {
   [BOOKING_STATUS.PENDING_PAYMENT]: "Pending payment",
@@ -84,6 +87,7 @@ export const BOOKING_STATUS_LABEL = {
   [BOOKING_STATUS.CANCELLED]: "Cancelled",
   [BOOKING_STATUS.DECLINED]: "Declined",
   [BOOKING_STATUS.PENDING_CANCELLATION]: "Pending cancellation",
+  [BOOKING_STATUS.CASH_PAYMENT]: "Cash payment",
 }
 
 export const BOOKING_TYPE = {

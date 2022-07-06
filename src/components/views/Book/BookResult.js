@@ -3,9 +3,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
+import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import Typography from "../../common/Typography";
 import { useEffect } from "react";
-import { BOOKING_STATUS } from "../../../utils/constants";
+import { BOOKING_STATUS, BOOKING_TYPE } from "../../../utils/constants";
 
 export default function BookResult() {
   const location = useLocation();
@@ -28,7 +29,7 @@ export default function BookResult() {
 
   const {state: {
     id,
-    // method,
+    method,
     result: {
       status,
       // success,
@@ -76,6 +77,18 @@ export default function BookResult() {
             <Typography variant="body1">Kindly wait while we verify your payment.</Typography>
             <br/>
             <Typography variant="body2">You can also contact our customer support for assistance.</Typography>
+          </>
+        }
+        {BOOKING_STATUS.CASH_PAYMENT === status &&
+          <>
+            <LocalAtmIcon sx={{fontSize: 150}} color="success" />
+            <Typography variant="h3">Cash payment</Typography>
+            <Typography variant="h6" color="text.secondary">
+              Your booking ID is <Chip label={id} color="secondary" size="small" onClick={goToBookingDetails} />
+            </Typography>
+            <Typography variant="body1">Kindly pay the amount of <b>₱{amount}</b> directly to your driver.</Typography>
+            <br/>
+            <Typography variant="body2">You will receive your booking confirmation via email.</Typography>
           </>
         }
       </Grid>

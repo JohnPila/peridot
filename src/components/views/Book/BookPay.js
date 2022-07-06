@@ -11,19 +11,21 @@ import { getPackage } from '../../../services/PackageService';
 import { getPackageOption } from '../../../services/PackageOptionService';
 import PackageDetailsOptionSkeleton from '../Admin/Packages/PackageDetailsOptionSkeleton';
 import withLoggedUser from '../../hocs/withLoggedUser';
-import { BOOKING_STATUS, PAYMENT_METHOD, PAYMENT_METHOD_LABEL } from '../../../utils/constants';
+import { BOOKING_STATUS, BOOKING_TYPE, PAYMENT_METHOD, PAYMENT_METHOD_LABEL } from '../../../utils/constants';
 import GCashConfig from '../../../config/GCashConfig';
-import { addPaymentDetailsForGCashUsingBatch, waitForPaymentTransaction } from '../../../services/PaymentDetailsService';
+import { addPaymentDetailsForCashUsingBatch, addPaymentDetailsForGCashUsingBatch, waitForPaymentTransaction } from '../../../services/PaymentDetailsService';
 import { addBooking, saveBooking } from '../../../services/BookingsService';
 import InfoIcon from '@mui/icons-material/Info';
+import GeoapifyConfig from '../../../config/GeoapifyConfig';
+import { toLonLatArray } from '../../common/MapRoute';
+import { getRoute } from '../../../services/LocationService';
 
 function BookPay(props) {
   const {
     loggedUser,
     info,
-    packageId,
-    bookingDate,
-    packageOption,
+    type,
+    data: stateData,
     isWaiting = false,
     setIsWaiting,
     onPrevious,
@@ -42,35 +44,7 @@ function BookPay(props) {
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
-    getPackage(packageId).then(async (d) => {
-      try {
-        const packageOpt = await getPackageOption(packageOption.id);
-        const options = [];
-        if (!packageOpt.hasSubOptions) {
-          options.push({
-            id: packageOption.id,
-            name: packageOpt.name,
-            price: packageOpt.price,
-            quantity: packageOption.options[0].quantity,
-          });
-        } else {
-          for (const opt of packageOption.options) {
-            const subPackageOpt = await getPackageOption(opt.id);
-            options.push({
-              id: opt.id,
-              name: subPackageOpt.name,
-              price: subPackageOpt.price,
-              quantity: opt.quantity,
-            });
-          }
-        }
-        packageOpt.options = options;
-        setData(packageOpt);
-        setTotalCost(options.reduce((acc, opt) => acc + (opt.quantity * opt.price), 0));
-      } catch (error) {
-        console.error("Failed to get booking info.", error);
-      }
-    }).catch(() => navigate("/errors/404", {replace: true}));
+    getData();
     return () => {
       if (unsubscribeRef.current) {
         unsubscribeRef.current();
@@ -78,33 +52,145 @@ function BookPay(props) {
     };
   }, []);
 
+  const getInitialPaymentStatus = () => {
+    switch (paymentMethod) {
+      case PAYMENT_METHOD.CASH:
+        return BOOKING_STATUS.CASH_PAYMENT;
+      case PAYMENT_METHOD.GCASH:
+      default:
+        return BOOKING_STATUS.PENDING_PAYMENT;
+    }
+  };
+
+  const getData = async () => {
+    switch (type) {
+      case BOOKING_TYPE.PACKAGE: {
+        const {
+          packageId,
+          packageOption,
+        } = stateData;
+        getPackage(packageId).then(async (d) => {
+          try {
+            const packageOpt = await getPackageOption(packageOption.id);
+            const options = [];
+            if (!packageOpt.hasSubOptions) {
+              options.push({
+                id: packageOption.id,
+                name: packageOpt.name,
+                price: packageOpt.price,
+                quantity: packageOption.options[0].quantity,
+              });
+            } else {
+              for (const opt of packageOption.options) {
+                const subPackageOpt = await getPackageOption(opt.id);
+                options.push({
+                  id: opt.id,
+                  name: subPackageOpt.name,
+                  price: subPackageOpt.price,
+                  quantity: opt.quantity,
+                });
+              }
+            }
+            packageOpt.options = options;
+            setData(packageOpt);
+            setTotalCost(options.reduce((acc, opt) => acc + (opt.quantity * opt.price), 0));
+          } catch (error) {
+            console.error("Failed to get booking info.", error);
+          }
+        }).catch(() => navigate("/errors/404", {replace: true}));
+      }
+      break;
+      case BOOKING_TYPE.AIRPORT_TRANSFER: {
+        const {
+          pickupLocation,
+          dropoffLocation,
+        } = stateData;
+        const routeData = await getRoute(toLonLatArray(pickupLocation), toLonLatArray(dropoffLocation));
+        setData({
+          dropoffLocation,
+          routeData,
+        });
+        setTotalCost(GeoapifyConfig.computeCost(
+          routeData.features[0].properties.distance));
+      }
+      break;
+    }
+  };
+
   const handlePay = async (e) => {
     e.preventDefault();
     setIsLoading(true);
     try {
-      const {booking, paymentDetails, otherData} = await addBooking(packageId, {
-        date: bookingDate,
-        fullName: `${info.firstName} ${info.lastName}`,
-        address: info.address,
-        phoneNumber: info.phoneNumber,
-        specialRequests: info.specialRequests,
-        status: BOOKING_STATUS.PENDING_PAYMENT,
-        packageOptions: data.options,
-      }, startPayment);
-      setBookingId(booking.id);
-      handlePostBooking(booking.id, paymentDetails.id, otherData);
+      switch (type) {
+        case BOOKING_TYPE.PACKAGE:
+          await handlePayPackage();
+          break;
+        case BOOKING_TYPE.AIRPORT_TRANSFER:
+          await handlePayAirportTransfer();
+          break;
+      }
     } catch (error) {
-      console.log("Failed!!!", error);
+      console.error("Failed to save booking and pay!", error);
     } finally {
       setIsLoading(false);
     }
   };
 
+  const handlePayPackage = async () => {
+    const {
+      packageId,
+      bookingDate,
+    } = stateData;
+    const {booking, paymentDetails, otherData} = await addBooking(type, {
+      packageId,
+      date: bookingDate,
+      fullName: `${info.firstName} ${info.lastName}`,
+      address: info.address,
+      phoneNumber: info.phoneNumber,
+      specialRequests: info.specialRequests,
+      status: getInitialPaymentStatus(),
+      packageOptions: data.options,
+    }, startPayment);
+    setBookingId(booking.id);
+    handlePostBooking(booking.id, paymentDetails.id, otherData);
+  };
+
+  const handlePayAirportTransfer = async () => {
+    const {
+      pickupDate,
+      pickupTime,
+      pickupLocation,
+      dropoffLocation,
+    } = stateData;
+    const {booking, paymentDetails, otherData} = await addBooking(type, {
+      fullName: `${info.firstName} ${info.lastName}`,
+      address: info.address,
+      phoneNumber: info.phoneNumber,
+      specialRequests: info.specialRequests,
+      status: getInitialPaymentStatus(),
+      pickupDate,
+      pickupTime,
+      pickupLocation: pickupLocation.properties.place_id,
+      dropoffLocation: dropoffLocation.properties.place_id,
+    }, startPayment);
+    setBookingId(booking.id);
+    handlePostBooking(booking.id, paymentDetails.id, otherData);
+  };
+
   const startPayment = async (batch, bookingRef) => {
     switch (paymentMethod) {
       case PAYMENT_METHOD.GCASH: {
+        let description;
+        switch (type) {
+          case BOOKING_TYPE.PACKAGE:
+            description = `Payment for "${data.name}" package.`;
+            break;
+          case BOOKING_TYPE.AIRPORT_TRANSFER:
+            description = `Payment for airport transfer to "${data.dropoffLocation.properties.formatted}".`;
+            break;
+        }
         const addData = {
-          description: `Payment for "${data.name}" package.`,
+          description,
           customername: `${info.firstName} ${info.lastName}`,
           customermobile: info.phoneNumber,
           customeremail: loggedUser.email,
@@ -114,10 +200,11 @@ function BookPay(props) {
         };
         return await addPaymentDetailsForGCashUsingBatch(batch, bookingRef, paymentMethod, totalCost, addData);
       }
+      case PAYMENT_METHOD.CASH:
+        return await addPaymentDetailsForCashUsingBatch(batch, bookingRef, paymentMethod, computeTotal());
       default:
-        break;
+        throw new Error(`Unsupported payment method [${paymentMethod}].`);
     }
-    throw new Error(`Unsupported payment method [${paymentMethod}].`);
   }
 
   const handlePostBooking = (bookingId, paymentDetailsId, otherData) => {
@@ -131,6 +218,15 @@ function BookPay(props) {
         setPaymentLink(otherData.data.checkouturl);
         setIsWaiting(true);
         break;
+      case PAYMENT_METHOD.CASH:
+        onNext({
+          id: bookingId,
+          method: paymentMethod,
+          result: {
+            ...otherData,
+            status: BOOKING_STATUS.CASH_PAYMENT,
+          },
+        });
       default:
         break;
     }
@@ -240,11 +336,14 @@ function BookPay(props) {
         <RadioGroup 
           defaultValue={paymentMethod}
           value={paymentMethod}
-          onChange={(e) => setPaymentMethod(e.target.value)}>
-          <FormControlLabel value={PAYMENT_METHOD.GCASH} control={<Radio color="info"/>} label="GCash" />
+          onChange={(e) => setPaymentMethod(parseInt(e.target.value))}>
+          <FormControlLabel value={PAYMENT_METHOD.GCASH} control={<Radio color="info"/>} 
+            label={PAYMENT_METHOD_LABEL[PAYMENT_METHOD.GCASH]} />
           <FormHelperText sx={{ml: 4, mt: -1.5}}>
             This will include a {GCashConfig.fee * 100}% surcharge fee.
           </FormHelperText>
+          <FormControlLabel value={PAYMENT_METHOD.CASH} control={<Radio color="info"/>} 
+            label={PAYMENT_METHOD_LABEL[PAYMENT_METHOD.CASH]} />
         </RadioGroup>
         <Divider sx={{mt: 3, mb: 2}}/>
         {null !== totalCost ? 
@@ -305,10 +404,9 @@ function BookPay(props) {
 }
 
 BookPay.propTypes = {
+  type: PropTypes.number.isRequired,
   info: PropTypes.object.isRequired,
-  packageId: PropTypes.string.isRequired,
-  bookingDate: PropTypes.instanceOf(Date).isRequired,
-  packageOption: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired,
   isWaiting: PropTypes.bool,
   setIsWaiting: PropTypes.func.isRequired,
   onPrevious: PropTypes.func.isRequired,

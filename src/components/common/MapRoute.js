@@ -4,7 +4,7 @@ import maplibre from "maplibre-gl";
 import GeoapifyConfig from '../../config/GeoapifyConfig';
 import { getRoute } from '../../services/LocationService';
 
-function toLonLatArray(value) {
+export function toLonLatArray(value) {
   return value ? [value.properties.lon, value.properties.lat] : null;
 }
 

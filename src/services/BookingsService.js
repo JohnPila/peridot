@@ -1,6 +1,6 @@
 import { updateDoc, getDocs, query, where, getDoc, onSnapshot } from "firebase/firestore";
 import FirebaseConfig, { COLLECTIONS } from "../config/FirebaseConfig";
-import { BOOKING_STATUS } from "../utils/constants";
+import { BOOKING_STATUS, BOOKING_TYPE } from "../utils/constants";
 import { getAuditFields, getCurrentUserId } from "./BaseService";
 
 function getDateByBookingStatus(status) {
@@ -38,7 +38,7 @@ export async function getAllBookingsByCurrentUser() {
   try {
     const userId = getCurrentUserId();
     const q = query(FirebaseConfig.getCollectionRef(COLLECTIONS.BOOKINGS), 
-      where("createdBy", "==", userId));
+      where("createdBy", "==", userId), where("type", "!=", BOOKING_TYPE.AIRPORT_TRANSFER));
     const result = await getDocs(q);
     return result.docs.map(d => ({id: d.id, ...d.data()}));
   } catch(err) {
@@ -77,15 +77,29 @@ export async function getAllBookingsByPackageAndDateRange(packageId, dateFrom, d
   }
 }
 
-export async function addBooking(packageId, data, callback = async () => {}) {
+export async function addBooking(type, data, callback = async () => {}) {
   try {
     return await FirebaseConfig.writeTransaction(async (batch) => {
       const newRef = FirebaseConfig.createRef(COLLECTIONS.BOOKINGS);
-      batch.set(newRef, {
-        package: FirebaseConfig.getDocRef(COLLECTIONS.PACKAGES, packageId),
-        ...data,
-        ...getAuditFields(true),
-      });
+      switch (type) {
+        case BOOKING_TYPE.PACKAGE: {
+          const {packageId, ...otherData} = data;
+          batch.set(newRef, {
+            type,
+            package: FirebaseConfig.getDocRef(COLLECTIONS.PACKAGES, packageId),
+            ...otherData,
+            ...getAuditFields(true),
+          });
+        }
+        break;
+        case BOOKING_TYPE.AIRPORT_TRANSFER:
+          batch.set(newRef, {
+            type,
+            ...data,
+            ...getAuditFields(true),
+          });
+          break;
+      }
       const otherData = await callback(batch, newRef);
       return {
         booking: newRef, 
