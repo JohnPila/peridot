@@ -1,4 +1,4 @@
-import { getDoc, getDocs, query } from "firebase/firestore";
+import { getDoc, getDocs, onSnapshot, query, updateDoc } from "firebase/firestore";
 import FirebaseConfig, { COLLECTIONS } from "../config/FirebaseConfig";
 import { getAuditFields } from "./BaseService";
 import { addPackageOptionsUsingBatch } from "./PackageOptionService";
@@ -21,6 +21,20 @@ export async function addPackage(data) {
   }
 }
 
+export async function savePackage(id, data) {
+  try {
+    const d = FirebaseConfig.getDocRef(COLLECTIONS.PACKAGES, id);
+    const result = await updateDoc(d, {
+      ...data,
+      ...getAuditFields(false),
+    });
+    return result;
+  } catch(err) {
+    console.error("Failed to save package.", err.message);
+    throw err;
+  }
+}
+
 export async function getAllPackages() {
   try {
     const q = query(FirebaseConfig.getCollectionRef(COLLECTIONS.PACKAGES));
@@ -30,6 +44,18 @@ export async function getAllPackages() {
     console.error("Failed to all packages.", err.message);
     throw err;
   }
+}
+
+export async function listenAllPackages(callback = () => {}) {
+  const q = query(FirebaseConfig.getCollectionRef(COLLECTIONS.PACKAGES));
+  return onSnapshot(q, 
+    (query) => {
+      const packages = [];
+      query.forEach((d) => {
+        packages.push({id: d.id, ...d.data()});
+      });
+      callback(packages);
+    });
 }
 
 export async function getPackage(refOrId) {
@@ -48,7 +74,9 @@ export async function getPackage(refOrId) {
 
 const defaults = {
   addPackage,
+  savePackage,
   getAllPackages,
   getPackage,
+  listenAllPackages,
 };
 export default defaults;

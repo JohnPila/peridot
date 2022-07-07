@@ -4,17 +4,27 @@ import Typography from '../../../common/Typography';
 import Carousel from 'react-material-ui-carousel'
 import { useEffect, useState } from 'react';
 import { getImages } from '../../../../services/FileService';
-import { STORAGE_FOLDERS } from '../../../../utils/constants';
+import { DIALOG_TYPE_VARIANT, STORAGE_FOLDERS } from '../../../../utils/constants';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import LocalMallIcon from '@mui/icons-material/LocalMall';
 import { useNavigate } from 'react-router-dom';
 import { getSmallestPackageOptionPrice } from '../../../../services/PackageOptionService';
+import withLoggedUser from '../../../hocs/withLoggedUser';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import DropdownMenu from '../../../common/DropdownMenu';
+import withDialog from '../../../hocs/withDialog';
+import { savePackage } from '../../../../services/PackageService';
+import { useSnackbar } from 'notistack';
 
 function ViewPackagesItem(props) {
   const {
     data,
+    isAdmin,
+    confirmDialog,
   } = props;
 
+  const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
   const [images, setImages] = useState(null);
   const [smallestPrice, setSmallestPrice] = useState(null);
@@ -25,16 +35,36 @@ function ViewPackagesItem(props) {
     getImages(data.id, STORAGE_FOLDERS.PACKAGES).then(setImages);
   }, []);
 
-  // const selectMenu = (action) => {
-  //   switch(action) {
-  //     case "update":
-  //       break;
-  //     case "delete":
-  //       break;
-  //     default:
-  //       break;
-  //   }
-  // };
+  const selectMenu = async (option) => {
+    switch(option.id) {
+      case "edit":
+        navigate("/packages/" + data.id + "/edit");
+        break;
+      case "delete":
+        confirmDialog("Delete package", `Are you sure you want to delete <b>${data.name}</b> package?`, (ok) => {
+          if (ok) {
+            deletePackage();
+          }
+        }, {
+          variant: DIALOG_TYPE_VARIANT.ERROR,
+          confirmButtonTitle: "Delete",
+        });
+        break;
+      default:
+        break;
+    }
+  };
+
+  const deletePackage = async () => {
+    try {
+      await savePackage(data.id, {
+        isDeleted: true,
+      });
+      enqueueSnackbar("Successfully deleted package!", {variant: "success"});
+    } catch (error) {
+      enqueueSnackbar("Failed to delete package! ERR: " + error.message, {variant: "error"});
+    }
+  }
 
   const onSelectPackage = (e) => {
     if ("circle" === e.target.tagName) {
@@ -45,7 +75,7 @@ function ViewPackagesItem(props) {
 
   return (
     <Grid item xs={12} sm={6} md={4}>
-      <Card sx={{ maxWidth: 345 }}>
+      <Card sx={{ maxWidth: 345, opacity: data.isDeleted ? 0.6 : 1 }}>
         {images?.length > 0 ? 
           <CardMedia
             component={Carousel}
@@ -69,11 +99,24 @@ function ViewPackagesItem(props) {
             alt="Default image"
           />
         }
-        <CardActionArea onClick={onSelectPackage}>
+        <CardActionArea disabled={data.isDeleted} onClick={onSelectPackage}>
           <CardHeader
-            // action={
-            //   <DropdownMenu onSelect={selectMenu}/>
-            // }
+            action={isAdmin &&
+              <DropdownMenu style={{marginLeft: "10px"}}
+                options={[
+                  {
+                    id: "edit",
+                    content: <><EditIcon sx={{mr: 1}}/> Edit</>,
+                  },
+                  {
+                    id: "delete",
+                    content: <><DeleteIcon sx={{mr: 1}}/> Delete</>,
+                  },
+                ]}
+                onChange={selectMenu}
+                disabled={data.isDeleted}
+              />
+            }
             title={data.name}
             subheader={<div style={{ display: "flex", alignItems: "flex-start" }}>
               {data.barangay.label}, {data.city.label} <LocationOnIcon sx={{fontSize: 18, ml: 0.2}} htmlColor="red" />
@@ -97,7 +140,7 @@ function ViewPackagesItem(props) {
         <CardActions disableSpacing>
           <Grid container>
             <Grid item>
-              <Button color="error" variant="contained">
+              <Button color="error" variant="contained" disabled={data.isDeleted}>
                 <LocalMallIcon sx={{mr: 0.5, fontSize: 16}}/> Book Now
               </Button>
             </Grid>
@@ -138,4 +181,4 @@ ViewPackagesItem.propTypes = {
   data: PropTypes.object.isRequired,
 };
 
-export default ViewPackagesItem;
+export default withDialog(withLoggedUser(ViewPackagesItem));
