@@ -1,5 +1,5 @@
 import { Box, InputLabel, Stack, TextField } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AppForm from "../../../common/AppForm";
 import FormButton from "../../../common/form/FormButton";
 import Typography from "../../../common/Typography";
@@ -7,26 +7,59 @@ import LocationPicker from "../../../common/picker/LocationPicker";
 import {DEFAULT_PACKAGE_DESCRIPTION, STORAGE_FOLDERS} from "../../../../utils/constants";
 import SavePackageOptions from "./SavePackageOptions";
 import ImageDropzone from "../../../common/ImageDropzone";
-import { addPackage } from "../../../../services/PackageService";
-import { uploadImages } from "../../../../services/FileService";
+import { addPackage, getPackage, savePackage } from "../../../../services/PackageService";
+import { deleteImages, getImages, getImagesAsFiles, uploadImages } from "../../../../services/FileService";
 import TextFieldEditor from "../../../common/TextFieldEditor";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+import { useSnackbar } from 'notistack';
+import { getPackageOptions } from "../../../../services/PackageOptionService";
 
-function SavePackage() {
+function SavePackage(props) {
+  const {
+    isEdit = false,
+  } = props;
+
+  const { enqueueSnackbar } = useSnackbar();
+  const {id: packageId} = useParams();
   const navigate  = useNavigate();
   const [name, setName] = useState("");
   const [description, setDescription] = useState(DEFAULT_PACKAGE_DESCRIPTION);
   const [city, setCity] = useState(null);
   const [barangay, setBarangay] = useState(null);
   const [packageOptions, setPackageOptions] = useState([]);
+  const [oldImages, setOldImages] = useState([]);
   const [images, setImages] = useState([]);
-  const [submitting, setSubmitting] = useState(false);
+  const [submitting, setSubmitting] = useState(isEdit);
   const [error, setError] = useState({
     name: "",
     city: "",
     barangay: "",
     packageOptions: "",
   });
+
+  /* eslint-disable react-hooks/exhaustive-deps */
+  useEffect(() => {
+    if (isEdit && packageId) {
+      getPackageDetails();
+    }
+  }, []);
+
+  const getPackageDetails = async () => {
+    try {
+      const data = await getPackage(packageId);
+      setName(data.name);
+      setDescription(data.description);
+      setCity(data.city);
+      setBarangay(data.barangay);
+      setImages(await getImagesAsFiles(packageId, STORAGE_FOLDERS.PACKAGES));
+      setOldImages(await getImages(packageId, STORAGE_FOLDERS.PACKAGES));
+      setPackageOptions(await getPackageOptions(packageId));
+    } catch (error) {
+      enqueueSnackbar("Failed to get package details! ERR: " + error.message, {variant: "error"});
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -38,14 +71,26 @@ function SavePackage() {
   const save = async () => {
     try {
       setSubmitting(true);
-      const packageRef = await addPackage({
-        name,
-        description,
-        city,
-        barangay,
-        options: packageOptions,
-      });
-      await uploadImages(images, `${STORAGE_FOLDERS.PACKAGES}/${packageRef.id}`);
+      if (isEdit) {
+        await savePackage(packageId, {
+          name,
+          description,
+          city,
+          barangay,
+          options: packageOptions,
+        });
+        await deleteImages(oldImages, `${STORAGE_FOLDERS.PACKAGES}/${packageId}`);
+        await uploadImages(images, `${STORAGE_FOLDERS.PACKAGES}/${packageId}`);
+      } else {
+        const packageRef = await addPackage({
+          name,
+          description,
+          city,
+          barangay,
+          options: packageOptions,
+        });
+        await uploadImages(images, `${STORAGE_FOLDERS.PACKAGES}/${packageRef.id}`);
+      }
       navigate("/admin/packages");
     } catch (error) {
       console.error("Failed to save package.", error);
@@ -101,7 +146,7 @@ function SavePackage() {
   return (
     <AppForm containerProps={{maxWidth: "xl"}}>
       <Typography variant="h3" gutterBottom marked="center" align="center">
-        Add Package
+        {isEdit ? "Edit" : "Add"} Package
       </Typography>
       <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 6 }}>
         <InputLabel sx={{mt: 1, mb: 1}}>Name *</InputLabel>
@@ -116,7 +161,7 @@ function SavePackage() {
           disabled={submitting}
         />
         <InputLabel sx={{mt: 1, mb: 1}}>Images</InputLabel>
-        <ImageDropzone
+        <ImageDropzone key={oldImages?.length}
           value={images}
           onChange={setImages}
           disabled={submitting}

@@ -216,7 +216,7 @@ function EnterDetails(props) {
   
   EnterDetails.propTypes = {
     info: PropTypes.object,
-    onNext: PropTypes.func.isRequired,
+    // onNext: PropTypes.func.isRequired,
   };
 
 export default EnterDetails;

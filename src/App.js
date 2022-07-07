@@ -53,6 +53,7 @@ function App() {
         <Route path="/admin/packages" element={<Packages/>}>
           <Route path="" element={<ViewPackages/>}/>
           <Route path="add" element={<SavePackage/>}/>
+          <Route path=":id/edit" element={<SavePackage isEdit/>}/>
         </Route>
         <Route path="/admin/airport-transfer" element={<AirportBooking />}/>
         <Route path="/admin/view-all-airport" element={<ViewAllAirport />}/>

@@ -38,7 +38,7 @@ function ViewPackagesItem(props) {
   const selectMenu = async (option) => {
     switch(option.id) {
       case "edit":
-        navigate("/packages/" + data.id + "/edit");
+        navigate("/admin/packages/" + data.id + "/edit");
         break;
       case "delete":
         confirmDialog("Delete package", `Are you sure you want to delete <b>${data.name}</b> package?`, (ok) => {

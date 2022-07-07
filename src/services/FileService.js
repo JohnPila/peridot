@@ -1,4 +1,4 @@
-import { deleteObject, getDownloadURL, listAll, uploadBytes } from "firebase/storage";
+import { deleteObject, getBlob, getDownloadURL, listAll, uploadBytes } from "firebase/storage";
 import FirebaseConfig from "../config/FirebaseConfig";
 
 export async function uploadImage(file, path) {
@@ -28,7 +28,7 @@ export async function uploadImages(images, path, deleteOnFail = true) {
 
 export async function deleteImages(images) {
   for (const image of images) {
-    await deleteImage(image);
+    await deleteImage(FirebaseConfig.getStorageRefByPath(image._location.path));
   }
 }
 
@@ -50,6 +50,20 @@ export async function getImages(id, path) {
       images.push({...item, url});
     }
     return images;
+  } catch (error) {
+    console.error("Failed to get images.", error);
+  }
+}
+
+export async function getImagesAsFiles(id, path) {
+  try {
+    const result = await listAll(FirebaseConfig.getStorageRef(id, path));
+    const files = [];
+    for (const item of result.items) {
+      const blob = await getBlob(item);
+      files.push(new File([blob], item.name, {type: blob.type}));
+    }
+    return files;
   } catch (error) {
     console.error("Failed to get images.", error);
   }

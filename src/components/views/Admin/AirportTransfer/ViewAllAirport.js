@@ -1,5 +1,4 @@
-import { Card, CardContent, CardMedia, Divider, Grid, Skeleton, Stack } from "@mui/material";
-import { Fragment} from "react";
+import { Card, CardContent, Divider, Grid, Stack } from "@mui/material";
 import Typography from "../../../common/Typography";
 import withLoggedUser from "../../../hocs/withLoggedUser";
 import withDialog from "../../../hocs/withDialog";

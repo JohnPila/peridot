@@ -85,6 +85,10 @@ class FirebaseConfig {
     return ref(this._storage, `${path}/${name}`);
   }
 
+  getStorageRefByPath(path) {
+    return ref(this._storage, path);
+  }
+
   createRef(name) {
     return doc(collection(this._db, name));
   }

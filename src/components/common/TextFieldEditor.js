@@ -34,6 +34,16 @@ function TextFieldEditor(props) {
     }
   });
 
+  useEffect(() => {
+    const contentBlock = htmlToDraft(value);
+    if (contentBlock) {
+      setEditorState(EditorState.createWithContent(ContentState
+        .createFromBlockArray(contentBlock.contentBlocks)));
+    } else {
+      setEditorState(EditorState.createEmpty());
+    }
+  }, [value]);
+
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (isMounted) {

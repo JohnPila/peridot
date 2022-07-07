@@ -17,13 +17,17 @@ function ViewPackages(props) {
   const [packages, setPackages] = useState(null);
 
   useEffect(() => {
-    unsubscribeRef.current = listenAllPackages(setPackages);
+    getAllPackages();
     return () => {
       if (unsubscribeRef.current) {
         unsubscribeRef.current();
       }
     };
   }, []);
+
+  const getAllPackages = async () => {
+    unsubscribeRef.current = await listenAllPackages(isAdmin, setPackages);
+  };
 
   return (
     <>

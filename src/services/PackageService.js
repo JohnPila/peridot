@@ -1,4 +1,4 @@
-import { getDoc, getDocs, onSnapshot, query, updateDoc } from "firebase/firestore";
+import { getDoc, getDocs, onSnapshot, query, updateDoc, where } from "firebase/firestore";
 import FirebaseConfig, { COLLECTIONS } from "../config/FirebaseConfig";
 import { getAuditFields } from "./BaseService";
 import { addPackageOptionsUsingBatch } from "./PackageOptionService";
@@ -28,6 +28,7 @@ export async function savePackage(id, data) {
       ...data,
       ...getAuditFields(false),
     });
+    // TODO: save package options
     return result;
   } catch(err) {
     console.error("Failed to save package.", err.message);
@@ -46,8 +47,9 @@ export async function getAllPackages() {
   }
 }
 
-export async function listenAllPackages(callback = () => {}) {
-  const q = query(FirebaseConfig.getCollectionRef(COLLECTIONS.PACKAGES));
+export async function listenAllPackages(includeDeleted = false, callback = () => {}) {
+  const q = includeDeleted ? query(FirebaseConfig.getCollectionRef(COLLECTIONS.PACKAGES)) : 
+    query(FirebaseConfig.getCollectionRef(COLLECTIONS.PACKAGES), where("isDeleted", "!=", true));
   return onSnapshot(q, 
     (query) => {
       const packages = [];
