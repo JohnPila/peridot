@@ -33,6 +33,9 @@ import ViewCarRental from './components/views/Carrental/ViewCarRental'
 import AllCarBooking from './components/views/Admin/CarRental/AllCarBooking';
 import { SnackbarProvider } from 'notistack';
 import ViewAllAirport from './components/views/Admin/AirportTransfer/ViewAllAirport';
+import BookingCarRental from './components/views/Carrental/CarRental'
+import Car_rental from './components/views/Carrental/Car'
+
 
 function App() {
   return (
@@ -45,9 +48,8 @@ function App() {
         <Route path="/sign-in" element={<SignIn />}/>
         <Route path="/contact-us" element={<ContactUs />}/>
         <Route path="/about-us" element={<AboutUs />}/>
-        <Route path="/car-rental" element={<BookCarRental />}/>
+
         <Route path="/view-carrental" element={<ViewCarRental />}/>
-        <Route path="/enter-details" element={<EnterDetails />}/>
         <Route path="/payment" element={<Payment />}/>
         <Route path="/forgot-password" element={<ForgotPassword />}/>
         <Route path="/admin/dashboard" element={<DashboardApp/>}/>
@@ -72,6 +74,13 @@ function App() {
         </Route>
         <Route path="/aiport-transfer" element={<AirportTransfer/>}>
           <Route path="" element={<BookAirportTransfer/>}/>
+          <Route path="book" element={<Book/>}/>
+          <Route path="book/result" element={<BookResult/>}/>
+        </Route>
+
+
+        <Route path="/car-rental" element={<Car_rental/>}>
+          <Route path="" element={<BookCarRental/>}/>
           <Route path="book" element={<Book/>}/>
           <Route path="book/result" element={<BookResult/>}/>
         </Route>

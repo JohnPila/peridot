@@ -4,10 +4,11 @@ import { styled } from '@mui/material/styles';
 import StepConnector, { stepConnectorClasses } from '@mui/material/StepConnector';
 import { Check } from "@mui/icons-material";
 import PropTypes from 'prop-types';
-import BookInfo from "./BookInfo";
-import BookReview from "./BookReview";
-import BookPay from "./BookPay";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
+import Enterdetails from "./Enterdetails";
+import Payment from "./Payment";
+import ViewCarRental from "./ViewCarRental";
+import { useNavigate, useLocation, useParams } from "react-router-dom";
+import { BOOKING_TYPE } from "../../../utils/constants";
 
 const QontoConnector = styled(StepConnector)(({ theme }) => ({
   [`&.${stepConnectorClasses.alternativeLabel}`]: {
@@ -82,12 +83,14 @@ QontoStepIcon.propTypes = {
 };
 
 export default function CarRental() {
-  const {id: packageId} = useParams();
   const navigate = useNavigate();
+  const {id: packageId} = useParams();
   const location = useLocation();
   const [activeStep, setActiveStep] = useState(1);
   const [info, setInfo] = useState(null);
   const [isWaiting, setIsWaiting] = useState(false);
+  
+  const {state: {type, data: stateData}} = location;
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
@@ -126,30 +129,29 @@ export default function CarRental() {
   const renderStep = () => {
     switch (activeStep) {
       case 1:
-        return <BookInfo 
+        return <Enterdetails 
           info={info} 
           onNext={handleNext}
         />;
-      case 2:
-        return <BookReview
-          info={info} 
-          packageId={packageId}
-          bookingDate={bookingDate}
-          packageOption={packageOption}
+        case 2:
+        return <ViewCarRental
+          info={info}
+          type={type}
+          data={stateData}
           onPrevious={handlePrevious} 
           onNext={handleNext} 
         />;
-      case 3:
-        return <BookPay
-          info={info} 
-          packageId={packageId}
-          bookingDate={bookingDate}
-          packageOption={packageOption}
+        case 3:
+        return <Payment
+          info={info}
+          type={type}
+          data={{...stateData, packageId}}
           isWaiting={isWaiting}
           setIsWaiting={setIsWaiting}
           onPrevious={handlePrevious} 
           onNext={handleNext} 
         />
+      
       default:
         return null;
     }
@@ -159,14 +161,14 @@ export default function CarRental() {
     return null;
   }
 
-  const {state: {bookingDate, packageOption}} = location;
   return (
     <>
       {!isWaiting && 
         <Stack sx={{ width: '100%' }} spacing={4}>
           <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector />}>
             <Step>
-              <StepLabel StepIconComponent={QontoStepIcon}>Choose package</StepLabel>
+              <StepLabel StepIconComponent={QontoStepIcon}>{type === BOOKING_TYPE.PACKAGE ? 
+              "Choose package" : "Book airport transfer"}</StepLabel>
             </Step>
             <Step>
               <StepLabel StepIconComponent={QontoStepIcon}>Enter info</StepLabel>
