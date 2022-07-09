@@ -30,6 +30,7 @@ import BookAirportTransfer from './components/views/AirportTransfer/BookAirportT
 import ViewCarRentals from './components/views/Admin/CarRental/ViewCarRentals';
 import DashboardApp from './components/views/Admin/AdminDashboard/DashboardApp';
 import ViewCarRental from './components/views/Carrental/ViewCarRental'
+import AllCarBooking from './components/views/Admin/CarRental/AllCarBooking';
 import { SnackbarProvider } from 'notistack';
 import ViewAllAirport from './components/views/Admin/AirportTransfer/ViewAllAirport';
 
@@ -58,6 +59,7 @@ function App() {
         <Route path="/admin/airport-transfer" element={<AirportBooking />}/>
         <Route path="/admin/view-all-airport" element={<ViewAllAirport />}/>
         <Route path="/admin/car-rentals" element={<ViewCarRentals/>}/>
+        <Route path="/admin/all-car-booking" element={<AllCarBooking/>}/>
         <Route path="/packages" element={<Packages/>}>
           <Route path="" element={<ViewPackages/>}/>
           <Route path=":id" element={<PackageDetails/>}/>
