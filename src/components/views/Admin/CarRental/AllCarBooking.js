@@ -17,7 +17,7 @@ export function ViewCarRentals() {
   const classes = useStyles();
 	return (
     <Grid container>
-      <Typography variant="h2"className={classes.typo}>All Car Bookings</Typography>
+      <Typography variant="h2"className={classes.typo}>All Car Rental Bookings</Typography>
 		<Grid container spacing={2}>
 			<Grid item md={6} sm={12} xs={12}>
         <Stack spacing={2}>

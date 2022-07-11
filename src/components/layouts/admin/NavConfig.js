@@ -24,12 +24,12 @@ const navConfig = [
   },
   {
     title: 'Airport Transfer',
-    path: '/admin/airport-transfer',
+    path: '/admin/all-airport-bookings',
     icon: getLargeIcon('ic:round-connecting-airports'),
   },
   {
     title: 'Car Rentals',
-    path: '/admin/car-rentals',
+    path: '/admin/all-car-bookings',
     icon: getIcon('bxs:car'),
   },
   // {
