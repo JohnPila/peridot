@@ -1,217 +1,151 @@
-import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import AppForm from '../../common/AppForm';
+import { Divider, Grid, Skeleton } from '@mui/material';
+import PropTypes from 'prop-types';
+import { useMemo } from 'react';
+import GeoapifyConfig from '../../../config/GeoapifyConfig';
+import { formatDate, formatTime } from '../../../utils/HelperUtils';
+import MapRoute from '../../common/MapRoute';
 import Typography from '../../common/Typography';
-import { Box } from '@mui/system';
-import { CardContent, CardMedia, Divider, Grid} from '@mui/material';
-import FormButton from '../../common/form/FormButton';
-import { Fragment} from 'react';
+import PackageDetailsOptionSkeleton from '../Admin/Packages/PackageDetailsOptionSkeleton';
 
-function ViewCarRental() {
-  return (
-    <AppForm containerProps={{maxWidth: "xl"}}>
-      <Typography variant="h3" gutterBottom marked="center" align="center">
-        Review
+function ViewCarRental(props) {
+  const {
+    info,
+    data: {
+      pickupDate,
+      pickupTime,
+      pickupLocation,
+      dropoffLocation,
+      routeData,
+    },
+  } = props;
+
+  return (routeData ?
+    <>
+      <Typography variant="h4" gutterBottom sx={{ mt: 6 }}>
+        Booking info
       </Typography>
-      <Box component="form">
-          <>
-            <Typography variant="h4" gutterBottom sx={{ mt: 6 }}>
-              Booking info
-            </Typography>
-            <Box sx={{ display: 'flex', background: "none" }}>
-              <CardMedia
-                component="img"
-                sx={{ width: 150 }}
-              />
-              <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-                <CardContent sx={{ flex: '1 0 auto' }}>
-                  <Typography component="div" variant="h5">
-                    Booking Id: 1548054018
-                  </Typography>
-                  <Typography component="div" variant="h5">
-                     Book Start: May 5, 2022 | 10:00 AM
-                  </Typography>
-                  <Typography component="div" variant="h5">
-                     Book End: May 15, 2022 | 10:00 AM
-                  </Typography>
-                  <Typography component="div" variant="h5">
-                     With Driver: Yes
-                  </Typography>
-                </CardContent>
-              </Box>
-            </Box>
-            <Typography variant="h4" gutterBottom sx={{ mt: 4 }}>
-              Personal info info
-            </Typography>
-            <Grid container>
-              <Grid item xs={2}>
-                <Typography variant="body1" color="text.secondary">Full name</Typography>
-              </Grid>
-              <Grid item xs textAlign="right">
-                <Typography variant="body1">Vince Samson</Typography>
-              </Grid>
-            </Grid>
-            <Grid container>
-              <Grid item xs={2}>
-                <Typography variant="body1" color="text.secondary">Phone number</Typography>
-              </Grid>
-              <Grid item xs textAlign="right">
-                <Typography variant="body1">+63 9618855989</Typography>
-              </Grid>
-            </Grid>
-            <Grid container>
-              <Grid item xs={2}>
-                <Typography variant="body1" color="text.secondary">Address</Typography>
-              </Grid>
-              <Grid item xs textAlign="right">
-                <Typography variant="body1">Punta Princesa, Cebu City</Typography>
-              </Grid>
-            </Grid>
-            <Typography variant="h4" gutterBottom sx={{ mt: 4 }}>
-              Additional info
-            </Typography>
-            <Grid container>
-              <Grid item xs={2}>
-                <Typography variant="body1" color="text.secondary">Special requests</Typography>
-              </Grid>
-              <Grid item xs textAlign="right">
-                <Typography variant="body1">anniversarry decorations</Typography>
-              </Grid>
-            </Grid>
-            <Typography variant="h4" gutterBottom sx={{ mt: 4 }}>
-              Driver Information
-            </Typography>
-            <Grid container>
-              <Grid item xs={2}>
-                <Typography variant="body1" color="text.secondary">Driver's Name:</Typography>
-              </Grid>
-              <Grid item xs textAlign="right">
-                <Typography variant="body1">Harry Styles</Typography>
-              </Grid>
-            </Grid>
-            <Grid container>
-              <Grid item xs={2}>
-                <Typography variant="body1" color="text.secondary">Driver's Contact Number:</Typography>
-              </Grid>
-              <Grid item xs textAlign="right">
-                <Typography variant="body1">+63 9978747700</Typography>
-              </Grid>
-            </Grid>
-            <Typography variant="h4" gutterBottom sx={{ mt: 4 }}>
-              Car Information
-            </Typography>
-            <Grid container>
-              <Grid item xs={2}>
-                <Typography variant="body1" color="text.secondary">Vehicle Type:</Typography>
-              </Grid>
-              <Grid item xs textAlign="right">
-                <Typography variant="body1">SUV</Typography>
-              </Grid>
-            </Grid>
-            <Grid container>
-              <Grid item xs={2}>
-                <Typography variant="body1" color="text.secondary">Car Brand:</Typography>
-              </Grid>
-              <Grid item xs textAlign="right">
-                <Typography variant="body1">MITSUBISHI</Typography>
-              </Grid>
-            </Grid>
-            <Grid container>
-              <Grid item xs={2}>
-                <Typography variant="body1" color="text.secondary">Model:</Typography>
-              </Grid>
-              <Grid item xs textAlign="right">
-                <Typography variant="body1">Xpander</Typography>
-              </Grid>
-            </Grid>
-            <Grid container>
-              <Grid item xs={2}>
-                <Typography variant="body1" color="text.secondary">Transmission:</Typography>
-              </Grid>
-              <Grid item xs textAlign="right">
-                <Typography variant="body1">Manual</Typography>
-              </Grid>
-            </Grid>
-            <Grid container>
-              <Grid item xs={2}>
-                <Typography variant="body1" color="text.secondary">Fuel:</Typography>
-              </Grid>
-              <Grid item xs textAlign="right">
-                <Typography variant="body1">Unleaded</Typography>
-              </Grid>
-            </Grid>
-            <Grid container>
-              <Grid item xs={2}>
-                <Typography variant="body1" color="text.secondary">Plate No:</Typography>
-              </Grid>
-              <Grid item xs textAlign="right">
-                <Typography variant="body1">DSX 126</Typography>
-              </Grid>
-            </Grid>
-            <Typography variant="h4" gutterBottom sx={{ mt: 4 }}>
-              Summary
-            </Typography>
-            <Grid container>
-              <Grid item xs={2}>
-                <Typography variant="body1" color="text.secondary">Booking date</Typography>
-              </Grid>
-              <Grid item xs textAlign="right">
-                <Typography variant="body1">April 30, 2022</Typography>
-              </Grid>
-            </Grid>
-            <Grid container>
-              <Grid item xs={2}>
-                <Typography variant="body1" color="text.secondary">Options</Typography>
-              </Grid>
-                <Fragment >
-                  
-                  <Grid item xs={8} textAlign="right">
-                    <Typography variant="body1">1 x  (₱1000)</Typography>
-                  </Grid>
-                  <Grid item xs={2} textAlign="right">
-                    <Typography variant="body1">₱1000</Typography>
-                  </Grid>
-                </Fragment>
-            </Grid>
-            <Divider sx={{mt: 3, mb: 2}}/>
-            <Grid container>
-              <Grid item xs={2}>
-                <Typography variant="h6" color="text.secondary">Total</Typography>
-              </Grid>
-              <Grid item xs textAlign="right">
-                <Typography variant="h6">₱1000</Typography>
-              </Grid>
-            </Grid>
-          </>
-          <>
-            
-          </> 
-        <Grid container>
-          <Grid item xs>
-            <FormButton
-              sx={{ mt: 3, mb: 2 }}
-              color="primary"
-              type="button"
-              variant="outlined"
-              href = "payment"
-        
-            >
-              <NavigateBeforeIcon/> <span style={{marginRight: 15}}>Back</span>
-            </FormButton>
-          </Grid>
-          <Grid item xs textAlign="right">
-            <FormButton
-              sx={{ mt: 3, mb: 2 }}
-              color="secondary"
-            >
-              <span style={{marginLeft: 15}}>Next</span> <NavigateNextIcon/>
-            </FormButton>
-          </Grid>
+      <Grid container>
+        <Grid item xs={2}>
+          <Typography variant="body1" color="text.secondary">Pick-up location</Typography>
         </Grid>
-      </Box>
-    </AppForm>
+        <Grid item xs textAlign="right">
+          <Typography variant="body1">{pickupLocation?.properties?.formatted}</Typography>
+        </Grid>
+      </Grid>
+      <Grid container>
+        <Grid item xs={2}>
+          <Typography variant="body1" color="text.secondary">Drop-off location</Typography>
+        </Grid>
+        <Grid item xs textAlign="right">
+          <Typography variant="body1">{dropoffLocation?.properties?.formatted}</Typography>
+        </Grid>
+      </Grid>
+      <Grid container sx={{mt: 2}}>
+        <Grid item xs>
+          <MapRoute
+            routeData={routeData}
+            fromValue={pickupLocation}
+            toValue={dropoffLocation}
+          />
+        </Grid>
+      </Grid>
+      <Typography variant="h4" gutterBottom sx={{ mt: 4 }}>
+        Personal info
+      </Typography>
+      <Grid container>
+        <Grid item xs={2}>
+          <Typography variant="body1" color="text.secondary">Full name</Typography>
+        </Grid>
+        <Grid item xs textAlign="right">
+          <Typography variant="body1">{info.firstName} {info.lastName}</Typography>
+        </Grid>
+      </Grid>
+      <Grid container>
+        <Grid item xs={2}>
+          <Typography variant="body1" color="text.secondary">Phone number</Typography>
+        </Grid>
+        <Grid item xs textAlign="right">
+          <Typography variant="body1">+63{info.phoneNumber}</Typography>
+        </Grid>
+      </Grid>
+      <Grid container>
+        <Grid item xs={2}>
+          <Typography variant="body1" color="text.secondary">Address</Typography>
+        </Grid>
+        <Grid item xs textAlign="right">
+          <Typography variant="body1">{info.address}</Typography>
+        </Grid>
+      </Grid>
+      <Typography variant="h4" gutterBottom sx={{ mt: 4 }}>
+        Additional info
+      </Typography>
+      <Grid container>
+        <Grid item xs={2}>
+          <Typography variant="body1" color="text.secondary">Special requests</Typography>
+        </Grid>
+        <Grid item xs textAlign="right">
+          <Typography variant="body1">{info.specialRequests}</Typography>
+        </Grid>
+      </Grid>
+      <Typography variant="h4" gutterBottom sx={{ mt: 4 }}>
+        Summary
+      </Typography>
+      <Grid container>
+        <Grid item xs={2}>
+          <Typography variant="body1" color="text.secondary">Booking date & time</Typography>
+        </Grid>
+        <Grid item xs textAlign="right">
+          <Typography variant="body1">{formatDate(pickupDate)} @ {formatTime(pickupTime)}</Typography>
+        </Grid>
+      </Grid>
+      <Divider sx={{mt: 3, mb: 2}}/>
+      <Grid container>
+        <Grid item xs={2}>
+          <Typography color="text.secondary">Base fare</Typography>
+        </Grid>
+        <Grid item xs={10} textAlign="right">
+          <Typography>₱{GeoapifyConfig.baseFare}</Typography>
+        </Grid>
+        <Grid item xs={2}>
+          <Typography color="text.secondary">Fare by distance</Typography>
+        </Grid>
+        <Grid item xs={10} textAlign="right">
+          <Typography>₱{GeoapifyConfig.farePerKilometer} x {routeData.features[0].properties.distance / 1000} km = ₱{Math.ceil(routeData.features[0].properties.distance / 1000) * GeoapifyConfig.farePerKilometer}</Typography>
+        </Grid>
+      </Grid>
+      <Grid container>
+        <Grid item xs={2}>
+          <Typography variant="h6" color="text.secondary">Total</Typography>
+        </Grid>
+        <Grid item xs textAlign="right">
+          <Typography variant="h6">₱</Typography>
+        </Grid>
+      </Grid>
+    </> : 
+    <>
+      <Skeleton animation="wave" height={40} width="40%" sx={{mb: 2}} />
+      <Grid container spacing={4}>
+        <Grid item xs={2}>
+          <Skeleton sx={{ height: 100 }} animation="wave" variant="rectangular" />
+        </Grid>
+        <Grid item xs>
+          <Skeleton height={35} animation="wave" width="80%" />
+          <Skeleton height={30} animation="wave" width="40%" />
+        </Grid>
+      </Grid>
+      <Divider sx={{mt: 3, mb: 2}}/>
+      <PackageDetailsOptionSkeleton />
+      <PackageDetailsOptionSkeleton />
+      <PackageDetailsOptionSkeleton />
+      <Divider sx={{mt: 3, mb: 2}}/>
+      <PackageDetailsOptionSkeleton innerProps={{height: 35}}/>
+    </>
   );
 }
 
+ViewCarRental.propTypes = {
+  data: PropTypes.object,
+  info: PropTypes.object.isRequired,
+};
 
-export default ViewCarRental;
+export default ViewCarRental; 

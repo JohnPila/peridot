@@ -6,11 +6,11 @@ import FormButton from "../../common/form/FormButton";
 import DesktopDatePicker from "@mui/lab/DesktopDatePicker";
 import { LocalizationProvider, TimePicker } from "@mui/lab";
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import MapLocationPicker from "../../common/picker/MapLocationPicker";
-import MapRoute from "../../common/MapRoute";
-import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
+//import MapLocationPicker from "../../common/picker/MapLocationPicker";
+//import MapRoute from "../../common/MapRoute";
+//import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
 import { styled } from '@mui/material/styles';
-import GeoapifyConfig from "../../../config/GeoapifyConfig";
+//import GeoapifyConfig from "../../../config/GeoapifyConfig";
 import Typography from "../../common/Typography";
 import { BOOKING_TYPE } from "../../../utils/constants";
 
@@ -108,7 +108,7 @@ function BookCarRental() {
   };
 
   const goToBookPage = () => {
-    navigate("book", {
+    navigate("car-booking", {
       state: {
         type: BOOKING_TYPE.CAR_RENTAL,
         data: {

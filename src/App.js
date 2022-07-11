@@ -34,7 +34,9 @@ import AllCarBooking from './components/views/Admin/CarRental/AllCarBooking';
 import { SnackbarProvider } from 'notistack';
 import ViewAllAirport from './components/views/Admin/AirportTransfer/ViewAllAirport';
 import BookingCarRental from './components/views/Carrental/CarRental'
-import Car_rental from './components/views/Carrental/Car'
+import Car_rental from './components/views/Carrental/CarRental'
+import Car from './components/views/Carrental/Car'
+import ReviewCarRental from './components/views/Carrental/ViewCarRental'
 
 
 function App() {
@@ -81,8 +83,8 @@ function App() {
 
         <Route path="/car-rental" element={<Car_rental/>}>
           <Route path="" element={<BookCarRental/>}/>
-          <Route path="book" element={<Book/>}/>
-          <Route path="book/result" element={<BookResult/>}/>
+          <Route path="car-booking" element={<Car/>}/>
+          <Route path="book/review" element={<ReviewCarRental/>}/>
         </Route>
         <Route path="/errors" element={<Errors/>}>
           <Route path="404" element={<PageNotFound/>}/>
