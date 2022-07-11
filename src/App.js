@@ -58,9 +58,9 @@ function App() {
           <Route path="add" element={<SavePackage/>}/>
           <Route path=":id/edit" element={<SavePackage isEdit/>}/>
         </Route>
-        <Route path="/admin/airport-transfer" element={<AirportBooking />}/>
+        <Route path="/admin/airport-transfer-details" element={<AirportBooking />}/>
         <Route path="/admin/all-airport-bookings" element={<ViewAllAirport />}/>
-        <Route path="/admin/car-rentals" element={<ViewCarRentals/>}/>
+        <Route path="/admin/car-rental-details" element={<ViewCarRentals/>}/>
         <Route path="/admin/all-car-bookings" element={<AllCarBooking/>}/>
         <Route path="/packages" element={<Packages/>}>
           <Route path="" element={<ViewPackages/>}/>
