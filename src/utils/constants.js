@@ -93,4 +93,5 @@ export const BOOKING_STATUS_LABEL = {
 export const BOOKING_TYPE = {
   PACKAGE: 1,
   AIRPORT_TRANSFER: 2,
+  CAR_RENTAL: 3,
 }

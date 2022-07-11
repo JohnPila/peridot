@@ -110,7 +110,7 @@ function BookCarRental() {
   const goToBookPage = () => {
     navigate("book", {
       state: {
-        type: BOOKING_TYPE.AIRPORT_TRANSFER,
+        type: BOOKING_TYPE.CAR_RENTAL,
         data: {
           DateEnd,
           TimeStart,
