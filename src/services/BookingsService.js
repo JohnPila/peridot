@@ -81,6 +81,7 @@ export async function addBooking(type, data, callback = async () => {}) {
   try {
     return await FirebaseConfig.writeTransaction(async (batch) => {
       const newRef = FirebaseConfig.createRef(COLLECTIONS.BOOKINGS);
+      // eslint-disable-next-line default-case
       switch (type) {
         case BOOKING_TYPE.PACKAGE: {
           const {packageId, ...otherData} = data;

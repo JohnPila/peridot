@@ -18,7 +18,7 @@ export function ViewAllAirport() {
   const classes = useStyles();
 	return (
     <Grid container>
-     <Typography variant="h2"className={classes.typo}>All Bookings</Typography>
+     <Typography variant="h2"className={classes.typo}>All Airport Bookings</Typography>
 		<Grid container spacing={1}>
 			<Grid item md={12} sm={12} xs={12}>
         <Stack spacing={2}>
