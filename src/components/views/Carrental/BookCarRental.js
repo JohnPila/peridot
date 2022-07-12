@@ -1,5 +1,5 @@
 import { Box, FormHelperText, Grid, InputLabel, TextField } from "@mui/material";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AppForm from "../../common/AppForm";
 import FormButton from "../../common/form/FormButton";
@@ -9,25 +9,24 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 //import MapLocationPicker from "../../common/picker/MapLocationPicker";
 //import MapRoute from "../../common/MapRoute";
 //import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
-import { styled } from '@mui/material/styles';
+// import { styled } from '@mui/material/styles';
 //import GeoapifyConfig from "../../../config/GeoapifyConfig";
 import Typography from "../../common/Typography";
 import { BOOKING_TYPE } from "../../../utils/constants";
 
-const RouteTotalLayout = styled('div')(({ theme }) => ({
-  display: "flex",
-  "h3": {
-    fontWeight: "bold",
-    fontSize: 25,
-  },
-  "h3:last-child": {
-    flex: 1,
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "flex-end",
-  }
-}));
-
+// const RouteTotalLayout = styled('div')(({ theme }) => ({
+//   display: "flex",
+//   "h3": {
+//     fontWeight: "bold",
+//     fontSize: 25,
+//   },
+//   "h3:last-child": {
+//     flex: 1,
+//     display: "flex",
+//     alignItems: "center",
+//     justifyContent: "flex-end",
+//   }
+// }));
 
 function BookCarRental() {
   const navigate  = useNavigate();
@@ -36,7 +35,7 @@ function BookCarRental() {
   const [TimeStart, setPickupTime] = useState(new Date());
   const [TimeEnd, PickupTime] = useState(new Date());
   const [submitting, setSubmitting] = useState(false);
-  const [routeData, setRouteData] = useState(null);
+  // const [routeData, setRouteData] = useState(null);
   const [error, setError] = useState({
     DateEnd: "",
     TimeStart: "",

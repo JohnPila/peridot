@@ -1,6 +1,5 @@
 import { Divider, Grid, Skeleton } from '@mui/material';
 import PropTypes from 'prop-types';
-import { useMemo } from 'react';
 import GeoapifyConfig from '../../../config/GeoapifyConfig';
 import { formatDate, formatTime } from '../../../utils/HelperUtils';
 import MapRoute from '../../common/MapRoute';

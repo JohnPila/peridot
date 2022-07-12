@@ -23,7 +23,7 @@ import AboutUs from './components/views/About/AboutUs';
 import BookCarRental from './components/views/Carrental/BookCarRental';
 import AirportTransfer from './components/views/AirportTransfer/AirportTransfer';
 import ContactUs from './components/views/Contact/ContactUs';
-import EnterDetails from './components/views/Carrental/Enterdetails';
+// import EnterDetails from './components/views/Carrental/Enterdetails';
 import Payment from './components/views/Carrental/Payment';
 import AirportBooking from './components/views/Admin/AirportTransfer/AirportBooking';
 import BookAirportTransfer from './components/views/AirportTransfer/BookAirportTransfer';
@@ -33,8 +33,8 @@ import ViewCarRental from './components/views/Carrental/ViewCarRental'
 import AllCarBooking from './components/views/Admin/CarRental/AllCarBooking';
 import { SnackbarProvider } from 'notistack';
 import ViewAllAirport from './components/views/Admin/AirportTransfer/ViewAllAirport';
-import BookingCarRental from './components/views/Carrental/CarRental'
-import Car_rental from './components/views/Carrental/CarRental'
+// import BookingCarRental from './components/views/Carrental/CarRental'
+import CarRental from './components/views/Carrental/CarRental'
 import Car from './components/views/Carrental/Car'
 import ReviewCarRental from './components/views/Carrental/ViewCarRental'
 
@@ -81,7 +81,7 @@ function App() {
         </Route>
 
 
-        <Route path="/car-rental" element={<Car_rental/>}>
+        <Route path="/car-rental" element={<CarRental/>}>
           <Route path="" element={<BookCarRental/>}/>
           <Route path="car-booking" element={<Car/>}/>
           <Route path="book/review" element={<ReviewCarRental/>}/>

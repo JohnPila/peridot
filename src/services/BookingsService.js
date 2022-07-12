@@ -25,7 +25,8 @@ function getDateByBookingStatus(status) {
 
 export async function getAllBookings() {
   try {
-    const q = FirebaseConfig.getCollectionRef(COLLECTIONS.BOOKINGS);
+    const q = query(FirebaseConfig.getCollectionRef(COLLECTIONS.BOOKINGS),
+      where("type", "!=", BOOKING_TYPE.AIRPORT_TRANSFER));
     const result = await getDocs(q);
     return result.docs.map(d => ({id: d.id, ...d.data()}));
   } catch(err) {
