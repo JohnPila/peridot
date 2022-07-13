@@ -6,6 +6,7 @@ import FormButton from '../../../common/form/FormButton';
 import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { makeStyles } from "@mui/styles";
+import withPage from "../../../hocs/withPage";
 
 
 const useStyles = makeStyles(theme => ({
@@ -288,4 +289,4 @@ export function ViewAllAirport() {
 	);
 }
 
-export default withDialog(withLoggedUser(ViewAllAirport));
+export default withDialog(withLoggedUser(withPage(ViewAllAirport)));

@@ -4,6 +4,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import withLoggedUser from "../../../hocs/withLoggedUser";
 import withDialog from "../../../hocs/withDialog";
 import { makeStyles } from "@mui/styles";
+import withPage from "../../../hocs/withPage";
 
 const useStyles = makeStyles(theme => ({
   typo: {
@@ -418,4 +419,4 @@ export function ViewCarRentals() {
 	);
 }
 
-export default withDialog(withLoggedUser(ViewCarRentals));
+export default withDialog(withLoggedUser(withPage(ViewCarRentals)));

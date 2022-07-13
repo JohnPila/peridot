@@ -79,8 +79,6 @@ function App() {
           <Route path="book" element={<Book/>}/>
           <Route path="book/result" element={<BookResult/>}/>
         </Route>
-
-
         <Route path="/car-rental" element={<CarRental/>}>
           <Route path="" element={<BookCarRental/>}/>
           <Route path="car-booking" element={<Car/>}/>

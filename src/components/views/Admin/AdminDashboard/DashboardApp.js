@@ -17,10 +17,11 @@ import {
   AppWebsiteVisits,
   AppWidgetSummary,
 } from '../../../../sections/@dashboard/app';
+import withPage from '../../../hocs/withPage';
 
 // ----------------------------------------------------------------------
 
-export default function DashboardApp() {
+function DashboardApp() {
   const theme = useTheme();
 
   return (
@@ -213,3 +214,5 @@ export default function DashboardApp() {
     </Page>
   );
 }
+
+export default withPage(DashboardApp);

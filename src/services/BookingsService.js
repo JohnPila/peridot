@@ -23,10 +23,10 @@ function getDateByBookingStatus(status) {
   };
 }
 
-export async function getAllBookings() {
+export async function getAllBookings(include = BOOKING_TYPE.PACKAGE) {
   try {
     const q = query(FirebaseConfig.getCollectionRef(COLLECTIONS.BOOKINGS),
-      where("type", "!=", BOOKING_TYPE.AIRPORT_TRANSFER));
+      where("type", "==", include));
     const result = await getDocs(q);
     return result.docs.map(d => ({id: d.id, ...d.data()}));
   } catch(err) {
@@ -35,11 +35,11 @@ export async function getAllBookings() {
   }
 }
 
-export async function getAllBookingsByCurrentUser() {
+export async function getAllBookingsByCurrentUser(include = BOOKING_TYPE.PACKAGE) {
   try {
     const userId = getCurrentUserId();
     const q = query(FirebaseConfig.getCollectionRef(COLLECTIONS.BOOKINGS), 
-      where("createdBy", "==", userId), where("type", "!=", BOOKING_TYPE.AIRPORT_TRANSFER));
+      where("createdBy", "==", userId), where("type", "==", include));
     const result = await getDocs(q);
     return result.docs.map(d => ({id: d.id, ...d.data()}));
   } catch(err) {

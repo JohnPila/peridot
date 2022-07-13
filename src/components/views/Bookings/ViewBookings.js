@@ -1,47 +1,59 @@
-import { Grid } from "@mui/material";
-import { useEffect, useState } from "react";
-import { getAllBookings, getAllBookingsByCurrentUser } from "../../../services/BookingsService";
+import { Box, Tab, Tabs } from "@mui/material";
+import { useState } from "react";
 import Typography from "../../common/Typography";
-import withLoggedUser from "../../hocs/withLoggedUser";
-import ViewBookingsItem from "./ViewBookingsItem";
+import ViewBookingsAirportTransfer from "./ViewBookingsAirportTransfer";
+import ViewBookingsPackage from "./ViewBookingsPackage";
+
+function TabPanel(props) {
+  const { children, value, index, ...other } = props;
+
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
+
+function a11yProps(index) {
+  return {
+    id: `simple-tab-${index}`,
+    'aria-controls': `simple-tabpanel-${index}`,
+  };
+}
 
 function ViewBookings(props) {
-  const {
-    isAdmin,
-  } = props;
-  const [bookings, setBookings] = useState(null);
+  const [value, setValue] = useState(0);
 
-  /* eslint-disable react-hooks/exhaustive-deps */
-  useEffect(() => {
-    (isAdmin ? getAllBookings() : getAllBookingsByCurrentUser()).then(setBookings);
-  }, []);
+  const handleChange = (event, newValue) => {
+    setValue(newValue);
+  };
 
   return (
     <>
-      <Grid
-        container
-        direction="row"
-        justifyContent="flex-start"
-        alignItems="flex-start"
-        spacing={2}
-      >
-        {bookings ? 
-          bookings.length > 0 ?
-            bookings.map(booking => (
-            <Grid item md={6} sm={12} xs={12} key={booking.id}>
-              <ViewBookingsItem data={booking} />
-            </Grid>
-            )) :
-            <Grid container>
-              <Grid item xs sx={{textAlign: "center", mt: 3}}>
-                <Typography variant="h4">No Bookings Available</Typography>
-              </Grid>
-            </Grid> :
-          <></>
-        }
-      </Grid>
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+          <Tab label="Tour Packages" {...a11yProps(0)} />
+          <Tab label="Airport Transfer" {...a11yProps(1)} />
+        </Tabs>
+      </Box>
+      <TabPanel value={value} index={0}>
+        <ViewBookingsPackage />
+      </TabPanel>
+      <TabPanel value={value} index={1}>
+        <ViewBookingsAirportTransfer />
+      </TabPanel>
     </>
   ); 
 }
 
-export default withLoggedUser(ViewBookings);
+export default ViewBookings;
