@@ -114,6 +114,8 @@ function BookPay(props) {
           routeData.features[0].properties.distance));
       }
       break;
+      default:
+        break;
     }
   };
 
@@ -127,6 +129,8 @@ function BookPay(props) {
           break;
         case BOOKING_TYPE.AIRPORT_TRANSFER:
           await handlePayAirportTransfer();
+          break;
+        default:
           break;
       }
     } catch (error) {
@@ -188,6 +192,8 @@ function BookPay(props) {
           case BOOKING_TYPE.AIRPORT_TRANSFER:
             description = `Payment for airport transfer to "${data.dropoffLocation.properties.formatted}".`;
             break;
+          default:
+            break;
         }
         const addData = {
           description,
@@ -227,6 +233,7 @@ function BookPay(props) {
             status: BOOKING_STATUS.CASH_PAYMENT,
           },
         });
+        break;
       default:
         break;
     }
