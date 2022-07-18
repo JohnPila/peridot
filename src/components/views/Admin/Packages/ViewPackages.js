@@ -16,6 +16,7 @@ function ViewPackages(props) {
   const unsubscribeRef = useRef(null);
   const [packages, setPackages] = useState(null);
 
+  /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     getAllPackages();
     return () => {

@@ -6,10 +6,10 @@ import Toolbar from '../common/Toolbar';
 import HeaderDrawer from './HeaderDrawer';
 import { useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { Avatar, Badge } from '@mui/material';
+// import { Avatar, Badge } from '@mui/material';
 import { ROLES } from '../../utils/constants';
 import HeaderBanner from './HeaderBanner';
-import VerifiedIcon from '@mui/icons-material/Verified';
+// import VerifiedIcon from '@mui/icons-material/Verified';
 import DashboardLayout from '../views/Admin/AdminDashboard/DashboardLayout';
 
 const rightLink = {
@@ -27,7 +27,8 @@ function Header() {
   const isLoggedIn = !!loggedUser;
   const initializedLoggedUser = loggedUser !== undefined;
   const isAdmin = isLoggedIn && ROLES.ADMIN === loggedUser.role;
-  const isEmailVerified = isLoggedIn && loggedUser.emailVerified;
+  // const isEmailVerified = isLoggedIn && loggedUser.emailVerified;
+
   return (
     <div sx={{mt:-10}}>
       {isLoggedIn && isAdmin &&

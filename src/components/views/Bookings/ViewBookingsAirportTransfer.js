@@ -5,7 +5,6 @@ import { BOOKING_TYPE } from "../../../utils/constants";
 import Typography from "../../common/Typography";
 import withLoggedUser from "../../hocs/withLoggedUser";
 import ViewBookingsAirportTransferItem from "./ViewBookingsAirportTransferItem";
-import ViewBookingsItem from "./ViewBookingsItem";
 
 function ViewBookingsAirportTransfer(props) {
   const {

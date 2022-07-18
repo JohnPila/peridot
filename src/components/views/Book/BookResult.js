@@ -6,7 +6,7 @@ import HourglassTopIcon from '@mui/icons-material/HourglassTop';
 import LocalAtmIcon from '@mui/icons-material/LocalAtm';
 import Typography from "../../common/Typography";
 import { useEffect } from "react";
-import { BOOKING_STATUS, BOOKING_TYPE } from "../../../utils/constants";
+import { BOOKING_STATUS } from "../../../utils/constants";
 
 export default function BookResult() {
   const location = useLocation();
@@ -29,7 +29,7 @@ export default function BookResult() {
 
   const {state: {
     id,
-    method,
+    // method,
     result: {
       status,
       // success,

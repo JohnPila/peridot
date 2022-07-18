@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 import { useEffect, useState } from 'react';
 import MapRoute from "../../common/MapRoute";
 import Typography from '../../common/Typography';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import SouthIcon from '@mui/icons-material/South';
 import { getPlaceDetails } from '../../../services/LocationService';
 
 function BookingDetailsAirportTransfer(props) {

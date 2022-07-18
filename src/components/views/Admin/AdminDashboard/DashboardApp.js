@@ -1,10 +1,10 @@
-import { faker } from '@faker-js/faker';
+// import { faker } from '@faker-js/faker';
 // @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
 // components
 import Page from '../../../common/Page';
-import Iconify from '../../../common/Iconify';
+// import Iconify from '../../../common/Iconify';
 // sections
 // AppTasks,
 // AppNewsUpdate,
