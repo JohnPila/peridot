@@ -4,6 +4,7 @@ import { getAllBookings, getAllBookingsByCurrentUser } from "../../../services/B
 import { BOOKING_TYPE } from "../../../utils/constants";
 import Typography from "../../common/Typography";
 import withLoggedUser from "../../hocs/withLoggedUser";
+import ViewBookingsAirportTransferItem from "./ViewBookingsAirportTransferItem";
 import ViewBookingsItem from "./ViewBookingsItem";
 
 function ViewBookingsAirportTransfer(props) {
@@ -31,7 +32,7 @@ function ViewBookingsAirportTransfer(props) {
         bookings.length > 0 ?
           bookings.map(booking => (
           <Grid item md={6} sm={12} xs={12} key={booking.id}>
-            <ViewBookingsItem data={booking} />
+            <ViewBookingsAirportTransferItem data={booking} />
           </Grid>
           )) :
           <Grid container>

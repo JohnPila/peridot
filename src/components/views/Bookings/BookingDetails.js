@@ -1,23 +1,23 @@
-import { Card, CardContent, CardMedia, Divider, Grid, Skeleton, Stack } from "@mui/material";
+import { Card, CardContent, Divider, Grid, Skeleton, Stack } from "@mui/material";
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import GCashConfig from "../../../config/GCashConfig";
 import { getBooking, listenForBookingChanges, saveBooking } from "../../../services/BookingsService";
 import { getPaymentDetailsByBooking } from "../../../services/PaymentDetailsService";
-import { BOOKING_STATUS, BOOKING_STATUS_LABEL, DIALOG_TYPE_VARIANT, PAYMENT_METHOD, PAYMENT_METHOD_LABEL, STORAGE_FOLDERS } from "../../../utils/constants";
+import { BOOKING_STATUS, BOOKING_STATUS_LABEL, BOOKING_TYPE, DIALOG_TYPE_VARIANT, PAYMENT_METHOD, PAYMENT_METHOD_LABEL } from "../../../utils/constants";
 import FormButton from "../../common/form/FormButton";
 import Typography from "../../common/Typography";
 import PendingActionsIcon from '@mui/icons-material/PendingActions';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import CancelIcon from '@mui/icons-material/Cancel';
 import HourglassTopIcon from '@mui/icons-material/HourglassTop';
-import { getImages } from "../../../services/FileService";
-import { getPackage } from "../../../services/PackageService";
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import { formatDate, formatDateTime } from "../../../utils/HelperUtils";
+import { formatDate, formatDateTime, formatTime } from "../../../utils/HelperUtils";
 import DoNotDisturbAltIcon from '@mui/icons-material/DoNotDisturbAlt';
 import withLoggedUser from "../../hocs/withLoggedUser";
 import withDialog from "../../hocs/withDialog";
+import BookingDetailsPackage from "./BookingDetailsPackage";
+import BookingDetailsAirportTransfer from "./BookingDetailsAirportTransfer";
+import GeoapifyConfig from "../../../config/GeoapifyConfig";
 
 export function BookingDetails(props) {
   const {
@@ -29,9 +29,25 @@ export function BookingDetails(props) {
 
   const bookingSubscribeRef = useRef(null);
   const [data, setData] = useState(null);
+  const [otherData, setOtherData] = useState(null);
   const [isSaving, setIsSaving] = useState(false);
-  const subTotal = useMemo(() => data && data.packageOptions
-    .reduce((acc, opt) => acc + (opt.quantity * opt.price), 0), [data]);
+  const subTotal = useMemo(() => {
+    if (!data) {
+      return 0;
+    }
+
+    switch (data.type) {
+      case BOOKING_TYPE.PACKAGE:
+        return data.packageOptions
+          .reduce((acc, opt) => acc + (opt.quantity * opt.price), 0);
+      case BOOKING_TYPE.AIRPORT_TRANSFER:
+        return (otherData && 
+          Math.ceil(otherData.features[0].properties.distance / 1000) * 
+          GeoapifyConfig.farePerKilometer + GeoapifyConfig.baseFare) || 0;
+      default:
+        return 0;
+    }
+  }, [data, otherData]);
   const fee = useMemo(() => {
     if (!data) {
       return 0;
@@ -113,26 +129,29 @@ export function BookingDetails(props) {
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
-    getBooking(bookingId).then(async (d) => {
-      d.packageDetails = await getPackage(d.package);
-      const images = await getImages(d.packageDetails.id, STORAGE_FOLDERS.PACKAGES);
-      d.thumbnail = images?.[0] || {
-        url: "/images/peridotLogo.jpg",
-        name: "Default image",
-      };
-      d.paymentDetails = await getPaymentDetailsByBooking(bookingId);
-      setData(d);
-      bookingSubscribeRef.current = listenForBookingChanges(bookingId, (changedData) => {
-        setData((currData) => ({...currData, ...changedData}));
-      });
-    })
-    .catch(() => navigate("/errors/404", {replace: true}));
+    if (!data) {
+      getBookingDetails();
+    }
     return () => {
       if (bookingSubscribeRef.current) {
         bookingSubscribeRef.current();
       }
     };
   }, []);
+
+  const getBookingDetails = async () => {
+    try {
+      const d = await getBooking(bookingId);
+      d.paymentDetails = await getPaymentDetailsByBooking(bookingId);
+      setData(d);
+      bookingSubscribeRef.current = listenForBookingChanges(bookingId, (changedData) => {
+        setData((currData) => ({...currData, ...changedData}));
+      });
+    } catch (error) {
+      console.error("Failed to get booking details.", error);
+      navigate("/errors/404", {replace: true});
+    }
+  }
 
   const handlePay = () => {
     switch (data.paymentDetails.method) {
@@ -221,6 +240,72 @@ export function BookingDetails(props) {
     });
   };
 
+  const renderSummary = () => {
+    switch(data.type) {
+      case BOOKING_TYPE.PACKAGE:
+        if (!otherData) {
+          setOtherData(true);
+        }
+        return <BookingDetailsPackage data={data} />
+      case BOOKING_TYPE.AIRPORT_TRANSFER:
+        return <BookingDetailsAirportTransfer data={data} onRouteData={setOtherData} />
+      default:
+        return null;
+    }
+  }
+
+  const renderOptions = () => {
+    switch(data.type) {
+      case BOOKING_TYPE.PACKAGE:
+        return data.packageOptions.map((opt, i) => (
+          <Fragment key={i}>
+            <Grid item xs={6} textAlign="left">
+              <Typography variant="body2">{opt.name}</Typography>
+            </Grid>
+            <Grid item xs={4} textAlign="right">
+              <Typography variant="body2">x {opt.quantity} (₱{opt.price})</Typography>
+            </Grid>
+            <Grid item xs={2} textAlign="right">
+              <Typography variant="body2">₱{opt.quantity * opt.price}</Typography>
+            </Grid>
+          </Fragment>
+        ));
+      case BOOKING_TYPE.AIRPORT_TRANSFER:
+        return (
+          <Fragment>
+            <Grid item xs={6} textAlign="left">
+              <Typography variant="body2">Base fare</Typography>
+            </Grid>
+            <Grid item xs={6} textAlign="right">
+              <Typography variant="body2">₱{GeoapifyConfig.baseFare}</Typography>
+            </Grid>
+            <Grid item xs={6} textAlign="left">
+              <Typography variant="body2">Fare by distance</Typography>
+            </Grid>
+            <Grid item xs={4} textAlign="right">
+              <Typography variant="body2">₱{GeoapifyConfig.farePerKilometer} x {otherData.features[0].properties.distance / 1000} km</Typography>
+            </Grid>
+            <Grid item xs={2} textAlign="right">
+              <Typography variant="body2">₱{Math.ceil(otherData.features[0].properties.distance / 1000) * GeoapifyConfig.farePerKilometer}</Typography>
+            </Grid>
+          </Fragment>
+        );
+      default:
+        return null;
+    }
+  }
+
+  const getBookingDate = () => {
+    switch(data.type) {
+      case BOOKING_TYPE.PACKAGE:
+        return formatDate(data.date.toDate());
+      case BOOKING_TYPE.AIRPORT_TRANSFER:
+        return `${formatDate(data.pickupDate.toDate())} | ${formatTime(data.pickupTime)}`
+      default:
+        return null;
+    }
+  }
+
 	return (
 		<Grid container spacing={2}>
 			<Grid item md={8} sm={12} xs={12}>
@@ -245,32 +330,13 @@ export function BookingDetails(props) {
               }
               <Divider sx={{my: 2}}/>
               <Grid container spacing={2}>
-                <Grid item>
-                  {data ? 
-                    <CardMedia
-                      component="img"
-                      sx={{ width: 120, height: 120, borderRadius: 2 }}
-                      image={data.thumbnail.url}
-                      alt={data.thumbnail.name}
-                    /> :
-                    <Skeleton sx={{ width: 120, height: 120 }} animation="wave" variant="rectangular" />
-                  }
-                </Grid>
-                <Grid item xs>
-                  {data ? 
-                    <>
-                      <Typography variant="body1">{data.packageDetails.name}</Typography>
-                      <Typography variant="body2">
-                        {data.packageDetails.barangay.label}, {data.packageDetails.city.label} <LocationOnIcon 
-                          fontSize="small" color="error" sx={{position: "relative", bottom: -2}}/>
-                      </Typography>
-                    </> :
-                    <>
-                      <Skeleton animation="wave" width="80%" sx={{ height: 30 }} />
-                      <Skeleton animation="wave" width="60%" sx={{ height: 30 }} />
-                    </>
-                  }
-                </Grid>
+                {data ? 
+                  renderSummary() : 
+                  <Grid item xs>
+                    <Skeleton animation="wave" width="80%" sx={{ height: 30 }} />
+                    <Skeleton animation="wave" width="60%" sx={{ height: 30 }} />
+                  </Grid>
+                }
               </Grid>
               <Divider sx={{my: 2}}/>
               <Grid container>
@@ -282,7 +348,7 @@ export function BookingDetails(props) {
                 </Grid>
                 <Grid item xs={10} textAlign="right">
                   {data ? 
-                    <Typography variant="body2">{formatDate(data.date.toDate())}</Typography> :
+                    <Typography variant="body2">{getBookingDate()}</Typography> :
                     <Skeleton animation="wave" width="30%" sx={{ marginLeft: "auto" }} />  
                   }
                 </Grid>
@@ -389,20 +455,8 @@ export function BookingDetails(props) {
             </Grid>
             <Divider sx={{my: 2}}/>
             <Grid container color="text.secondary">
-              {data && data.packageOptions.map((opt, i) => (
-                <Fragment key={i}>
-                  <Grid item xs={6} textAlign="left">
-                    <Typography variant="body2">{opt.name}</Typography>
-                  </Grid>
-                  <Grid item xs={4} textAlign="right">
-                    <Typography variant="body2">x {opt.quantity} (₱{opt.price})</Typography>
-                  </Grid>
-                  <Grid item xs={2} textAlign="right">
-                    <Typography variant="body2">₱{opt.quantity * opt.price}</Typography>
-                  </Grid>
-                </Fragment>
-              ))}
-              {!data && 
+              {(data && otherData) ? 
+                renderOptions() : 
                 <>
                   <Grid item xs={6} textAlign="left">
                     <Skeleton animation="wave" width="80%" />  

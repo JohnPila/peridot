@@ -144,7 +144,7 @@ function ViewCarRental(props) {
 
 ViewCarRental.propTypes = {
   data: PropTypes.object,
-  info: PropTypes.object.isRequired,
+  info: PropTypes.object,
 };
 
 export default ViewCarRental; 
