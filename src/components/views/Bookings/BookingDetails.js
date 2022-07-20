@@ -1,4 +1,4 @@
-import { Card, CardContent, Divider, Grid, Skeleton, Stack } from "@mui/material";
+import { Card, CardContent, Divider, FormHelperText, Grid, Skeleton, Stack } from "@mui/material";
 import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import GCashConfig from "../../../config/GCashConfig";
@@ -153,13 +153,32 @@ export function BookingDetails(props) {
     }
   }
 
-  const handlePay = () => {
+  // const handlePay = () => {
+  //   switch (data.paymentDetails.method) {
+  //     case PAYMENT_METHOD.GCASH:
+  //       window.open(
+  //         data.paymentDetails.request.data.checkouturl,
+  //         "_blank",
+  //       );
+  //       break;
+  //     default:
+  //       break;
+  //   }
+  // };
+
+  const handlePaid = async () => {
     switch (data.paymentDetails.method) {
       case PAYMENT_METHOD.GCASH:
-        window.open(
-          data.paymentDetails.request.data.checkouturl,
-          "_blank",
-        );
+        try {
+          setIsSaving(true);
+          await saveBooking(bookingId, {
+            status: BOOKING_STATUS.PAYMENT_VERIFICATION,
+          });
+        } catch (error) {
+          console.error("Failed to pay booking.", error);
+        } finally {
+          setIsSaving(false);
+        }
         break;
       default:
         break;
@@ -167,7 +186,7 @@ export function BookingDetails(props) {
   };
 
   const handleCancellation = () => {
-    confirmDialog("Cancel booking", "Do you really want to cancel your booking?", async (ok) => {
+    confirmDialog("Cancel booking", "Do you really want to cancel your booking?", async (ok, reason) => {
       if (ok) {
         try {
           setIsSaving(true);
@@ -175,6 +194,7 @@ export function BookingDetails(props) {
             status: BOOKING_STATUS.PAID === data.status ? 
               BOOKING_STATUS.PENDING_CANCELLATION :
               BOOKING_STATUS.CANCELLED,
+            remarks: reason,
           });
         } catch (error) {
           console.error("Failed to cancel booking.", error);
@@ -186,6 +206,11 @@ export function BookingDetails(props) {
       variant: DIALOG_TYPE_VARIANT.WARNING,
       closeButtonTitle: "Close",
       confirmButtonTitle: "Cancel",
+      fieldProps: {
+        multiline: true,
+        placeholder: "What's the reason?",
+        maxRows: 5,
+      }
     });
   };
 
@@ -322,6 +347,16 @@ export function BookingDetails(props) {
                       </Grid>
                       <Grid item xs textAlign="right">
                         <Typography variant="body2">{formatDateTime(data[statusDate.key].toDate())}</Typography>
+                      </Grid>
+                    </Grid>
+                  }
+                  {data.remarks && 
+                    <Grid container color="text.secondary">
+                      <Grid item>
+                        <Typography variant="body2">Reason</Typography>
+                      </Grid>
+                      <Grid item xs textAlign="right">
+                        <Typography variant="body2">{data.remarks}</Typography>
                       </Grid>
                     </Grid>
                   }
@@ -531,20 +566,27 @@ export function BookingDetails(props) {
                   </> :
                   <>
                     {BOOKING_STATUS.PENDING_PAYMENT === data.status &&
-                      <FormButton sx={{width: "100%", mt: 2}} color="secondary" 
-                        onClick={handlePay} disabled={isSaving}>
-                        Pay Now
-                      </FormButton>
-                    }
-                    {![BOOKING_STATUS.CANCELLED, 
-                      BOOKING_STATUS.DECLINED, 
-                      BOOKING_STATUS.PENDING_CANCELLATION].includes(data.status) &&
-                      <FormButton sx={{width: "100%", mt: 1}} color="warning" 
-                        onClick={handleCancellation} disabled={isSaving}>
-                        Cancel Booking
-                      </FormButton>
+                      <>
+                        <FormButton sx={{width: "100%", mt: 2}} color="secondary" 
+                          onClick={handlePaid} disabled={isSaving}>
+                          Paid
+                        </FormButton>
+                        {PAYMENT_METHOD.GCASH === data.paymentDetails.method && 
+                          <FormHelperText>
+                            You can also click <a href={data.paymentDetails.request.data.checkouturl} target="_">here</a> to open GCash payment portal.
+                          </FormHelperText> 
+                        }
+                      </>
                     }
                   </>
+                }
+                {![BOOKING_STATUS.CANCELLED, 
+                  BOOKING_STATUS.DECLINED, 
+                  BOOKING_STATUS.PENDING_CANCELLATION].includes(data.status) &&
+                  <FormButton sx={{width: "100%", mt: 1}} color="warning" 
+                    onClick={handleCancellation} disabled={isSaving}>
+                    Cancel Booking
+                  </FormButton>
                 }
               </>
             }

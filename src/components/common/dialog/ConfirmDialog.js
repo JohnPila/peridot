@@ -1,5 +1,6 @@
-import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
+import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField } from '@mui/material';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { closeDialog } from '../../../store/reducers/common';
 import { DIALOG_TYPE_VARIANT } from '../../../utils/constants';
@@ -12,16 +13,18 @@ function ConfirmDialog(props) {
       variant,
       closeButtonTitle,
       confirmButtonTitle,
+      fieldProps,
     },
     content,
     callback,
   } = props;
   
   const dispatch = useDispatch();
+  const [text, setText] = useState();
 
   const handleConfirm = (confirm) => {
     if (callback) {
-      callback(confirm);
+      callback(confirm, text);
     }
     dispatch(closeDialog());
   };
@@ -56,6 +59,12 @@ function ConfirmDialog(props) {
           <DialogContentText id="confirm-dialog-content">
             <div dangerouslySetInnerHTML={{__html: content}} />
           </DialogContentText>
+          {fieldProps && 
+            <TextField type="text" sx={{mt: 1}} fullWidth 
+              {...fieldProps} 
+              value={text} 
+              onChange={(e) => setText(e.target.value)} />
+          }
         </DialogContent>
       }
       <DialogActions>
