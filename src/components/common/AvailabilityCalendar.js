@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import { LocalizationProvider, StaticDatePicker } from '@mui/lab';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
+import { LocalizationProvider, StaticDatePicker } from '@mui/x-date-pickers';
+import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import CircularProgress from '@mui/material/CircularProgress';
 import { useEffect, useState } from 'react';
 import { FormHelperText, Skeleton } from '@mui/material';
@@ -10,7 +10,7 @@ import { formatDate } from '../../utils/HelperUtils';
 import { getAllBookingsByPackageAndDateRange } from '../../services/BookingsService';
 
 const AvailabilityLayout = styled('div')(({ theme }) => ({
-  "> div > div, > div > div > div, .MuiCalendarPicker-root": {
+  "> div > div, > div > div > div, .MuiPickerStaticWrapper-content > div > div, .MuiCalendarPicker-root": {
     width: "100%",
     maxWidth: "100%",
   },
