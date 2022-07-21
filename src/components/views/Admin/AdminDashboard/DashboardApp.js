@@ -3,7 +3,6 @@
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
 // components
-import Page from '../../../common/Page';
 // import Iconify from '../../../common/Iconify';
 // sections
 // AppTasks,
@@ -18,14 +17,27 @@ import {
   AppWidgetSummary,
 } from '../../../../sections/@dashboard/app';
 import withPage from '../../../hocs/withPage';
+import UserService from '../../../../services/UserService';
+import { useEffect, useState } from 'react';
+import AppForm from '../../../common/AppForm';
 
 // ----------------------------------------------------------------------
 
 function DashboardApp() {
   const theme = useTheme();
 
+  const [totalUsers, setTotalUsers] = useState(0);
+
+  useEffect(() => {
+    initialize();
+  }, []);
+
+  const initialize = async () => {
+    setTotalUsers(await UserService.getUserCount());
+  };
+
   return (
-    <Page title="Dashboard">
+    <AppForm containerProps={{maxWidth: "xl"}} sx={{marginLeft: "16%", width: "92%"}}>
       <Container maxWidth="xl">
         <Typography variant="h4" sx={{ mt: -10, mb: 5 }}>
           Hi, Welcome back
@@ -37,7 +49,7 @@ function DashboardApp() {
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
-            <AppWidgetSummary title="New Users" total={1352831} color="info" icon={'ant-design:apple-filled'} />
+            <AppWidgetSummary title="All Users" total={totalUsers} color="info" icon={'ant-design:apple-filled'} />
           </Grid>
 
           <Grid item xs={12} sm={6} md={3}>
@@ -211,7 +223,7 @@ function DashboardApp() {
           </Grid> */}
         </Grid>
       </Container>
-    </Page>
+    </AppForm>
   );
 }
 

@@ -32,7 +32,10 @@ export const COLLECTIONS = {
   PACKAGE_OPTIONS: "PackageOptions",
   PAYMENT_DETAILS: "PaymentDetails",
   BOOKINGS: "Bookings",
+  USER_COUNT: "UserCount",
 };
+
+export const USER_COUNT_ID = "61NC9qEvwcOWv3tD2r4i";
 
 class FirebaseConfig {
   init() {
@@ -112,6 +115,7 @@ class FirebaseConfig {
         await RoleService.createUserRole(ROLE_IDS.USER, user.uid);
         user.role = ROLES.USER;
         user.displayName = displayName;
+        UserService.addUserCount();
         this.sendEmailVerification();
         store.dispatch(setUser(user));
       })

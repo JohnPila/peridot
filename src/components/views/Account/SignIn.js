@@ -11,21 +11,25 @@ import FormFeedback from '../../common/form/FormFeedback';
 import FirebaseConfig from '../../../config/FirebaseConfig';
 import IconButtonBox from '../../common/IconButtonBox';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
 import { AuthErrorCodes } from 'firebase/auth';
 import { useSnackbar } from 'notistack';
+import withLoggedUser from '../../hocs/withLoggedUser';
 
-function SignIn() {
+function SignIn(props) {
+  const {
+    isLoggedIn,
+    isAdmin,
+  } = props;
+
   const { enqueueSnackbar } = useSnackbar();
   const [sent, setSent] = React.useState(false);
   const navigate = useNavigate();
   const [search] = useSearchParams();
-  const isLoggedIn = useSelector(state => !!state.loggedUser.user);
 
   /* eslint-disable react-hooks/exhaustive-deps */
   React.useEffect(() => {
     if (isLoggedIn) {
-      navigate(search.get("redirectTo") || "/", {replace: true});
+      navigate(search.get("redirectTo") || (isAdmin ? "/admin/dashboard" : "/"), {replace: true});
     }
   }, [isLoggedIn]);
 
@@ -164,4 +168,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default withLoggedUser(SignIn);
