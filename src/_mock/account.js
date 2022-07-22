@@ -1,7 +1,7 @@
 // ----------------------------------------------------------------------
 
 const account = {
-    displayName: 'Admin',
+    displayName: 'Welcome Admin',
     email: 'peridottravelagency@gmail.com',
     photoURL: '/images/peridot_logo2.png',
   };
