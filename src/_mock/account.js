@@ -1,9 +1,9 @@
 // ----------------------------------------------------------------------
 
 const account = {
-    displayName: 'Jaydon Frankie',
-    email: 'demo@minimals.cc',
-    photoURL: '/static/mock-images/avatars/avatar_default.jpg',
+    displayName: 'Admin',
+    email: 'peridottravelagency@gmail.com',
+    photoURL: '/images/peridot_logo2.png',
   };
   
   export default account;
