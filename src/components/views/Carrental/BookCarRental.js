@@ -106,7 +106,7 @@ function BookCarRental() {
   };
 
   const goToBookPage = () => {
-    navigate("car-booking", {
+    navigate("book", {
       state: {
         type: BOOKING_TYPE.CAR_RENTAL,
         data: {
