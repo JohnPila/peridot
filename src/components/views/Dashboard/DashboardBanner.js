@@ -4,7 +4,7 @@ import Typography from '../../common/Typography';
 import DashboardBannerLayout from './DashboardBannerLayout';
 
 const backgroundImage =
-  'https://images.pexels.com/photos/1435752/pexels-photo-1435752.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1';
+  'https://images.unsplash.com/photo-1505881502353-a1986add3762?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2016&q=80';
 
 export default function DashboardBanner() {
   return (
