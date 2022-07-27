@@ -57,7 +57,7 @@ function BookCarRental() {
       setSubmitting(true);
       goToBookPage();
     } catch (error) {
-      console.error("Failed to book airport transfer.", error);
+      console.error("Failed to book car rental.", error);
     } finally {
       setSubmitting(false);
     }

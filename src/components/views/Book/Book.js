@@ -167,7 +167,8 @@ export default function Book() {
           <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector />}>
             <Step>
               <StepLabel StepIconComponent={QontoStepIcon}>{type === BOOKING_TYPE.PACKAGE ? 
-              "Choose package" : "Book airport transfer"}</StepLabel>
+              "Choose package" : "Book airport transfer" || type === BOOKING_TYPE.CAR_RENTAL ? 
+              "Book car rental" : null }</StepLabel>
             </Step>
             <Step>
               <StepLabel StepIconComponent={QontoStepIcon}>Enter info</StepLabel>
