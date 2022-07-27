@@ -8,24 +8,24 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 //import MapLocationPicker from "../../common/picker/MapLocationPicker";
 //import MapRoute from "../../common/MapRoute";
 //import SwapHorizIcon from '@mui/icons-material/SwapHoriz';
-// import { styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 //import GeoapifyConfig from "../../../config/GeoapifyConfig";
 import Typography from "../../common/Typography";
 import { BOOKING_TYPE } from "../../../utils/constants";
 
-// const RouteTotalLayout = styled('div')(({ theme }) => ({
-//   display: "flex",
-//   "h3": {
-//     fontWeight: "bold",
-//     fontSize: 25,
-//   },
-//   "h3:last-child": {
-//     flex: 1,
-//     display: "flex",
-//     alignItems: "center",
-//     justifyContent: "flex-end",
-//   }
-// }));
+const RouteTotalLayout = styled('div')(({ theme }) => ({
+  display: "flex",
+  "h3": {
+    fontWeight: "bold",
+    fontSize: 25,
+  },
+  "h3:last-child": {
+    flex: 1,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+  }
+}));
 
 function BookCarRental() {
   const navigate  = useNavigate();
@@ -42,6 +42,7 @@ function BookCarRental() {
     TimeEnd: "",
   });
   
+  const totalCost = 0;
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -190,8 +191,17 @@ function BookCarRental() {
               }
             </LocalizationProvider>
           </Grid>
-          
           <Grid item xs={9} />
+          <Grid item xs={3}>
+            <RouteTotalLayout>
+              <Typography variant="h5">
+                Total Fare
+              </Typography>
+              <Typography variant="h5" color="darkgreen">
+                ₱{totalCost}
+              </Typography>
+            </RouteTotalLayout>
+          </Grid>
         </Grid>
         <FormButton
           sx={{ mt: 3, mb: 2 }}
