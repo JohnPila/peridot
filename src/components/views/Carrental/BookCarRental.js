@@ -113,9 +113,9 @@ function BookCarRental() {
       state: {
         type: BOOKING_TYPE.CAR_RENTAL,
         data: {
+          DateStart,
           DateEnd,
           TimeStart,
-          DateStart,
           TimeEnd,
           passengerCapacity,
           driverOption,

@@ -1,15 +1,16 @@
 import PropTypes from 'prop-types';
-import { Card, CardContent, Skeleton, Chip, CardActionArea } from "@mui/material";
+import { Card, CardMedia, CardContent, Skeleton, Chip, CardActionArea } from "@mui/material";
 import { Box } from "@mui/system";
 import Typography from "../../common/Typography";
 import { useEffect, useState } from 'react';
-import { BOOKING_STATUS, BOOKING_STATUS_LABEL } from '../../../utils/constants';
-import { formatDate, formatTime } from '../../../utils/HelperUtils';
+import { getImages } from '../../../services/FileService';
+import { BOOKING_STATUS, BOOKING_STATUS_LABEL, STORAGE_FOLDERS } from '../../../utils/constants';
+// import { getPackage } from '../../../services/PackageService';
+import { formatDate } from '../../../utils/HelperUtils';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import { useNavigate } from 'react-router-dom';
-import { getPlaceDetails } from '../../../services/LocationService';
-import SouthIcon from '@mui/icons-material/South';
+import { getBooking } from '../../../services/BookingsService';
 
 function ViewBookingCarRentalItem(props) {
   const {
@@ -17,21 +18,17 @@ function ViewBookingCarRentalItem(props) {
   } = props;
 
   const navigate = useNavigate();
-  const [location, setLocation] = useState(null);
+//   const [thumbnail, setThumbnail] = useState(null);
+  const [carRentalData, setCarRentalData] = useState(null);
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
-    getLocation();
+    getBooking(data).then(setCarRentalData);
+    // getImages(data.package.id, STORAGE_FOLDERS.PACKAGES).then(images => setThumbnail(images?.[0] || {
+    //   url: "/images/peridotLogo.jpg",
+    //   name: "Default image",
+    // }));
   }, []);
-
-  const getLocation = async () => {
-    const pickupData = await getPlaceDetails(data.pickupLocation);
-    const dropoffData = await getPlaceDetails(data.dropoffLocation);
-    setLocation({
-      pickup: pickupData.features[0],
-      dropoff: dropoffData.features[0],
-    });
-  };
 
   const getStatus = () => {
     let color = "default";
@@ -71,29 +68,39 @@ function ViewBookingCarRentalItem(props) {
   return (
     <Card sx={{ display: 'flex' }}>
       <CardActionArea sx={{ display: 'flex' }} onClick={onSelectBooking}>
+        {/* {thumbnail ? 
+          <CardMedia
+            component="img"
+            sx={{ width: 200, height: 200 }}
+            image={thumbnail.url}
+            alt={thumbnail.name}
+          /> : 
+          <Skeleton sx={{ width: 200, height: 200 }} animation="wave" variant="rectangular" />
+        } */}
         <Box sx={{ flex: 1, height: "100%" }}>
           <CardContent sx={{ flex: 1, height: "100%", display: "flex", flexDirection: "column" }}>
-            {!location ? 
+            {carRentalData ? 
+              <>
+                <Typography component="div" variant="h5">
+                  {carRentalData.driverOption}
+                  {carRentalData.id}
+                </Typography>
+                <Typography variant="body1" color="text.secondary" component="div">
+                  {carRentalData.passengerCapacity} <LocationOnIcon htmlColor="red" 
+                    sx={{ fontSize: 18, position: "relative", bottom: -2 }}/>
+                </Typography>
+                <Typography variant="body2" color="text.secondary" component="div">
+                  <DateRangeIcon sx={{fontSize: 18, position: "relative", bottom: -3}} /> {formatDate(data.DateStart)}
+                </Typography>
+                {getStatus()}
+              </> :
               <>
                 <Skeleton animation="wave" width="80%" sx={{ height: 30 }} />
                 <Skeleton animation="wave" width="60%" sx={{ height: 30 }} />
-              </> : 
-              <>
-                <Typography variant="body1" color="text.secondary" component="div">
-                  <LocationOnIcon htmlColor="red" sx={{fontSize: 18, position: "relative", bottom: -2}} /> {location.pickup.properties.formatted}
-                </Typography>
-                <div style={{width: "100%", textAlign: "center"}}>
-                  <SouthIcon sx={{ mt: 1, mb: 1, fontSize: 20 }} />
-                </div>
-                <Typography variant="body1" color="text.secondary" component="div">
-                  <LocationOnIcon htmlColor="red" sx={{fontSize: 18, position: "relative", bottom: -2}}/> {location.dropoff.properties.formatted}
-                </Typography>
+                <Skeleton animation="wave" width="40%" sx={{ height: 30 }} />
+                <Skeleton animation="wave" width="40%" sx={{ height: 30, position: "relative", top: 50 }} />
               </>
             }
-            <Typography variant="body2" color="text.secondary" component="div" sx={{mt: 1, mb: 3}}>
-              <DateRangeIcon sx={{fontSize: 18, position: "relative", bottom: -3}} /> {formatDate(data.pickupDate.toDate())} | {formatTime(data.pickupTime)}
-            </Typography>
-            {getStatus()}
           </CardContent>
         </Box>
       </CardActionArea>

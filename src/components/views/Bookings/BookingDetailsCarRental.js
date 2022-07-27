@@ -7,36 +7,45 @@ import { STORAGE_FOLDERS } from '../../../utils/constants';
 import { getPackage } from '../../../services/PackageService';
 import { getImages } from '../../../services/FileService';
 
-function BookingDetailCarRental(props) {
+function BookingDetailsCarRental(props) {
   const {data} = props;
 
-  const [carRentalDetails, setPackageDetails] = useState(null);
+  const [carRentalDetails, setCarRentalDetails] = useState(null);
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     getDetails();
   }, []);
 
+  const getDetails = async () => {
+    const details = await getPackage(data.package);
+    const images = await getImages(details.id, STORAGE_FOLDERS.PACKAGES);
+    details.thumbnail = images?.[0] || {
+      url: "/images/peridotLogo.jpg",
+      name: "Default image",
+    };
+    setCarRentalDetails(details);
+  };
 
   return (
     <>
       <Grid item>
-        {packageDetails ?
+        {carRentalDetails ?
           <CardMedia
             component="img"
             sx={{ width: 120, height: 120, borderRadius: 2 }}
-            image={packageDetails.thumbnail.url}
-            alt={packageDetails.thumbnail.name}
+            image={carRentalDetails.thumbnail.url}
+            alt={carRentalDetails.thumbnail.name}
           /> :
           <Skeleton sx={{ width: 120, height: 120 }} animation="wave" variant="rectangular" />
         }
       </Grid>
       <Grid item xs>
-        {packageDetails ? 
+        {carRentalDetails ? 
           <>
-            <Typography variant="body1">{packageDetails.name}</Typography>
+            <Typography variant="body1">{carRentalDetails.name}</Typography>
             <Typography variant="body2">
-              {packageDetails.barangay.label}, {packageDetails.city.label} <LocationOnIcon 
+              {carRentalDetails.barangay.label}, {carRentalDetails.city.label} <LocationOnIcon 
                 fontSize="small" color="error" sx={{position: "relative", bottom: -2}}/>
             </Typography>
           </> :
@@ -50,8 +59,8 @@ function BookingDetailCarRental(props) {
   );
 }
 
-BookingDetailCarRental.propTypes = {
+BookingDetailsCarRental.propTypes = {
   data: PropTypes.object.isRequired,
 };
 
-export default BookingDetailCarRental;
+export default BookingDetailsCarRental;

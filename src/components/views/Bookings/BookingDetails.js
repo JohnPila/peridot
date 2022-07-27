@@ -17,6 +17,7 @@ import withLoggedUser from "../../hocs/withLoggedUser";
 import withDialog from "../../hocs/withDialog";
 import BookingDetailsPackage from "./BookingDetailsPackage";
 import BookingDetailsAirportTransfer from "./BookingDetailsAirportTransfer";
+import BookingDetailsCarRental from "./BookingDetailsCarRental";
 import GeoapifyConfig from "../../../config/GeoapifyConfig";
 
 export function BookingDetails(props) {
@@ -274,6 +275,8 @@ export function BookingDetails(props) {
         return <BookingDetailsPackage data={data} />
       case BOOKING_TYPE.AIRPORT_TRANSFER:
         return <BookingDetailsAirportTransfer data={data} onRouteData={setOtherData} />
+      case BOOKING_TYPE.CAR_RENTAL:
+        return <BookingDetailsCarRental data={data} onRouteData={setOtherData} />
       default:
         return null;
     }
@@ -326,6 +329,8 @@ export function BookingDetails(props) {
         return formatDate(data.date.toDate());
       case BOOKING_TYPE.AIRPORT_TRANSFER:
         return `${formatDate(data.pickupDate.toDate())} | ${formatTime(data.pickupTime)}`
+      case BOOKING_TYPE.CAR_RENTAL:
+        return `${formatDate(data.DateStart.toDate())} | ${formatTime(data.TimeStart)}`
       default:
         return null;
     }

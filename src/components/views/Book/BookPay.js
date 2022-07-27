@@ -116,15 +116,15 @@ function BookPay(props) {
       break;
       case BOOKING_TYPE.CAR_RENTAL: {
         const {
+          DateStart,
           DateEnd,
           TimeStart,
-          DateStart,
           TimeEnd,
         } = stateData;
         setData({
+          DateStart,
           DateEnd,
           TimeStart,
-          DateStart,
           TimeEnd,
         });
         setTotalCost(0);
@@ -202,8 +202,8 @@ function BookPay(props) {
 
   const handlePayCarRental = async () => {
     const {
-      DateEnd,
       DateStart,
+      DateEnd,
       TimeStart,
       TimeEnd,
       passengerCapacity,
@@ -215,8 +215,8 @@ function BookPay(props) {
       phoneNumber: info.phoneNumber,
       specialRequests: info.specialRequests,
       status: getInitialPaymentStatus(),
-      DateEnd,
       DateStart,
+      DateEnd,
       TimeStart,
       TimeEnd,
       passengerCapacity,
