@@ -1,4 +1,4 @@
-import { Box, FormHelperText, Grid, InputLabel, TextField } from "@mui/material";
+import { Box, FormHelperText, Grid, InputLabel, TextField, RadioGroup, Radio, FormControlLabel } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AppForm from "../../common/AppForm";
@@ -191,6 +191,12 @@ function BookCarRental() {
               }
             </LocalizationProvider>
           </Grid>
+          <RadioGroup row sx={{ml: 5, mt: 3}} >
+            <FormControlLabel value={"with driver"} control={<Radio color="info"/>} 
+              label={"with driver"} />
+            <FormControlLabel value={"without driver"} control={<Radio color="info"/>} 
+              label={"without driver"} />
+          </RadioGroup>
           <Grid item xs={9} />
           <Grid item xs={3}>
             <RouteTotalLayout>
