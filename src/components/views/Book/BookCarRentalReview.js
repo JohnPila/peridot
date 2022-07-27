@@ -1,4 +1,4 @@
-import { Divider, Grid, Skeleton } from '@mui/material';
+import { Divider, Grid, Skeleton, Chip } from '@mui/material';
 import PropTypes from 'prop-types';
 import { formatDate, formatTime } from '../../../utils/HelperUtils';
 import Typography from '../../common/Typography';
@@ -14,6 +14,7 @@ function BookCarRentalReview(props) {
       TimeEnd,
       passengerCapacity,
       driverOption,
+      id,
     },
   } = props;
 
@@ -27,7 +28,7 @@ function BookCarRentalReview(props) {
           <Typography variant="body1" color="text.secondary">Passenger Capacity</Typography>
         </Grid>
         <Grid item xs textAlign="right">
-          <Typography variant="body1">{passengerCapacity}</Typography>
+          <Typography variant="body1">{passengerCapacity} {info.id}</Typography>
         </Grid>
       </Grid>
       <Grid container sx={{mt: 2}}>

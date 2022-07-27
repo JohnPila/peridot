@@ -326,8 +326,6 @@ export function BookingDetails(props) {
         return formatDate(data.date.toDate());
       case BOOKING_TYPE.AIRPORT_TRANSFER:
         return `${formatDate(data.pickupDate.toDate())} | ${formatTime(data.pickupTime)}`
-      case BOOKING_TYPE.CAR_RENTAL:
-        return `${formatDate(data.DateStart.toDate())} | ${formatTime(data.TimeStart)}`
       default:
         return null;
     }

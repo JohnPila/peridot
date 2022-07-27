@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { getPlaceDetails } from '../../../services/LocationService';
 import SouthIcon from '@mui/icons-material/South';
 
-function ViewBookingsCarRentalItem(props) {
+function ViewBookingCarRentalItem(props) {
   const {
     data,
   } = props;
@@ -101,8 +101,8 @@ function ViewBookingsCarRentalItem(props) {
   );
 }
 
-ViewBookingsCarRentalItem.propTypes = {
+ViewBookingCarRentalItem.propTypes = {
   data: PropTypes.object.isRequired,
 };
 
-export default ViewBookingsCarRentalItem;
+export default ViewBookingCarRentalItem;
