@@ -114,6 +114,22 @@ function BookPay(props) {
           routeData.features[0].properties.distance));
       }
       break;
+      case BOOKING_TYPE.CAR_RENTAL: {
+        const {
+          DateEnd,
+          TimeStart,
+          DateStart,
+          TimeEnd,
+        } = stateData;
+        setData({
+          DateEnd,
+          TimeStart,
+          DateStart,
+          TimeEnd,
+        });
+        setTotalCost(0);
+      }
+      break;
       default:
         break;
     }
@@ -129,6 +145,9 @@ function BookPay(props) {
           break;
         case BOOKING_TYPE.AIRPORT_TRANSFER:
           await handlePayAirportTransfer();
+          break;
+        case BOOKING_TYPE.CAR_RENTAL:
+          await handlePayCarRental();
           break;
         default:
           break;
@@ -176,6 +195,32 @@ function BookPay(props) {
       pickupTime,
       pickupLocation: pickupLocation.properties.place_id,
       dropoffLocation: dropoffLocation.properties.place_id,
+    }, startPayment);
+    setBookingId(booking.id);
+    handlePostBooking(booking.id, paymentDetails.id, otherData);
+  };
+
+  const handlePayCarRental = async () => {
+    const {
+      DateEnd,
+      DateStart,
+      TimeStart,
+      TimeEnd,
+      passengerCapacity,
+      driverOption,
+    } = stateData;
+    const {booking, paymentDetails, otherData} = await addBooking(type, {
+      fullName: `${info.firstName} ${info.lastName}`,
+      address: info.address,
+      phoneNumber: info.phoneNumber,
+      specialRequests: info.specialRequests,
+      status: getInitialPaymentStatus(),
+      DateEnd,
+      DateStart,
+      TimeStart,
+      TimeEnd,
+      passengerCapacity,
+      driverOption,
     }, startPayment);
     setBookingId(booking.id);
     handlePostBooking(booking.id, paymentDetails.id, otherData);

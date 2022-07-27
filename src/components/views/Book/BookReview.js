@@ -9,6 +9,7 @@ import FormButton from '../../common/form/FormButton';
 import { BOOKING_TYPE } from '../../../utils/constants';
 import BookPackageReview from './BookPackageReview';
 import BookAirportTransferReview from './BookAirportTransferReview';
+import BookCarRentalReview from './BookCarRentalReview';
 
 function BookReview(props) {
   const {
@@ -25,6 +26,8 @@ function BookReview(props) {
         return <BookPackageReview info={info} data={data} />;
       case BOOKING_TYPE.AIRPORT_TRANSFER:
         return <BookAirportTransferReview info={info} data={data} />;
+      case BOOKING_TYPE.CAR_RENTAL:
+        return <BookCarRentalReview info={info} data={data} />;
       default:
         return null;
     }

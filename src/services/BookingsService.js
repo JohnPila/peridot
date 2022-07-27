@@ -101,6 +101,13 @@ export async function addBooking(type, data, callback = async () => {}) {
             ...getAuditFields(true),
           });
           break;
+        case BOOKING_TYPE.CAR_RENTAL:
+          batch.set(newRef, {
+            type,
+            ...data,
+            ...getAuditFields(true),
+          });
+          break;
       }
       const otherData = await callback(batch, newRef);
       return {

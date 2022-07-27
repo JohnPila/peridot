@@ -1,4 +1,4 @@
-import { Box, FormHelperText, Grid, InputLabel, TextField, RadioGroup, Radio, FormControlLabel } from "@mui/material";
+import { Box, FormHelperText, Grid, InputLabel, TextField, RadioGroup, Radio, FormControl, FormLabel, FormControlLabel } from "@mui/material";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AppForm from "../../common/AppForm";
@@ -35,6 +35,7 @@ function BookCarRental() {
   const [TimeEnd, PickupTime] = useState(new Date());
   const [submitting, setSubmitting] = useState(false);
   const [driverOption, setDriverOption] = useState('with driver');
+  const [passengerCapacity, setPassengerCapacity] = useState('2 seater');
   // const [routeData, setRouteData] = useState(null);
   const [error, setError] = useState({
     DateEnd: "",
@@ -116,6 +117,8 @@ function BookCarRental() {
           TimeStart,
           DateStart,
           TimeEnd,
+          passengerCapacity,
+          driverOption,
         },
       },
     });
@@ -192,14 +195,42 @@ function BookCarRental() {
               }
             </LocalizationProvider>
           </Grid>
-          <RadioGroup row sx={{ml: 5, mt: 3}}
-            value={driverOption}
-            onChange={(e) => setDriverOption(e.target.value)} >
-            <FormControlLabel value="with driver" control={<Radio color="info"/>} 
-              label="with driver" />
-            <FormControlLabel value="without driver" control={<Radio color="info"/>} 
-              label="without driver" />
-          </RadioGroup>
+          <Grid item xs={6}>
+            <FormControl>
+              <FormLabel id="capacity-radio-button-label">Passenger Capacity</FormLabel>
+              <RadioGroup 
+                row
+                sx={{mt: 3, columnGap: 10}}
+                aria-labelledby="capacity-radio-button-label"
+                value={passengerCapacity}
+                onChange={(e) => setPassengerCapacity(e.target.value)} >
+                <FormControlLabel value="2 seater" control={<Radio color="info"/>} 
+                  label="2 seater" />
+                <FormControlLabel value="4 seater" control={<Radio color="info"/>} 
+                  label="4 seater" />
+                <FormControlLabel value="6 seater" control={<Radio color="info"/>} 
+                  label="6 seater" />
+                <FormControlLabel value="above 6 seater" control={<Radio color="info"/>} 
+                  label="above 6 seater" />
+              </RadioGroup>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
+            <FormControl>
+              <FormLabel id="driver-radio-button-label">Driver Option</FormLabel>
+              <RadioGroup 
+                row 
+                sx={{mt: 3, columnGap: 10}}
+                aria-labelledby="driver-radio-button-label"
+                value={driverOption}
+                onChange={(e) => setDriverOption(e.target.value)} >
+                <FormControlLabel value="with driver" control={<Radio color="info"/>} 
+                  label="with driver" />
+                <FormControlLabel value="without driver" control={<Radio color="info"/>} 
+                  label="without driver" />
+              </RadioGroup>
+            </FormControl>
+          </Grid>
           <Grid item xs={9} />
           <Grid item xs={3}>
             <RouteTotalLayout>
