@@ -1,35 +1,39 @@
 import { CardMedia, Grid, Skeleton } from '@mui/material';
 import PropTypes from 'prop-types';
 import Typography from '../../common/Typography';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
+import PeopleIcon from '@mui/icons-material/People';
+import DriverIcon from '@mui/icons-material/BadgeSharp';
 import { useEffect, useState } from 'react';
 import { STORAGE_FOLDERS } from '../../../utils/constants';
-import { getPackage } from '../../../services/PackageService';
+// import { getPackage } from '../../../services/PackageService';
 import { getImages } from '../../../services/FileService';
+import { getBooking } from '../../../services/BookingsService';
 
 function BookingDetailsCarRental(props) {
-  const {data} = props;
+  const {
+    data
+  } = props;
 
   const [carRentalDetails, setCarRentalDetails] = useState(null);
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
-    getDetails();
+    getDetails(); 
   }, []);
 
   const getDetails = async () => {
-    const details = await getPackage(data.package);
-    const images = await getImages(details.id, STORAGE_FOLDERS.PACKAGES);
-    details.thumbnail = images?.[0] || {
-      url: "/images/peridotLogo.jpg",
-      name: "Default image",
-    };
+    const details = await getBooking(data.id);
+    // const images = await getImages(details.id, STORAGE_FOLDERS.PACKAGES);
+    // details.thumbnail = images?.[0] || {
+    //   url: "/images/peridotLogo.jpg",
+    //   name: "Default image",
+    // };
     setCarRentalDetails(details);
   };
 
   return (
     <>
-      <Grid item>
+      {/* <Grid item>
         {carRentalDetails ?
           <CardMedia
             component="img"
@@ -39,14 +43,15 @@ function BookingDetailsCarRental(props) {
           /> :
           <Skeleton sx={{ width: 120, height: 120 }} animation="wave" variant="rectangular" />
         }
-      </Grid>
+      </Grid> */}
       <Grid item xs>
         {carRentalDetails ? 
           <>
-            <Typography variant="body1">{carRentalDetails.name}</Typography>
             <Typography variant="body2">
-              {carRentalDetails.barangay.label}, {carRentalDetails.city.label} <LocationOnIcon 
-                fontSize="small" color="error" sx={{position: "relative", bottom: -2}}/>
+              <DriverIcon color="info" sx={{position: "relative", bottom: -4}} /> {carRentalDetails.driverOption}
+            </Typography>
+            <Typography variant="body2">
+              <PeopleIcon color="error" sx={{position: "relative", bottom: -4}}/> {carRentalDetails.passengerCapacity}
             </Typography>
           </> :
           <>
