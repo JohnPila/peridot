@@ -3,6 +3,7 @@ import { useState } from "react";
 import Typography from "../../common/Typography";
 import ViewBookingsAirportTransfer from "./ViewBookingsAirportTransfer";
 import ViewBookingsPackage from "./ViewBookingsPackage";
+import ViewBookingsCarRental from "./ViewBookingsCarRental";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -52,6 +53,9 @@ function ViewBookings(props) {
       </TabPanel>
       <TabPanel value={value} index={1}>
         <ViewBookingsAirportTransfer />
+      </TabPanel>
+      <TabPanel value={value} index={2}>
+        <ViewBookingsCarRental />
       </TabPanel>
     </>
   ); 
