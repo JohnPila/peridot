@@ -34,6 +34,7 @@ function BookCarRental() {
   const [TimeStart, setPickupTime] = useState(new Date());
   const [TimeEnd, PickupTime] = useState(new Date());
   const [submitting, setSubmitting] = useState(false);
+  const [driverOption, setDriverOption] = useState('with driver');
   // const [routeData, setRouteData] = useState(null);
   const [error, setError] = useState({
     DateEnd: "",
@@ -191,11 +192,13 @@ function BookCarRental() {
               }
             </LocalizationProvider>
           </Grid>
-          <RadioGroup row sx={{ml: 5, mt: 3}} >
-            <FormControlLabel value={"with driver"} control={<Radio color="info"/>} 
-              label={"with driver"} />
-            <FormControlLabel value={"without driver"} control={<Radio color="info"/>} 
-              label={"without driver"} />
+          <RadioGroup row sx={{ml: 5, mt: 3}}
+            value={driverOption}
+            onChange={(e) => setDriverOption(e.target.value)} >
+            <FormControlLabel value="with driver" control={<Radio color="info"/>} 
+              label="with driver" />
+            <FormControlLabel value="without driver" control={<Radio color="info"/>} 
+              label="without driver" />
           </RadioGroup>
           <Grid item xs={9} />
           <Grid item xs={3}>
