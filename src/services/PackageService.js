@@ -10,6 +10,7 @@ export async function addPackage(data) {
       const newRef = FirebaseConfig.createRef(COLLECTIONS.PACKAGES);
       batch.set(newRef, {
         ...packageData,
+        isDeleted: false,
         ...getAuditFields(true),
       });
       addPackageOptionsUsingBatch(batch, newRef, options);
@@ -23,9 +24,10 @@ export async function addPackage(data) {
 
 export async function savePackage(id, data) {
   try {
+    const {options, ...packageData} = data; 
     const d = FirebaseConfig.getDocRef(COLLECTIONS.PACKAGES, id);
     const result = await updateDoc(d, {
-      ...data,
+      ...packageData,
       ...getAuditFields(false),
     });
     // TODO: save package options

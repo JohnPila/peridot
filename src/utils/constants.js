@@ -20,6 +20,7 @@ export const ROLE_IDS = {
 export const STORAGE_FOLDERS = {
   GLOBALS: "globals",
   PACKAGES: "packages",
+  CAR_RENTALS: "car-rentals",
 };
 
 export const ADMIN_ROUTES = [
@@ -34,7 +35,7 @@ export const USER_ROUTES = [
   {name: "Packages", path: "/packages", icon: <TravelExploreIcon/>},
   {name: "Bookings", path: "/bookings", icon: <BookIcon/>},
   {name: "Airport Transfer", path: "/aiport-transfer", icon: <Airlines/>},
-  {name: "Car Rental", path: "/car-rental", icon: <CarRental/>},
+  {name: "Car Rental", path: "/car-rentals", icon: <CarRental/>},
 ];
 
 export const GENERAL_ROUTES = [

@@ -95,7 +95,7 @@ export default function Car() {
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (!location.state) {
-      navigate("/car-rental", {replace: true});
+      navigate("/car-rentals", {replace: true});
     }
   }, []);
 

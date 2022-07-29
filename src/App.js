@@ -20,10 +20,8 @@ import Bookings from './components/views/Bookings/Bookings';
 import ViewBookings from './components/views/Bookings/ViewBookings';
 import BookingDetails from './components/views/Bookings/BookingDetails';
 import AboutUs from './components/views/About/AboutUs';
-import BookCarRental from './components/views/Carrental/BookCarRental';
 import AirportTransfer from './components/views/AirportTransfer/AirportTransfer';
 import ContactUs from './components/views/Contact/ContactUs';
-// import EnterDetails from './components/views/Carrental/Enterdetails';
 import Payment from './components/views/Carrental/Payment';
 import AirportBooking from './components/views/Admin/AirportTransfer/AirportBooking';
 import BookAirportTransfer from './components/views/AirportTransfer/BookAirportTransfer';
@@ -33,10 +31,8 @@ import ViewCarRental from './components/views/Carrental/ViewCarRental'
 import AllCarBooking from './components/views/Admin/CarRental/AllCarBooking';
 import { SnackbarProvider } from 'notistack';
 import ViewAllAirport from './components/views/Admin/AirportTransfer/ViewAllAirport';
-// import BookingCarRental from './components/views/Carrental/CarRental'
 import CarRental from './components/views/Carrental/CarRental'
-/*import Car from './components/views/Carrental/Car'
-import ReviewCarRental from './components/views/Carrental/ViewCarRental'*/
+import SaveCar from './components/views/Admin/CarRental/SaveCar';
 
 
 function App() {
@@ -62,7 +58,11 @@ function App() {
         <Route path="/admin/airport-transfer-details" element={<AirportBooking />}/>
         <Route path="/admin/all-airport-bookings" element={<ViewAllAirport />}/>
         <Route path="/admin/car-rental-details" element={<ViewCarRentals/>}/>
-        <Route path="/admin/all-car-bookings" element={<AllCarBooking/>}/>
+        <Route path="/admin/car-rentals" element={<CarRental/>}>
+          <Route path="" element={<AllCarBooking/>}/>
+          <Route path="add" element={<SaveCar/>}/>
+          <Route path=":id/edit" element={<SaveCar isEdit/>}/>
+        </Route>
         <Route path="/packages" element={<Packages/>}>
           <Route path="" element={<ViewPackages/>}/>
           <Route path=":id" element={<PackageDetails/>}/>
@@ -78,19 +78,14 @@ function App() {
           <Route path="book" element={<Book/>}/>
           <Route path="book/result" element={<BookResult/>}/>
         </Route>
-        <Route path="/car-rental" element={<CarRental/>}>
-          <Route path="" element={<BookCarRental/>}/>
+        <Route path="/car-rentals" element={<CarRental/>}>
+          <Route path="" element={<AllCarBooking/>}/>
           <Route path="book" element={<Book/>}/>
           <Route path="book/result" element={<BookResult/>}/>
-        { /* <Route path="car-booking" element={<Car/>}/>
-          <Route path="book/review" element={<ReviewCarRental/>}/>*/}
         </Route>
         <Route path="/errors" element={<Errors/>}>
           <Route path="404" element={<PageNotFound/>}/>
         </Route>
-        {/* <Route path="/carrentaldetails" element={<CarRentals/>}/>
-        <Route path="/view-carrental" element={<ViewCarRental/>}/>
-        <Route path="/error" element={<Errors/>}/> */}
       </Routes>
       <Footer/>
       <DialogGroup/>

@@ -29,7 +29,7 @@ const navConfig = [
   },
   {
     title: 'Car Rentals',
-    path: '/admin/all-car-bookings',
+    path: '/admin/car-rentals',
     icon: getIcon('bxs:car'),
   },
   // {

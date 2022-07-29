@@ -1,422 +1,63 @@
-import { Card, CardContent, CardMedia, Divider, Grid, Stack } from "@mui/material";
+import { Grid } from "@mui/material";
 import Typography from "../../../common/Typography";
-import LocationOnIcon from '@mui/icons-material/LocationOn';
 import withLoggedUser from "../../../hocs/withLoggedUser";
-import withDialog from "../../../hocs/withDialog";
 import { makeStyles } from "@mui/styles";
-import withPage from "../../../hocs/withPage";
+import AddIcon from '@mui/icons-material/Add';
+import Button from "../../../common/Button";
+import { Link } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { listenAllCars } from "../../../../services/CarRentalService";
+import AllCarBookingItem from "./AllCarBookingItem";
 
 const useStyles = makeStyles(theme => ({
   typo: {
     flexGrow: 1,
-    textAlign: "center"
+    textAlign: "center",
+    marginBottom: 15,
   }
 }));
 
-export function ViewCarRentals() {
+function ViewCarRentals(props) {
+  const {isAdmin} = props;
   const classes = useStyles();
+  
+  const unsubscribeRef = useRef(null);
+  const [cars, setCars] = useState(null);
+  /* eslint-disable react-hooks/exhaustive-deps */
+  useEffect(() => {
+    getAllCars();
+    return () => {
+      if (unsubscribeRef.current) {
+        unsubscribeRef.current();
+      }
+    };
+  }, []);
+  
+  const getAllCars = async () => {
+    unsubscribeRef.current = await listenAllCars(isAdmin, setCars);
+  };
+
 	return (
-    <Grid container>
-      <Typography variant="h2"className={classes.typo}>All Car Rental Bookings</Typography>
-		<Grid container spacing={2}>
-			<Grid item md={6} sm={12} xs={12}>
-        <Stack spacing={2}>
-          <Card variant="outlined">
-            <CardContent> 
-                <>
-                    <Grid container color="text.secondary" sx={{mt: 1}}>
-                        <Typography variant="body2">Booking ID: 1548054018</Typography>
-                      <Grid item xs textAlign="right">
-                        <Typography variant="body2">10 Days</Typography>
-                      </Grid>
-                      </Grid>
-                    
-                    
-                  
-                </>
-              <Divider sx={{my: 2}}/>
-              <Grid container spacing={2}>
-                <Grid item >
-       
-                    <CardMedia
-                      component="img"  
-                      sx={{ width: 120, height: 120, borderRadius: 2 }}
-                      //image={data.thumbnail.url}
-                     
-                    /> 
-
-                </Grid>
-                <Grid item xs>
-   
-                    <>
-                      <Typography variant="body1">5 May 2022|09:00 → 15 May 2022|9:00</Typography>
-                      <Typography variant="body2">
-                        With Driver <LocationOnIcon 
-                          fontSize="small" color="error" sx={{position: "relative", bottom: -2}}/>
-                      </Typography>
-                    </> 
-                </Grid>
-              </Grid>
-              <Divider sx={{my: 2}}/>
-              <Grid container>
-                <Grid item xs={2} color="text.secondary">
-      
-                    <Typography variant="h6">Car Selection
-                    :</Typography>
-                </Grid>
-                    <Divider sx={{my: 2}}/>
-              <Grid container>
-                <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Vehicle Type:</Typography> 
-                  </Grid>
-                  <Grid item xs textAlign="center">
-                    <Typography variant="body2">SUV</Typography> 
-                    </Grid>
-                  
-                </Grid>
-                <Grid container>
-                <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Company :</Typography> 
-                  </Grid>
-                  <Grid item xs textAlign="center">
-                    <Typography variant="body2">MITSUBISHI</Typography> 
-                    </Grid>
-                </Grid>
-                <Grid container>
-                <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Model:</Typography> 
-                  </Grid>
-                  <Grid item xs textAlign="center">
-                    <Typography variant="body2">XPANDER</Typography> 
-                    </Grid>
-                </Grid>
-                <Grid container>
-                <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Transmission:</Typography> 
-                  </Grid>
-                  <Grid item xs textAlign="center">
-                    <Typography variant="body2">MANUAL</Typography> 
-                    </Grid>
-                </Grid>
-                <Grid container>
-                <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Fuel Type:</Typography> 
-                  </Grid>
-                  <Grid item xs textAlign="center">
-                    <Typography variant="body2">UNLEADED</Typography> 
-                    </Grid>
-                </Grid>
-                <Grid container>
-                <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Plate No.:</Typography> 
-                  </Grid>
-                  <Grid item xs textAlign="center">
-                    <Typography variant="body2">DSX 126</Typography> 
-                    </Grid>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-        </Stack>
-			</Grid>
-			<Grid item md={6} sm={12} xs={12}>
-            <Card variant="outlined">
-            <CardContent> 
-                <>
-                    <Grid container color="text.secondary" sx={{mt: 1}}>
-                        <Typography variant="body2">Booking ID: 1548054018</Typography>
-                      <Grid item xs textAlign="right">
-                        <Typography variant="body2">10 Days</Typography>
-                      </Grid>
-                      </Grid>
-                    
-                    
-                  
-                </>
-              <Divider sx={{my: 2}}/>
-              <Grid container spacing={2}>
-                <Grid item >
-       
-                    <CardMedia
-                      component="img"  
-                      sx={{ width: 120, height: 120, borderRadius: 2 }}
-                      //image={data.thumbnail.url}
-                     
-                    /> 
-
-                </Grid>
-                <Grid item xs>
-   
-                    <>
-                      <Typography variant="body1">5 May 2022|09:00 → 15 May 2022|9:00</Typography>
-                      <Typography variant="body2">
-                        With Driver <LocationOnIcon 
-                          fontSize="small" color="error" sx={{position: "relative", bottom: -2}}/>
-                      </Typography>
-                    </> 
-                </Grid>
-              </Grid>
-              <Divider sx={{my: 2}}/>
-              <Grid container>
-                <Grid item xs={2} color="text.secondary">
-      
-                    <Typography variant="h6">Car Selection
-                    :</Typography>
-                </Grid>
-                    <Divider sx={{my: 2}}/>
-              <Grid container>
-                <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Vehicle Type:</Typography> 
-                  </Grid>
-                  <Grid item xs textAlign="center">
-                    <Typography variant="body2">VAN</Typography> 
-                    </Grid>
-                  
-                </Grid>
-                <Grid container>
-                <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Company :</Typography> 
-                  </Grid>
-                  <Grid item xs textAlign="center">
-                    <Typography variant="body2">TOYOTA</Typography> 
-                    </Grid>
-                </Grid>
-                <Grid container>
-                <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Model:</Typography> 
-                  </Grid>
-                  <Grid item xs textAlign="center">
-                    <Typography variant="body2">HIACE GRANDIA GL</Typography> 
-                    </Grid>
-                </Grid>
-                <Grid container>
-                <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Transmission:</Typography> 
-                  </Grid>
-                  <Grid item xs textAlign="center">
-                    <Typography variant="body2">AUTOMATIC</Typography> 
-                    </Grid>
-                </Grid>
-                <Grid container>
-                <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Fuel Type:</Typography> 
-                  </Grid>
-                  <Grid item xs textAlign="center">
-                    <Typography variant="body2">UNLEADED</Typography> 
-                    </Grid>
-                </Grid>
-                <Grid container>
-                <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Plate No.:</Typography> 
-                  </Grid>
-                  <Grid item xs textAlign="center">
-                    <Typography variant="body2">YTS 253</Typography> 
-                    </Grid>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-			</Grid>
-      <Grid item md={6} sm={12} xs={12}>
-            <Card variant="outlined">
-            <CardContent> 
-                <>
-                    <Grid container color="text.secondary" sx={{mt: 1}}>
-                        <Typography variant="body2">Booking ID: 1548054018</Typography>
-                      <Grid item xs textAlign="right">
-                        <Typography variant="body2">10 Days</Typography>
-                      </Grid>
-                      </Grid>
-                    
-                    
-                  
-                </>
-              <Divider sx={{my: 2}}/>
-              <Grid container spacing={2}>
-                <Grid item >
-       
-                    <CardMedia
-                      component="img"  
-                      sx={{ width: 120, height: 120, borderRadius: 2 }}
-                      //image={data.thumbnail.url}
-                     
-                    /> 
-
-                </Grid>
-                <Grid item xs>
-   
-                    <>
-                      <Typography variant="body1">5 May 2022|09:00 → 15 May 2022|9:00</Typography>
-                      <Typography variant="body2">
-                        With Driver <LocationOnIcon 
-                          fontSize="small" color="error" sx={{position: "relative", bottom: -2}}/>
-                      </Typography>
-                    </> 
-                </Grid>
-              </Grid>
-              <Divider sx={{my: 2}}/>
-              <Grid container>
-                <Grid item xs={2} color="text.secondary">
-      
-                    <Typography variant="h6">Car Selection
-                    :</Typography>
-                </Grid>
-                    <Divider sx={{my: 2}}/>
-              <Grid container>
-                <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Vehicle Type:</Typography> 
-                  </Grid>
-                  <Grid item xs textAlign="center">
-                    <Typography variant="body2">PICK-UP</Typography> 
-                    </Grid>
-                  
-                </Grid>
-                <Grid container>
-                <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Company :</Typography> 
-                  </Grid>
-                  <Grid item xs textAlign="center">
-                    <Typography variant="body2">TOYOTA</Typography> 
-                    </Grid>
-                </Grid>
-                <Grid container>
-                <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Model:</Typography> 
-                  </Grid>
-                  <Grid item xs textAlign="center">
-                    <Typography variant="body2">HILUX CONQUEST</Typography> 
-                    </Grid>
-                </Grid>
-                <Grid container>
-                <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Transmission:</Typography> 
-                  </Grid>
-                  <Grid item xs textAlign="center">
-                    <Typography variant="body2">AUTOMATIC</Typography> 
-                    </Grid>
-                </Grid>
-                <Grid container>
-                <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Fuel Type:</Typography> 
-                  </Grid>
-                  <Grid item xs textAlign="center">
-                    <Typography variant="body2">DEISEL</Typography> 
-                    </Grid>
-                </Grid>
-                <Grid container>
-                <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Plate No.:</Typography> 
-                  </Grid>
-                  <Grid item xs textAlign="center">
-                    <Typography variant="body2">RNC 870</Typography> 
-                    </Grid>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-			</Grid>
-      <Grid item md={6} sm={12} xs={12}>
-            <Card variant="outlined">
-            <CardContent> 
-                <>
-                    <Grid container color="text.secondary" sx={{mt: 1}}>
-                        <Typography variant="body2">Booking ID: 1548054018</Typography>
-                      <Grid item xs textAlign="right">
-                        <Typography variant="body2">10 Days</Typography>
-                      </Grid>
-                      </Grid>
-                    
-                    
-                  
-                </>
-              <Divider sx={{my: 2}}/>
-              <Grid container spacing={2}>
-                <Grid item >
-       
-                    <CardMedia
-                      component="img"  
-                      sx={{ width: 120, height: 120, borderRadius: 2 }}
-                      //image={data.thumbnail.url}
-                     
-                    /> 
-
-                </Grid>
-                <Grid item xs>
-   
-                    <>
-                      <Typography variant="body1">5 May 2022|09:00 → 15 May 2022|9:00</Typography>
-                      <Typography variant="body2">
-                        With Driver <LocationOnIcon 
-                          fontSize="small" color="error" sx={{position: "relative", bottom: -2}}/>
-                      </Typography>
-                    </> 
-                </Grid>
-              </Grid>
-              <Divider sx={{my: 2}}/>
-              <Grid container>
-                <Grid item xs={2} color="text.secondary">
-      
-                    <Typography variant="h6">Car Selection
-                    :</Typography>
-                </Grid>
-                    <Divider sx={{my: 2}}/>
-              <Grid container>
-                <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Vehicle Type:</Typography> 
-                  </Grid>
-                  <Grid item xs textAlign="center">
-                    <Typography variant="body2">SEDAN</Typography> 
-                    </Grid>
-                  
-                </Grid>
-                <Grid container>
-                <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Company :</Typography> 
-                  </Grid>
-                  <Grid item xs textAlign="center">
-                    <Typography variant="body2">TOYOTA</Typography> 
-                    </Grid>
-                </Grid>
-                <Grid container>
-                <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Model:</Typography> 
-                  </Grid>
-                  <Grid item xs textAlign="center">
-                    <Typography variant="body2">VIOS</Typography> 
-                    </Grid>
-                </Grid>
-                <Grid container>
-                <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Transmission:</Typography> 
-                  </Grid>
-                  <Grid item xs textAlign="center">
-                    <Typography variant="body2">MANUAL</Typography> 
-                    </Grid>
-                </Grid>
-                <Grid container>
-                <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Fuel Type:</Typography> 
-                  </Grid>
-                  <Grid item xs textAlign="center">
-                    <Typography variant="body2">UNLEADED</Typography> 
-                    </Grid>
-                </Grid>
-                <Grid container>
-                <Grid item xs={2}>
-                    <Typography variant="body2" color="text.secondary">Plate No.:</Typography> 
-                  </Grid>
-                  <Grid item xs textAlign="center">
-                    <Typography variant="body2">YTS 253</Typography> 
-                    </Grid>
-                </Grid>
-              </Grid>
-            </CardContent>
-          </Card>
-			</Grid>
-		</Grid>
-    </Grid>
-    
+    <>
+      <Typography variant="h2"className={classes.typo}>Car Rentals</Typography>
+      {isAdmin && 
+        <Button component={Link} color="warning" sx={{mb: 2}} variant="contained" to="/admin/car-rentals/add">
+          <AddIcon sx={{mr: 1}}/> Add new car
+        </Button>
+      }
+      <Grid
+        container
+        direction="row"
+        justifyContent="flex-start"
+        alignItems="flex-start"
+        spacing={2}
+      >
+        {cars ? cars.map((data) => (
+          <AllCarBookingItem data={data} key={data.id} />
+        )) : <>...</>}
+      </Grid>
+    </>
 	);
 }
 
-export default withDialog(withLoggedUser(withPage(ViewCarRentals)));
+export default withLoggedUser(ViewCarRentals);

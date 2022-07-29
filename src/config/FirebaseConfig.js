@@ -33,6 +33,8 @@ export const COLLECTIONS = {
   PAYMENT_DETAILS: "PaymentDetails",
   BOOKINGS: "Bookings",
   USER_COUNT: "UserCount",
+  CAR_RENTALS: "CarRentals",
+  CAR_RENTAL_OPTIONS: "CarRentalOptions",
 };
 
 export const USER_COUNT_ID = "61NC9qEvwcOWv3tD2r4i";
