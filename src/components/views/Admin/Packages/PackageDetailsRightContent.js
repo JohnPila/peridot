@@ -9,6 +9,7 @@ import withLoggedUser from "../../../hocs/withLoggedUser";
 import { createSearchParams, useNavigate } from "react-router-dom";
 import { BOOKING_TYPE } from "../../../../utils/constants";
 
+
 function PackageDetailsRightContent(props) {
   const {
     packageId,
@@ -127,6 +128,7 @@ function PackageDetailsRightContent(props) {
         Book Now
       </FormButton>
     </Grid>
+   
   );
 }
 

@@ -4,6 +4,7 @@ import withPage from "../../../hocs/withPage";
 function Packages() {
   return (
     <Outlet />
+    
   );
 }
 
