@@ -15,7 +15,6 @@ function PackageDetails() {
       <PackageDetailsRightContent 
         packageId={packageId} 
       />
-      <Feedback/>
     </Grid>
   );
 }

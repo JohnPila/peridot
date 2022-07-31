@@ -8,6 +8,8 @@ import withDialog from "../../../hocs/withDialog";
 import withLoggedUser from "../../../hocs/withLoggedUser";
 import { createSearchParams, useNavigate } from "react-router-dom";
 import { BOOKING_TYPE } from "../../../../utils/constants";
+import Feedback from "./Feedback";
+import Typography from "../../../common/Typography";
 
 
 function PackageDetailsRightContent(props) {
@@ -127,6 +129,7 @@ function PackageDetailsRightContent(props) {
       >
         Book Now
       </FormButton>
+      <Typography>Rating:</Typography><Feedback/>
     </Grid>
    
   );
