@@ -59,16 +59,15 @@ export default function AboutUs() {
                       // 16:9
                       pt: '56.25%',
                     }}
-                    image="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Emblem-person-blue.svg/2048px-Emblem-person-blue.svg.png"
+                    image="/images/montesclaros.png"
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      Developer
+                      Full-Stack
                     </Typography>
                     <Typography>
-                    sample ipsum dolor sit amet, consectetur adipiscing elit,
-                     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    An engineer or developer who works on both the front end (client-side) and the back end (server-side) of a website or application is called a full-stack developer. 
                     </Typography>
                   </CardContent>
                 </Card>
@@ -84,16 +83,15 @@ export default function AboutUs() {
                       // 16:9
                       pt: '56.25%',
                     }}
-                    image="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Emblem-person-blue.svg/2048px-Emblem-person-blue.svg.png"
+                    image="/images/rabe.png"
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      Developer
+                      Backend
                     </Typography>
                     <Typography>
-                    sample ipsum dolor sit amet, consectetur adipiscing elit,
-                     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Backend developers work on databases, scripting languages, and website design to create the logic upon which websites and web app function.
                     </Typography>
                   </CardContent>
                 </Card>
@@ -109,16 +107,15 @@ export default function AboutUs() {
                       // 16:9
                       pt: '56.25%',
                     }}
-                    image="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Emblem-person-blue.svg/2048px-Emblem-person-blue.svg.png"
+                    image="/images/pila.png"
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      Developer
+                      Full-Stack
                     </Typography>
                     <Typography>
-                    sample ipsum dolor sit amet, consectetur adipiscing elit,
-                     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    An engineer or developer who works on both the front end (client-side) and the back end (server-side) of a website or application is called a full-stack developer. 
                     </Typography>
                   </CardContent>
                 </Card>
@@ -136,16 +133,15 @@ export default function AboutUs() {
                       // 16:9
                       pt: '56.25%',
                     }}
-                    image="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Emblem-person-blue.svg/2048px-Emblem-person-blue.svg.png"
+                    image="/images/caneda.png"
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      Developer
+                      Quality Assurance
                     </Typography>
                     <Typography>
-                    sample ipsum dolor sit amet, consectetur adipiscing elit,
-                     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    Developed test plans to describe types of tests and coverage of the required system features by reviewing and analyzing product requirements, design and specifications.
                     </Typography>
                   </CardContent>
                 </Card>
@@ -166,15 +162,15 @@ export default function AboutUs() {
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
                     <Typography gutterBottom variant="h5" component="h2">
-                      Developer
+                    Front-End
                     </Typography>
                     <Typography>
-                    sample ipsum dolor sit amet, consectetur adipiscing elit,
-                     sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    A Front-End Developer is responsible for developing new user-facing features, determining the structure and design of web pages, building reusable codes, optimizing page loading times, and using a variety of markup languages to create the web pages.
                     </Typography>
                   </CardContent>
                 </Card>
               </Grid>
+
           </Grid>
         </Container>
         
