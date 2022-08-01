@@ -8,6 +8,7 @@ import { STORAGE_FOLDERS } from '../../../utils/constants';
 // import { getPackage } from '../../../services/PackageService';
 import { getImages } from '../../../services/FileService';
 import { getBooking } from '../../../services/BookingsService';
+import { getCar } from '../../../services/CarRentalService';
 
 function BookingDetailsCarRental(props) {
   const {
@@ -22,18 +23,18 @@ function BookingDetailsCarRental(props) {
   }, []);
 
   const getDetails = async () => {
-    const details = await getBooking(data.id);
-    // const images = await getImages(details.id, STORAGE_FOLDERS.PACKAGES);
-    // details.thumbnail = images?.[0] || {
-    //   url: "/images/peridotLogo.jpg",
-    //   name: "Default image",
-    // };
+    const details = await getCar(data.id);
+    const images = await getImages(details.id, STORAGE_FOLDERS.CAR_RENTALS);
+    details.thumbnail = images?.[0] || {
+      url: "/images/peridotLogo.jpg",
+      name: "Default image",
+    };
     setCarRentalDetails(details);
   };
 
   return (
     <>
-      {/* <Grid item>
+      <Grid item>
         {carRentalDetails ?
           <CardMedia
             component="img"
@@ -43,16 +44,16 @@ function BookingDetailsCarRental(props) {
           /> :
           <Skeleton sx={{ width: 120, height: 120 }} animation="wave" variant="rectangular" />
         }
-      </Grid> */}
+      </Grid>
       <Grid item xs>
         {carRentalDetails ? 
           <>
             <Typography variant="body2">
               <DriverIcon color="info" sx={{position: "relative", bottom: -4}} /> {carRentalDetails.driverOption}
             </Typography>
-            <Typography variant="body2">
+            {/* <Typography variant="body2">
               <PeopleIcon color="error" sx={{position: "relative", bottom: -4}}/> {carRentalDetails.passengerCapacity}
-            </Typography>
+            </Typography> */}
           </> :
           <>
             <Skeleton animation="wave" width="80%" sx={{ height: 30 }} />

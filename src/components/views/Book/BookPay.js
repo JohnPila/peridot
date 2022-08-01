@@ -120,6 +120,7 @@ function BookPay(props) {
           DateEnd,
           TimeStart,
           TimeEnd,
+          // carRentalOption,
         } = stateData;
         setData({
           DateStart,
@@ -127,7 +128,7 @@ function BookPay(props) {
           TimeStart,
           TimeEnd,
         });
-        setTotalCost(0);
+        setTotalCost(1200);
       }
       break;
       default:
@@ -206,7 +207,6 @@ function BookPay(props) {
       DateEnd,
       TimeStart,
       TimeEnd,
-      passengerCapacity,
       driverOption,
     } = stateData;
     const {booking, paymentDetails, otherData} = await addBooking(type, {
@@ -219,7 +219,6 @@ function BookPay(props) {
       DateEnd,
       TimeStart,
       TimeEnd,
-      passengerCapacity,
       driverOption,
     }, startPayment);
     setBookingId(booking.id);
@@ -236,6 +235,9 @@ function BookPay(props) {
             break;
           case BOOKING_TYPE.AIRPORT_TRANSFER:
             description = `Payment for airport transfer to "${data.dropoffLocation.properties.formatted}".`;
+            break;
+          case BOOKING_TYPE.CAR_RENTAL:
+            description = `Payment for car rental.`;
             break;
           default:
             break;

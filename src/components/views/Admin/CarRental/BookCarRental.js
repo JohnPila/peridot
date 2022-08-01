@@ -43,7 +43,7 @@ function BookCarRental() {
     TimeStart: "",
     DateStart: "",
     TimeEnd: "",
-    carRentalOption: "",
+    // carRentalOption: "",
   });
   
   const totalCost = 0;
@@ -119,10 +119,9 @@ function BookCarRental() {
           DateEnd,
           TimeStart,
           TimeEnd,
-          carRentalOption: {
-            id: carRentalOption.id,
-
-          },
+        //   carRentalOption: {
+        //     id: carRentalOption.id,
+        //   },
           driverOption,
         },
       },

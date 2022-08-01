@@ -13,7 +13,7 @@ function BookCarRentalReview(props) {
       DateStart,
       TimeStart,
       TimeEnd,
-      carRentalOption,
+      // carRentalOption,
       driverOption,
       id,
     },

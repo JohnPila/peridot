@@ -42,7 +42,7 @@ function AllCarBookingItem(props) {
         navigate("/admin/car-rentals/" + data.id + "/edit");
         break;
       case "delete":
-        confirmDialog("Delete car", `Are you sure you want to delete <b>${data.name}</b> car?`, (ok) => {
+        confirmDialog("Delete car", `Are you sure you want to delete <b>${data.make} ${data.model}</b> car?`, (ok) => {
           if (ok) {
             deleteCar();
           }
@@ -75,7 +75,7 @@ function AllCarBookingItem(props) {
       await saveCar(data.id, {
         isAvailable: !data.isAvailable,
       });
-      enqueueSnackbar("Successfully set to car availability!", {variant: "success"});
+      enqueueSnackbar("Successfully set car availability!", {variant: "success"});
     } catch (error) {
       enqueueSnackbar("Failed to set car availability! ERR: " + error.message, {variant: "error"});
     }
@@ -86,6 +86,13 @@ function AllCarBookingItem(props) {
       return;
     }
     navigate("/car-rentals/" + data.id);
+  }
+
+  const onViewCar = (e) => {
+    // if ("circle" === e.target.tagName) {
+    //   return;
+    // }
+    navigate(data.id + "/view");
   }
 
   return (
@@ -114,7 +121,7 @@ function AllCarBookingItem(props) {
             alt="Default image"
           />
         }
-        <CardActionArea disabled={data.isDeleted || (!isAdmin && !data.isAvailable)} onClick={onSelectCar}>
+        <CardActionArea disabled={data.isDeleted || (!isAdmin && !data.isAvailable)} onClick={isAdmin ? onViewCar : onSelectCar}>
           <CardHeader
             action={isAdmin &&
               <DropdownMenu style={{marginLeft: "10px"}}

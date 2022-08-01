@@ -114,6 +114,22 @@ function Payment(props) {
           routeData.features[0].properties.distance));
       }
       break;
+      case BOOKING_TYPE.CAR_RENTAL: {
+        const {
+          DateStart,
+          DateEnd,
+          TimeStart,
+          TimeEnd,
+        } = stateData;
+        setData({
+          DateStart,
+          DateEnd,
+          TimeStart,
+          TimeEnd,
+        });
+        setTotalCost(1200);
+      }
+      break;
       default:
         break;
     }
@@ -129,6 +145,9 @@ function Payment(props) {
           break;
         case BOOKING_TYPE.AIRPORT_TRANSFER:
           await handlePayAirportTransfer();
+          break;
+        case BOOKING_TYPE.CAR_RENTAL:
+          await handlePayCarRental();
           break;
         default:
           break;
@@ -181,6 +200,30 @@ function Payment(props) {
     handlePostBooking(booking.id, paymentDetails.id, otherData);
   };
 
+  const handlePayCarRental = async () => {
+    const {
+      DateStart,
+      DateEnd,
+      TimeStart,
+      TimeEnd,
+      driverOption,
+    } = stateData;
+    const {booking, paymentDetails, otherData} = await addBooking(type, {
+      fullName: `${info.firstName} ${info.lastName}`,
+      address: info.address,
+      phoneNumber: info.phoneNumber,
+      specialRequests: info.specialRequests,
+      status: getInitialPaymentStatus(),
+      DateStart,
+      DateEnd,
+      TimeStart,
+      TimeEnd,
+      driverOption,
+    }, startPayment);
+    setBookingId(booking.id);
+    handlePostBooking(booking.id, paymentDetails.id, otherData);
+  };
+
   const startPayment = async (batch, bookingRef) => {
     switch (paymentMethod) {
       case PAYMENT_METHOD.GCASH: {
@@ -192,6 +235,9 @@ function Payment(props) {
           case BOOKING_TYPE.AIRPORT_TRANSFER:
             description = `Payment for airport transfer to "${data.dropoffLocation.properties.formatted}".`;
             break;
+            case BOOKING_TYPE.CAR_RENTAL:
+              description = `Payment for car rental.`;
+              break;
           default:
             break;
         }
