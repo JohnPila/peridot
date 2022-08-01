@@ -57,7 +57,7 @@ export default function AboutUs() {
                     component="img"
                     sx={{
                       // 16:9
-                      pt: '56.25%',
+                      pt: '55.50%',
                     }}
                     image="/images/montesclaros.png"
                     alt="random"
@@ -81,7 +81,7 @@ export default function AboutUs() {
                     component="img"
                     sx={{
                       // 16:9
-                      pt: '56.25%',
+                      pt: '64.25%',
                     }}
                     image="/images/rabe.png"
                     alt="random"
@@ -131,7 +131,7 @@ export default function AboutUs() {
                     component="img"
                     sx={{
                       // 16:9
-                      pt: '56.25%',
+                      pt: '62.25%',
                     }}
                     image="/images/caneda.png"
                     alt="random"
@@ -170,7 +170,6 @@ export default function AboutUs() {
                   </CardContent>
                 </Card>
               </Grid>
-
           </Grid>
         </Container>
         
