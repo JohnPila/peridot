@@ -35,13 +35,15 @@ function BookCarRental() {
   const [TimeEnd, PickupTime] = useState(new Date());
   const [submitting, setSubmitting] = useState(false);
   const [driverOption, setDriverOption] = useState('with driver');
-  const [passengerCapacity, setPassengerCapacity] = useState('4 seater');
+  const [carRentalOption, setCarRentalOption] = useState(null);
+//   const [passengerCapacity, setPassengerCapacity] = useState('4 seater');
   // const [routeData, setRouteData] = useState(null);
   const [error, setError] = useState({
     DateEnd: "",
     TimeStart: "",
     DateStart: "",
     TimeEnd: "",
+    carRentalOption: "",
   });
   
   const totalCost = 0;
@@ -117,7 +119,10 @@ function BookCarRental() {
           DateEnd,
           TimeStart,
           TimeEnd,
-          passengerCapacity,
+          carRentalOption: {
+            id: carRentalOption.id,
+
+          },
           driverOption,
         },
       },
@@ -195,7 +200,7 @@ function BookCarRental() {
               }
             </LocalizationProvider>
           </Grid>
-          <Grid item xs={6}>
+          {/* <Grid item xs={6}>
             <FormControl>
               <FormLabel id="capacity-radio-button-label">Passenger Capacity</FormLabel>
               <RadioGroup 
@@ -212,7 +217,7 @@ function BookCarRental() {
                   label="15 seater" />
               </RadioGroup>
             </FormControl>
-          </Grid>
+          </Grid> */}
           <Grid item xs={6}>
             <FormControl>
               <FormLabel id="driver-radio-button-label">Driver Option</FormLabel>

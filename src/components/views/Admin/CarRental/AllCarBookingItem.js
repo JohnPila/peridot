@@ -160,7 +160,7 @@ function AllCarBookingItem(props) {
           <Grid container>
             {!isAdmin &&
             <Grid item>
-              <Button color="error" variant="contained" disabled={data.isDeleted || !data.isAvailable}>
+              <Button color="error" variant="contained" disabled={data.isDeleted || !data.isAvailable} onClick={onSelectCar}>
                 <LocalMallIcon sx={{mr: 0.5, fontSize: 16}}/> Book Now
               </Button>
             </Grid>

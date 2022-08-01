@@ -1,8 +1,9 @@
-import { Divider, Grid, Skeleton, Chip } from '@mui/material';
+import { Divider, Grid, Skeleton, Chip, CardContent, CardMedia } from '@mui/material';
 import PropTypes from 'prop-types';
 import { formatDate, formatTime } from '../../../utils/HelperUtils';
 import Typography from '../../common/Typography';
 import PackageDetailsOptionSkeleton from '../Admin/Packages/PackageDetailsOptionSkeleton';
+import { Box } from '@mui/system';
 
 function BookCarRentalReview(props) {
   const {
@@ -12,7 +13,7 @@ function BookCarRentalReview(props) {
       DateStart,
       TimeStart,
       TimeEnd,
-      passengerCapacity,
+      carRentalOption,
       driverOption,
       id,
     },
@@ -24,13 +25,31 @@ function BookCarRentalReview(props) {
         Booking info
       </Typography>
       <Grid container>
-        <Grid item xs={2}>
+        {/* <Grid item xs={2}>
           <Typography variant="body1" color="text.secondary">Passenger Capacity</Typography>
-        </Grid>
+        </Grid> */}
         <Grid item xs textAlign="right">
-          <Typography variant="body1">{passengerCapacity} {info.id}</Typography>
+          <Typography variant="body1">{} {info.id}</Typography>
         </Grid>
       </Grid>
+      {/* <Box sx={{ display: 'flex', background: "none" }}>
+        <CardMedia
+          component="img"
+          sx={{ width: 150 }}
+          image={data.image.url}
+          alt={data.image.name}
+        />
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <CardContent sx={{ flex: '1 0 auto' }}>
+            <Typography component="div" variant="h5">
+              {data.name}
+            </Typography>
+            <Typography variant="body1" color="text.secondary" component="div" sx={{mt: 0.5}}>
+              {data.packageOption.name}
+            </Typography>
+          </CardContent>
+        </Box>
+      </Box> */}
       <Grid container sx={{mt: 2}}>
         <Grid item xs={2}>
           <Typography variant="body1" color="text.secondary">Driver Option</Typography>
