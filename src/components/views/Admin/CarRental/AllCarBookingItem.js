@@ -158,11 +158,13 @@ function AllCarBookingItem(props) {
         </CardActionArea>
         <CardActions disableSpacing>
           <Grid container>
+            {!isAdmin &&
             <Grid item>
               <Button color="error" variant="contained" disabled={data.isDeleted || !data.isAvailable}>
                 <LocalMallIcon sx={{mr: 0.5, fontSize: 16}}/> Book Now
               </Button>
             </Grid>
+            }
             <Grid item xs sx={{textAlign: "right"}}>
               <Typography variant="body2" fontSize={10}>Price starts at</Typography>
               <Typography variant="h6" fontSize={22} sx={{lineHeight: 1}} color="green">
