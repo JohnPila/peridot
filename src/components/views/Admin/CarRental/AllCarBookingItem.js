@@ -85,7 +85,7 @@ function AllCarBookingItem(props) {
     if ("circle" === e.target.tagName) {
       return;
     }
-    // navigate("/packages/" + data.id);
+    navigate("/car-rentals/" + data.id);
   }
 
   return (

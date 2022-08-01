@@ -33,6 +33,7 @@ import { SnackbarProvider } from 'notistack';
 import ViewAllAirport from './components/views/Admin/AirportTransfer/ViewAllAirport';
 import CarRental from './components/views/Carrental/CarRental'
 import SaveCar from './components/views/Admin/CarRental/SaveCar';
+import BookCarRental from './components/views/Admin/CarRental/BookCarRental';
 
 
 function App() {
@@ -80,8 +81,9 @@ function App() {
         </Route>
         <Route path="/car-rentals" element={<CarRental/>}>
           <Route path="" element={<AllCarBooking/>}/>
-          <Route path="book" element={<Book/>}/>
-          <Route path="book/result" element={<BookResult/>}/>
+          <Route path=":id" element={<BookCarRental/>}/>
+          <Route path=":id/book" element={<Book/>}/>
+          <Route path=":id/book/result" element={<BookResult/>}/>
         </Route>
         <Route path="/errors" element={<Errors/>}>
           <Route path="404" element={<PageNotFound/>}/>
