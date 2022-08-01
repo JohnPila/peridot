@@ -59,7 +59,7 @@ export default function AboutUs() {
                       // 16:9
                       pt: '56.25%',
                     }}
-                    image="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d8/Emblem-person-blue.svg/2048px-Emblem-person-blue.svg.png"
+                    image="/images/samson.jpg"
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
