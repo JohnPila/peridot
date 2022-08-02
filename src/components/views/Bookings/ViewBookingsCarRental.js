@@ -4,7 +4,7 @@ import { getAllBookings, getAllBookingsByCurrentUser } from "../../../services/B
 import { BOOKING_TYPE } from "../../../utils/constants";
 import Typography from "../../common/Typography";
 import withLoggedUser from "../../hocs/withLoggedUser";
-import ViewBookingCarRentalItem from "./ViewBookingsAirportTransferItem";
+import ViewBookingCarRentalItem from "./ViewBookingCarRentalItem";
 
 function ViewBookingsCarRental(props) {
   const {

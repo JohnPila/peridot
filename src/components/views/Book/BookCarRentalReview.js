@@ -1,29 +1,86 @@
-import { Divider, Grid, Skeleton, Chip } from '@mui/material';
+import { Divider, Grid, Skeleton, CardMedia, CardContent } from '@mui/material';
 import PropTypes from 'prop-types';
 import { formatDate, formatTime } from '../../../utils/HelperUtils';
 import Typography from '../../common/Typography';
 import PackageDetailsOptionSkeleton from '../Admin/Packages/PackageDetailsOptionSkeleton';
+import { useNavigate, useParams } from "react-router-dom";
+import { Fragment, useEffect, useMemo, useState } from 'react';
+import { getCar } from '../../../services/CarRentalService';
+import { STORAGE_FOLDERS } from '../../../utils/constants';
+import { getImages } from '../../../services/FileService';
+import { Box } from '@mui/system';
+import { getRateOptions } from '../../../services/CarRentalOptionService';
 
 function BookCarRentalReview(props) {
   const {
     info,
     data: {
-      DateEnd,
-      DateStart,
-      TimeStart,
-      TimeEnd,
+      id,
+      pickupDate,
+      pickupTime,
       passengerCapacity,
       driverOption,
-      id,
+      rateOptions,
     },
   } = props;
 
+  const navigate = useNavigate();
+  const {id: carId} = useParams();
+  const [data, setData] = useState(null);
+  const totalCost = useMemo(() => data ? 
+    data.rateOptions.reduce((acc, opt) => acc + (opt.quantity * opt.rate), 0) : 
+    0 , [data]);
+
+  /* eslint-disable react-hooks/exhaustive-deps */
+  useEffect(() => {
+    getCar(carId).then(async (d) => {
+      try {
+        const options = await getRateOptions(carId);
+        const optionsMap = options.reduce((acc, opt) => {
+          acc[opt.id] = opt;
+          return acc;
+        }, {})
+        d.rateOptions = rateOptions.map((opt) => ({
+          ...optionsMap[opt.id],
+          ...opt,
+        }));
+        const images = await getImages(d.id, STORAGE_FOLDERS.CAR_RENTALS);
+        d.image = images.length > 0 ? images[0] : {
+          url: "/images/peridotLogo.jpg",
+          name: "Default image",
+        };
+        setData(d);
+      } catch (error) {
+        console.error("Failed to get car rental info.", error);
+      }
+    }).catch(() => navigate("/errors/404", {replace: true}));
+  }, []);
+
   return (
+    data ?
     <>
       <Typography variant="h4" gutterBottom sx={{ mt: 6 }}>
-        Booking info
+        Booking info {id}
       </Typography>
-      <Grid container>
+      <Box sx={{ display: 'flex', background: "none" }}>
+        <CardMedia
+          component="img"
+          sx={{ width: 150 }}
+          image={data.image.url}
+          alt={data.image.name}
+        />
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+          <CardContent sx={{ flex: '1 0 auto' }}>
+            <Typography component="div" variant="h5">
+              {data.make} {data.model}
+            </Typography>
+            <Typography variant="body1" color="text.secondary" component="div" sx={{mt: 0.5}}>
+              {data.transmission} {data.fuel}
+            </Typography>
+          </CardContent>
+        </Box>
+      </Box>
+      <Grid container sx={{mt: 2}}>
         <Grid item xs={2}>
           <Typography variant="body1" color="text.secondary">Passenger Capacity</Typography>
         </Grid>
@@ -31,7 +88,7 @@ function BookCarRentalReview(props) {
           <Typography variant="body1">{passengerCapacity} {info.id}</Typography>
         </Grid>
       </Grid>
-      <Grid container sx={{mt: 2}}>
+      <Grid container>
         <Grid item xs={2}>
           <Typography variant="body1" color="text.secondary">Driver Option</Typography>
         </Grid>
@@ -82,63 +139,65 @@ function BookCarRentalReview(props) {
       </Typography>
       <Grid container>
         <Grid item xs={2}>
-          <Typography variant="body1" color="text.secondary">Booking date & time</Typography>
+          <Typography variant="body1" color="text.secondary">Pickup date & time</Typography>
         </Grid>
         <Grid item xs textAlign="right">
-          <Typography variant="body1">{formatDate(DateStart)} @ {formatTime(TimeStart)}</Typography>
+          <Typography variant="body1">{formatDate(pickupDate)} @ {formatTime(pickupTime)}</Typography>
         </Grid>
       </Grid>
-      <Grid container>
+      {/* <Grid container>
         <Grid item xs={2}>
           <Typography variant="body1" color="text.secondary">Return date & time</Typography>
         </Grid>
         <Grid item xs textAlign="right">
           <Typography variant="body1">{formatDate(DateEnd)} @ {formatTime(TimeEnd)}</Typography>
         </Grid>
+      </Grid> */}
+      <Grid container>
+        <Grid item xs={2}>
+          <Typography variant="body1" color="text.secondary">Options</Typography>
+        </Grid>
+        {data.rateOptions.map((opt, i) => (
+          <Fragment key={i}>
+            {i > 0 && <Grid item xs={2}/>}
+            <Grid item xs={8} textAlign="right">
+              <Typography variant="body1">{opt.quantity} x {opt.duration} (₱{opt.rate})</Typography>
+            </Grid>
+            <Grid item xs={2} textAlign="right">
+              <Typography variant="body1">₱{opt.quantity * opt.rate}</Typography>
+            </Grid>
+          </Fragment>
+        ))}
       </Grid>
       <Divider sx={{mt: 3, mb: 2}}/>
-      {/* <Grid container>
-        <Grid item xs={2}>
-          <Typography color="text.secondary">Base fare</Typography>
-        </Grid>
-        <Grid item xs={10} textAlign="right">
-          <Typography>₱{GeoapifyConfig.baseFare}</Typography>
-        </Grid>
-        <Grid item xs={2}>
-          <Typography color="text.secondary">Fare by distance</Typography>
-        </Grid>
-        <Grid item xs={10} textAlign="right">
-          <Typography>₱{GeoapifyConfig.farePerKilometer} x {routeData.features[0].properties.distance / 1000} km = ₱{Math.ceil(routeData.features[0].properties.distance / 1000) * GeoapifyConfig.farePerKilometer}</Typography>
-        </Grid>
-      </Grid> */}
       <Grid container>
         <Grid item xs={2}>
           <Typography variant="h6" color="text.secondary">Total</Typography>
         </Grid>
         <Grid item xs textAlign="right">
-          <Typography variant="h6">₱</Typography>
+          <Typography variant="h6">₱{totalCost}</Typography>
         </Grid>
       </Grid>
     </> 
-    // : 
-    // <>
-    //   <Skeleton animation="wave" height={40} width="40%" sx={{mb: 2}} />
-    //   <Grid container spacing={4}>
-    //     <Grid item xs={2}>
-    //       <Skeleton sx={{ height: 100 }} animation="wave" variant="rectangular" />
-    //     </Grid>
-    //     <Grid item xs>
-    //       <Skeleton height={35} animation="wave" width="80%" />
-    //       <Skeleton height={30} animation="wave" width="40%" />
-    //     </Grid>
-    //   </Grid>
-    //   <Divider sx={{mt: 3, mb: 2}}/>
-    //   <PackageDetailsOptionSkeleton />
-    //   <PackageDetailsOptionSkeleton />
-    //   <PackageDetailsOptionSkeleton />
-    //   <Divider sx={{mt: 3, mb: 2}}/>
-    //   <PackageDetailsOptionSkeleton innerProps={{height: 35}}/>
-    // </>
+    : 
+    <>
+      <Skeleton animation="wave" height={40} width="40%" sx={{mb: 2}} />
+      <Grid container spacing={4}>
+        <Grid item xs={2}>
+          <Skeleton sx={{ height: 100 }} animation="wave" variant="rectangular" />
+        </Grid>
+        <Grid item xs>
+          <Skeleton height={35} animation="wave" width="80%" />
+          <Skeleton height={30} animation="wave" width="40%" />
+        </Grid>
+      </Grid>
+      <Divider sx={{mt: 3, mb: 2}}/>
+      <PackageDetailsOptionSkeleton />
+      <PackageDetailsOptionSkeleton />
+      <PackageDetailsOptionSkeleton />
+      <Divider sx={{mt: 3, mb: 2}}/>
+      <PackageDetailsOptionSkeleton innerProps={{height: 35}}/>
+    </>
   );
 }
 

@@ -265,7 +265,7 @@ function SaveCar(props) {
               onChange={(e) => setValue("plateNo", e.target.value)} />
           </Grid>
         </Grid>
-        <Typography variant="h4" gutterBottom sx={{ mt: 4, fontSize: 30 }}>
+        {/* <Typography variant="h4" gutterBottom sx={{ mt: 4, fontSize: 30 }}>
           Driver Information
         </Typography>
         <InputLabel sx={{mt: 1, mb: 1}}>Full Name *</InputLabel>
@@ -282,7 +282,7 @@ function SaveCar(props) {
         <TextField error={!!error.address} autoFocus disabled={submitting} size="large" 
           fullWidth sx={{mb: 1}} value={address} 
           helperText={error.address}
-          onChange={(e) => setValue("address", e.target.value)} />
+          onChange={(e) => setValue("address", e.target.value)} /> */}
         <InputLabel sx={{mt: 1, mb: 1}}>Images</InputLabel>
         <ImageDropzone key={oldImages?.length}
           value={images}

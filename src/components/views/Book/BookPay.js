@@ -19,6 +19,8 @@ import InfoIcon from '@mui/icons-material/Info';
 import GeoapifyConfig from '../../../config/GeoapifyConfig';
 import { toLonLatArray } from '../../common/MapRoute';
 import { getRoute } from '../../../services/LocationService';
+import { getCar } from '../../../services/CarRentalService';
+import { getRateOptions } from '../../../services/CarRentalOptionService';
 
 function BookPay(props) {
   const {
@@ -116,18 +118,26 @@ function BookPay(props) {
       break;
       case BOOKING_TYPE.CAR_RENTAL: {
         const {
-          DateStart,
-          DateEnd,
-          TimeStart,
-          TimeEnd,
+          packageId: carId,
+          rateOptions,
         } = stateData;
-        setData({
-          DateStart,
-          DateEnd,
-          TimeStart,
-          TimeEnd,
-        });
-        setTotalCost(0);
+        getCar(carId).then(async (d) => {
+          try {
+            const options = await getRateOptions(carId);
+            const optionsMap = options.reduce((acc, opt) => {
+              acc[opt.id] = opt;
+              return acc;
+            }, {})
+            d.rateOptions = rateOptions.map((opt) => ({
+              ...optionsMap[opt.id],
+              ...opt,
+            }));
+            setData(d);
+            setTotalCost(rateOptions.reduce((acc, opt) => acc + (opt.rate * opt.quantity), 0));
+          } catch (error) {
+            console.error("Failed to get car rental info.", error);
+          }
+        }).catch(() => navigate("/errors/404", {replace: true}));
       }
       break;
       default:
@@ -202,23 +212,21 @@ function BookPay(props) {
 
   const handlePayCarRental = async () => {
     const {
-      DateStart,
-      DateEnd,
-      TimeStart,
-      TimeEnd,
+      packageId: carId,
+      pickupDate,
+      pickupTime,
       passengerCapacity,
       driverOption,
     } = stateData;
     const {booking, paymentDetails, otherData} = await addBooking(type, {
+      carId,
       fullName: `${info.firstName} ${info.lastName}`,
       address: info.address,
       phoneNumber: info.phoneNumber,
       specialRequests: info.specialRequests,
       status: getInitialPaymentStatus(),
-      DateStart,
-      DateEnd,
-      TimeStart,
-      TimeEnd,
+      pickupDate,
+      pickupTime,
       passengerCapacity,
       driverOption,
     }, startPayment);
@@ -236,6 +244,9 @@ function BookPay(props) {
             break;
           case BOOKING_TYPE.AIRPORT_TRANSFER:
             description = `Payment for airport transfer to "${data.dropoffLocation.properties.formatted}".`;
+            break;
+          case BOOKING_TYPE.CAR_RENTAL:
+            description = `Payment for "${data.make} ${data.model}" car rental.`;
             break;
           default:
             break;

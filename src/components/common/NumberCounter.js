@@ -25,6 +25,7 @@ function NumberCounter(props) {
         }}
         size="small"
         variant="outlined"
+        type="button"
       >
         <RemoveIcon fontSize="small" />
       </FormButton>
@@ -44,6 +45,7 @@ function NumberCounter(props) {
         }}
         size="small"
         variant="outlined"
+        type="button"
       >
         <AddIcon fontSize="small" />
       </FormButton>

@@ -95,7 +95,17 @@ export default function Book() {
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
     if (!location.state) {
-      navigate("/packages", {replace: true});
+      switch(type) {
+        case BOOKING_TYPE.PACKAGE:
+          navigate("/packages", {replace: true});
+          break;
+        case BOOKING_TYPE.CAR_RENTAL:
+          navigate("/car-rentals", {replace: true});
+          break;
+        default:
+          navigate("/", {replace: true});
+          break;
+      }
     }
   }, []);
 
@@ -156,6 +166,19 @@ export default function Book() {
     }
   };
 
+  const getStepLabel = () => {
+    switch (type) {
+      case BOOKING_TYPE.PACKAGE:
+        return "Choose package";
+      case BOOKING_TYPE.AIRPORT_TRANSFER:
+        return "Book airport transfer";
+      case BOOKING_TYPE.CAR_RENTAL:
+        return "Choose car to rent";
+      default: 
+        return "";
+    }
+  };
+
   if (!location.state) {
     return null;
   }
@@ -166,9 +189,7 @@ export default function Book() {
         <Stack sx={{ width: '100%' }} spacing={4}>
           <Stepper alternativeLabel activeStep={activeStep} connector={<QontoConnector />}>
             <Step>
-              <StepLabel StepIconComponent={QontoStepIcon}>{type === BOOKING_TYPE.PACKAGE ? 
-              "Choose package" : "Book airport transfer" || type === BOOKING_TYPE.CAR_RENTAL ? 
-              "Book car rental" : null }</StepLabel>
+              <StepLabel StepIconComponent={QontoStepIcon}>{getStepLabel()}</StepLabel>
             </Step>
             <Step>
               <StepLabel StepIconComponent={QontoStepIcon}>Enter info</StepLabel>

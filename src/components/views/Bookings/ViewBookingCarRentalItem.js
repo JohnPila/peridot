@@ -5,12 +5,10 @@ import Typography from "../../common/Typography";
 import { useEffect, useState } from 'react';
 import { getImages } from '../../../services/FileService';
 import { BOOKING_STATUS, BOOKING_STATUS_LABEL, STORAGE_FOLDERS } from '../../../utils/constants';
-// import { getPackage } from '../../../services/PackageService';
-import { formatDate } from '../../../utils/HelperUtils';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
+import { formatDate, formatTime } from '../../../utils/HelperUtils';
 import DateRangeIcon from '@mui/icons-material/DateRange';
 import { useNavigate } from 'react-router-dom';
-import { getBooking } from '../../../services/BookingsService';
+import { getCar } from '../../../services/CarRentalService';
 
 function ViewBookingCarRentalItem(props) {
   const {
@@ -18,16 +16,16 @@ function ViewBookingCarRentalItem(props) {
   } = props;
 
   const navigate = useNavigate();
-//   const [thumbnail, setThumbnail] = useState(null);
+  const [thumbnail, setThumbnail] = useState(null);
   const [carRentalData, setCarRentalData] = useState(null);
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
-    getBooking(data).then(setCarRentalData);
-    // getImages(data.package.id, STORAGE_FOLDERS.PACKAGES).then(images => setThumbnail(images?.[0] || {
-    //   url: "/images/peridotLogo.jpg",
-    //   name: "Default image",
-    // }));
+    getCar(data.car).then(setCarRentalData);
+    getImages(data.car.id, STORAGE_FOLDERS.CAR_RENTALS).then(images => setThumbnail(images?.[0] || {
+      url: "/images/peridotLogo.jpg",
+      name: "Default image",
+    }));
   }, []);
 
   const getStatus = () => {
@@ -68,7 +66,7 @@ function ViewBookingCarRentalItem(props) {
   return (
     <Card sx={{ display: 'flex' }}>
       <CardActionArea sx={{ display: 'flex' }} onClick={onSelectBooking}>
-        {/* {thumbnail ? 
+        {thumbnail ? 
           <CardMedia
             component="img"
             sx={{ width: 200, height: 200 }}
@@ -76,21 +74,19 @@ function ViewBookingCarRentalItem(props) {
             alt={thumbnail.name}
           /> : 
           <Skeleton sx={{ width: 200, height: 200 }} animation="wave" variant="rectangular" />
-        } */}
+        }
         <Box sx={{ flex: 1, height: "100%" }}>
           <CardContent sx={{ flex: 1, height: "100%", display: "flex", flexDirection: "column" }}>
             {carRentalData ? 
               <>
                 <Typography component="div" variant="h5">
-                  {carRentalData.driverOption}
-                  {carRentalData.id}
+                  {carRentalData.make} {carRentalData.model}
                 </Typography>
                 <Typography variant="body1" color="text.secondary" component="div">
-                  {carRentalData.passengerCapacity} <LocationOnIcon htmlColor="red" 
-                    sx={{ fontSize: 18, position: "relative", bottom: -2 }}/>
+                  {carRentalData.transmission} {carRentalData.fuel}
                 </Typography>
                 <Typography variant="body2" color="text.secondary" component="div">
-                  <DateRangeIcon sx={{fontSize: 18, position: "relative", bottom: -3}} /> {formatDate(data.DateStart)}
+                  <DateRangeIcon sx={{fontSize: 18, position: "relative", bottom: -3}} /> {formatDate(data.pickupDate.toDate())} | {formatTime(data.pickupTime.toDate())}
                 </Typography>
                 {getStatus()}
               </> :

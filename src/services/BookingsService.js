@@ -101,13 +101,16 @@ export async function addBooking(type, data, callback = async () => {}) {
             ...getAuditFields(true),
           });
           break;
-        case BOOKING_TYPE.CAR_RENTAL:
+        case BOOKING_TYPE.CAR_RENTAL: {
+          const {carId, ...otherData} = data;
           batch.set(newRef, {
             type,
-            ...data,
+            car: FirebaseConfig.getDocRef(COLLECTIONS.CAR_RENTALS, carId),
+            ...otherData,
             ...getAuditFields(true),
           });
-          break;
+        }
+        break;
       }
       const otherData = await callback(batch, newRef);
       return {

@@ -1,6 +1,6 @@
 import { Box, FormHelperText, Grid, InputLabel, TextField, RadioGroup, Radio, FormControl, FormLabel, FormControlLabel } from "@mui/material";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useMemo, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import AppForm from "../../../common/AppForm";
 import FormButton from "../../../common/form/FormButton";
 import { LocalizationProvider, TimePicker, DesktopDatePicker } from '@mui/x-date-pickers';
@@ -12,6 +12,7 @@ import { styled } from '@mui/material/styles';
 //import GeoapifyConfig from "../../../config/GeoapifyConfig";
 import Typography from "../../../common/Typography";
 import { BOOKING_TYPE } from "../../../../utils/constants";
+import CarRateOptions from "./CarRateOptions";
 
 const RouteTotalLayout = styled('div')(({ theme }) => ({
   display: "flex",
@@ -28,23 +29,27 @@ const RouteTotalLayout = styled('div')(({ theme }) => ({
 }));
 
 function BookCarRental() {
+  const {id: carId} = useParams();
   const navigate  = useNavigate();
-  const [DateStart, setPickupDate] = useState(new Date());
-  const [DateEnd, PickupDate] = useState(new Date());
-  const [TimeStart, setPickupTime] = useState(new Date());
-  const [TimeEnd, PickupTime] = useState(new Date());
+  const [pickupDate, setPickupDate] = useState(new Date());
+  // const [dateEnd, PickupDate] = useState(new Date());
+  const [pickupTime, setPickupTime] = useState(new Date());
+  // const [timeEnd, PickupTime] = useState(new Date());
   const [submitting, setSubmitting] = useState(false);
   const [driverOption, setDriverOption] = useState('with driver');
   const [passengerCapacity, setPassengerCapacity] = useState('4 seater');
+  const [rateOptions, setRateOptions] = useState([]);
   // const [routeData, setRouteData] = useState(null);
   const [error, setError] = useState({
-    DateEnd: "",
-    TimeStart: "",
-    DateStart: "",
-    TimeEnd: "",
+    // dateEnd: "",
+    pickupDate: "",
+    pickupTime: "",
+    // timeEnd: "",
+    rateOptions: "",
   });
   
-  const totalCost = 0;
+  const totalCost = useMemo(() => rateOptions.reduce((acc, opt) => acc + (opt.rate * opt.quantity), 0), 
+    [rateOptions]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -66,17 +71,20 @@ function BookCarRental() {
 
   const isValid = () => {
     const errMsg = {};
-    if (!DateStart) {
-      errMsg.DateStart = "Date start location is required.";
+    if (!pickupDate) {
+      errMsg.pickupDate = "Pick up date is required.";
     }
-    if (!DateEnd) {
-      errMsg.DateEnd = "Date end location is required.";
+    // if (!dateEnd) {
+    //   errMsg.dateEnd = "Date end location is required.";
+    // }
+    if (!pickupTime) {
+      errMsg.pickupTime = "Pick up time is required.";
     }
-    if (!TimeStart) {
-      errMsg.TimeStart = "Time start date is required.";
-    }
-    if (!TimeEnd) {
-      errMsg.TimeEnd = "Time end is required.";
+    // if (!timeEnd) {
+    //   errMsg.timeEnd = "Time end is required.";
+    // }
+    if (!rateOptions.length) {
+      errMsg.rateOptions = "Rate option(s) is required.";
     }
     if (Object.keys(errMsg).length > 0) {
       setError(errMsg);
@@ -87,21 +95,25 @@ function BookCarRental() {
   
   const setValue = (field, value) => {
     switch (field) {
-      case "DateStart":
+      case "pickupDate":
         setPickupDate(value);
-        setError((err) => ({...err, Datestart: ""}));
+        setError((err) => ({...err, pickupDate: ""}));
         break;
-      case "DateEnd":
-        PickupDate(value);
-        setError((err) => ({...err, DateEnd: ""}));
-        break;
-      case "TimeStart":
+      // case "dateEnd":
+      //   PickupDate(value);
+      //   setError((err) => ({...err, dateEnd: ""}));
+      //   break;
+      case "pickupTime":
         setPickupTime(value);
-        setError((err) => ({...err, TimeStart: ""}));
+        setError((err) => ({...err, pickupTime: ""}));
         break;
-      case "TimeEnd":
-        PickupTime(value);
-        setError((err) => ({...err, TimeEnd: ""}));
+      // case "timeEnd":
+      //   PickupTime(value);
+      //   setError((err) => ({...err, timeEnd: ""}));
+      //   break;
+      case "rateOptions":
+        setRateOptions(value);
+        setError((err) => ({...err, rateOptions: ""}));
         break;
       default:
         break;
@@ -113,12 +125,15 @@ function BookCarRental() {
       state: {
         type: BOOKING_TYPE.CAR_RENTAL,
         data: {
-          DateStart,
-          DateEnd,
-          TimeStart,
-          TimeEnd,
+          pickupDate,
+          pickupTime,
           passengerCapacity,
           driverOption,
+          rateOptions: rateOptions.map((opt) => ({
+            id: opt.id,
+            rate: opt.rate,
+            quantity: opt.quantity,
+          })),
         },
       },
     });
@@ -131,70 +146,70 @@ function BookCarRental() {
       </Typography>
       <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 6 }}>
         <Grid container spacing={4}>
-          <Grid item xs={6}>
-          <InputLabel sx={{mt: 1, mb: 1}}>Rental Date Start *</InputLabel>
+          <Grid item xs={12}>
+          <InputLabel sx={{mt: 1, mb: 1}}>Rental Start Date *</InputLabel>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DesktopDatePicker
                 inputFormat="MM/dd/yyyy"
-                value={DateStart}
-                onChange={(v) => setValue("DateStart", v)} 
+                value={pickupDate}
+                onChange={(v) => setValue("pickupDate", v)} 
                 renderInput={(params) => <TextField {...params} size="large" fullWidth />}
               />
-              {error.DateEnd && 
+              {error.pickupDate && 
                 <FormHelperText error>
-                  {error.DateStart}
+                  {error.pickupDate}
                 </FormHelperText> 
               }
             </LocalizationProvider>
           </Grid>
-          <Grid item xs={6}>
+          {/* <Grid item xs={6}>
             <InputLabel sx={{mt: 1, mb: 1}}>Rental Date End *</InputLabel>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <DesktopDatePicker
                 inputFormat="MM/dd/yyyy"
-                value={DateEnd}
-                onChange={(v) => setValue("DateEnd", v)} 
+                value={dateEnd}
+                onChange={(v) => setValue("dateEnd", v)} 
                 renderInput={(params) => <TextField {...params} size="large" fullWidth />}
               />
-              {error.DateEnd && 
+              {error.dateEnd && 
                 <FormHelperText error>
-                  {error.DateEnd}
+                  {error.dateEnd}
                 </FormHelperText> 
               }
             </LocalizationProvider>
-          </Grid>
+          </Grid> */}
         </Grid>
         <Grid container spacing={4}>
-          <Grid item xs={6}>
-          <InputLabel sx={{mt: 1, mb: 1}}>Rental Time Start *</InputLabel>
+          <Grid item xs={12}>
+            <InputLabel sx={{mt: 1, mb: 1}}>Rental Start Time *</InputLabel>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <TimePicker
-                value={TimeStart}
-                onChange={(v) => setValue("TimeStart", v)} 
+                value={pickupTime}
+                onChange={(v) => setValue("pickupTime", v)} 
                 renderInput={(params) => <TextField {...params} size="large" fullWidth />}
               />
-              {error.TimeStart && 
+              {error.pickupTime && 
                 <FormHelperText error>
-                  {error.TimeStart}
+                  {error.pickupTime}
                 </FormHelperText> 
               }
             </LocalizationProvider>
           </Grid>
-          <Grid item xs={6}>
+          {/* <Grid item xs={6}>
             <InputLabel sx={{mt: 1, mb: 1}}>Rental Time End *</InputLabel>
             <LocalizationProvider dateAdapter={AdapterDateFns}>
               <TimePicker
-                value={TimeEnd}
-                onChange={(v) => setValue("TimeEnd", v)} 
+                value={timeEnd}
+                onChange={(v) => setValue("timeEnd", v)} 
                 renderInput={(params) => <TextField {...params} size="large" fullWidth />}
               />
-              {error.TimeEnd && 
+              {error.timeEnd && 
                 <FormHelperText error>
-                  {error.TimeEnd}
+                  {error.timeEnd}
                 </FormHelperText> 
               }
             </LocalizationProvider>
-          </Grid>
+          </Grid> */}
           <Grid item xs={6}>
             <FormControl>
               <FormLabel id="capacity-radio-button-label">Passenger Capacity</FormLabel>
@@ -229,8 +244,18 @@ function BookCarRental() {
               </RadioGroup>
             </FormControl>
           </Grid>
-          <Grid item xs={9} />
-          <Grid item xs={3}>
+          <Grid item xs={6} />
+          <Grid item xs={6}>
+            <FormLabel id="capacity-radio-button-label">Rate Options *</FormLabel>
+            <CarRateOptions 
+              carId={carId} 
+              error={error.rateOptions}
+              disabled={submitting} 
+              onSelect={(v) => setValue("rateOptions", v)}
+            />
+          </Grid>
+          <Grid item xs={8} />
+          <Grid item xs={4}>
             <RouteTotalLayout>
               <Typography variant="h5">
                 Total Fare
