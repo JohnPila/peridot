@@ -62,10 +62,10 @@ export default function AboutUs() {
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Typography gutterBottom variant="h5" align="center" component="h2">
                       Full-Stack
                     </Typography>
-                    <Typography>
+                    <Typography align="justify">
                     An engineer or developer who works on both the front end (client-side) and the back end (server-side) of a website or application is called a full-stack developer. 
                     </Typography>
                   </CardContent>
@@ -73,7 +73,7 @@ export default function AboutUs() {
               </Grid>
               <Grid  xs={12} sm={6} md={4}>
                 <Card
-                  sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+                  sx={{ height: '100%', display: 'flex',  flexDirection: 'column' }}
                 >
                   <CardMedia
                     key = ""
@@ -86,10 +86,10 @@ export default function AboutUs() {
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Typography gutterBottom variant="h5" align="center" component="h2">
                       Backend
                     </Typography>
-                    <Typography>
+                    <Typography align="justify">
                     Backend developers work on databases, scripting languages, and website design to create the logic upon which websites and web app function.
                     </Typography>
                   </CardContent>
@@ -110,10 +110,10 @@ export default function AboutUs() {
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Typography gutterBottom variant="h5" align="center" component="h2">
                       Full-Stack
                     </Typography>
-                    <Typography>
+                    <Typography align="justify">
                     An engineer or developer who works on both the front end (client-side) and the back end (server-side) of a website or application is called a full-stack developer. 
                     </Typography>
                   </CardContent>
@@ -136,10 +136,10 @@ export default function AboutUs() {
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Typography gutterBottom variant="h5" align="center" component="h2">
                       Quality Assurance
                     </Typography>
-                    <Typography>
+                    <Typography align="justify">
                     Developed test plans to describe types of tests and coverage of the required system features by reviewing and analyzing product requirements, design and specifications.
                     </Typography>
                   </CardContent>
@@ -160,10 +160,10 @@ export default function AboutUs() {
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Typography gutterBottom variant="h5" align="center" component="h2">
                     Front-End
                     </Typography>
-                    <Typography>
+                    <Typography align="justify">
                     A Front-End Developer is responsible for developing new user-facing features, determining the structure and design of web pages, building reusable codes, optimizing page loading times, and using a variety of markup languages to create the web pages.
                     </Typography>
                   </CardContent>
