@@ -37,10 +37,9 @@ export default function AboutUs() {
               About Us
             </Typography>
             <Typography variant="h5" align="center" color="text.secondary" paragraph>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure 
-            dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            Peridot is a web application that allows users to book travel-related services in real-time with email 
+            updates and is mobile-optimized, making it easy to navigate through the web application on any mobile 
+            device. It allows users to obtain the information they require even during non-business hours.
             </Typography>
             
           </Container>
@@ -57,7 +56,7 @@ export default function AboutUs() {
                     component="img"
                     sx={{
                       // 16:9
-                      pt: '55.50%',
+                      pt: '56.25%',
                     }}
                     image="/images/montesclaros.png"
                     alt="random"
@@ -81,7 +80,7 @@ export default function AboutUs() {
                     component="img"
                     sx={{
                       // 16:9
-                      pt: '64.25%',
+                      pt: '56.25%',
                     }}
                     image="/images/rabe.png"
                     alt="random"
@@ -131,7 +130,7 @@ export default function AboutUs() {
                     component="img"
                     sx={{
                       // 16:9
-                      pt: '62.25%',
+                      pt: '56.25%',
                     }}
                     image="/images/caneda.png"
                     alt="random"
@@ -170,6 +169,7 @@ export default function AboutUs() {
                   </CardContent>
                 </Card>
               </Grid>
+
           </Grid>
         </Container>
         
