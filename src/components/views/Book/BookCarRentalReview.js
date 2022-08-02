@@ -85,7 +85,7 @@ function BookCarRentalReview(props) {
           <Typography variant="body1" color="text.secondary">Passenger Capacity</Typography>
         </Grid>
         <Grid item xs textAlign="right">
-          <Typography variant="body1">{passengerCapacity} {info.id}</Typography>
+          <Typography variant="body1">{passengerCapacity}</Typography>
         </Grid>
       </Grid>
       <Grid container>

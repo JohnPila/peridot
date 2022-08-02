@@ -37,10 +37,9 @@ export default function AboutUs() {
               About Us
             </Typography>
             <Typography variant="h5" align="center" color="text.secondary" paragraph>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor 
-            incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud 
-            exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure 
-            dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            Peridot is a web application that allows users to book travel-related services in real-time with email 
+            updates and is mobile-optimized, making it easy to navigate through the web application on any mobile 
+            device. It allows users to obtain the information they require even during non-business hours.
             </Typography>
             
           </Container>
@@ -57,16 +56,16 @@ export default function AboutUs() {
                     component="img"
                     sx={{
                       // 16:9
-                      pt: '55.50%',
+                      pt: '56.25%',
                     }}
                     image="/images/montesclaros.png"
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Typography gutterBottom variant="h5" align="center" component="h2">
                       Full-Stack
                     </Typography>
-                    <Typography>
+                    <Typography align="justify">
                     An engineer or developer who works on both the front end (client-side) and the back end (server-side) of a website or application is called a full-stack developer. 
                     </Typography>
                   </CardContent>
@@ -74,7 +73,7 @@ export default function AboutUs() {
               </Grid>
               <Grid  xs={12} sm={6} md={4}>
                 <Card
-                  sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}
+                  sx={{ height: '100%', display: 'flex',  flexDirection: 'column' }}
                 >
                   <CardMedia
                     key = ""
@@ -87,10 +86,10 @@ export default function AboutUs() {
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Typography gutterBottom variant="h5" align="center" component="h2">
                       Backend
                     </Typography>
-                    <Typography>
+                    <Typography align="justify">
                     Backend developers work on databases, scripting languages, and website design to create the logic upon which websites and web app function.
                     </Typography>
                   </CardContent>
@@ -105,16 +104,16 @@ export default function AboutUs() {
                     component="img"
                     sx={{
                       // 16:9
-                      pt: '56.25%',
+                      pt: '50.25%',
                     }}
                     image="/images/pila.png"
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Typography gutterBottom variant="h5" align="center" component="h2">
                       Full-Stack
                     </Typography>
-                    <Typography>
+                    <Typography align="justify">
                     An engineer or developer who works on both the front end (client-side) and the back end (server-side) of a website or application is called a full-stack developer. 
                     </Typography>
                   </CardContent>
@@ -137,10 +136,10 @@ export default function AboutUs() {
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Typography gutterBottom variant="h5" align="center" component="h2">
                       Quality Assurance
                     </Typography>
-                    <Typography>
+                    <Typography align="justify">
                     Developed test plans to describe types of tests and coverage of the required system features by reviewing and analyzing product requirements, design and specifications.
                     </Typography>
                   </CardContent>
@@ -161,15 +160,16 @@ export default function AboutUs() {
                     alt="random"
                   />
                   <CardContent sx={{ flexGrow: 1 }}>
-                    <Typography gutterBottom variant="h5" component="h2">
+                    <Typography gutterBottom variant="h5" align="center" component="h2">
                     Front-End
                     </Typography>
-                    <Typography>
+                    <Typography align="justify">
                     A Front-End Developer is responsible for developing new user-facing features, determining the structure and design of web pages, building reusable codes, optimizing page loading times, and using a variety of markup languages to create the web pages.
                     </Typography>
                   </CardContent>
                 </Card>
               </Grid>
+
           </Grid>
         </Container>
         

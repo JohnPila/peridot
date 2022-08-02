@@ -34,7 +34,7 @@ import ViewAllAirport from './components/views/Admin/AirportTransfer/ViewAllAirp
 import CarRental from './components/views/Carrental/CarRental'
 import SaveCar from './components/views/Admin/CarRental/SaveCar';
 import BookCarRental from './components/views/Admin/CarRental/BookCarRental';
-
+import ViewCar from './components/views/Admin/CarRental/ViewCar';
 
 function App() {
   return (
@@ -62,6 +62,7 @@ function App() {
         <Route path="/admin/car-rentals" element={<CarRental/>}>
           <Route path="" element={<AllCarBooking/>}/>
           <Route path="add" element={<SaveCar/>}/>
+          <Route path=":id/view" element={<ViewCar/>}/>
           <Route path=":id/edit" element={<SaveCar isEdit/>}/>
         </Route>
         <Route path="/packages" element={<Packages/>}>
