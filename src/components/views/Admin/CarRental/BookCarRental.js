@@ -227,7 +227,7 @@ function BookCarRental() {
                   label="15 seater" />
               </RadioGroup>
             </FormControl>
-          </Grid> */}
+          </Grid>
           <Grid item xs={6}>
             <FormControl>
               <FormLabel id="driver-radio-button-label">Driver Option</FormLabel>
