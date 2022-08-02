@@ -2,7 +2,7 @@ import { Grid } from "@mui/material";
 import { useParams } from "react-router-dom";
 import PackageDetailsLeftContent from "./PackageDetailsLeftContent";
 import PackageDetailsRightContent from "./PackageDetailsRightContent";
-import Feedback from "./Feedback";
+import Reviews from "./Reviews";
 
 function PackageDetails() {
   const {id: packageId} = useParams();
@@ -15,6 +15,7 @@ function PackageDetails() {
       <PackageDetailsRightContent 
         packageId={packageId} 
       />
+      <Reviews/>
     </Grid>
   );
 }
