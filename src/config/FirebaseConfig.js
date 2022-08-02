@@ -23,7 +23,6 @@ const CONFIG = {
   appId: "1:945464055589:web:55811736c8b60c0fdc6ccc",
   measurementId: "G-JY8EPL5HCW"
 };
-
 export const COLLECTIONS = {
   ROLES: "Roles",
   USER_ROLES: "UserRoles",
@@ -35,6 +34,7 @@ export const COLLECTIONS = {
   USER_COUNT: "UserCount",
   CAR_RENTALS: "CarRentals",
   CAR_RENTAL_OPTIONS: "CarRentalOptions",
+  FEEDBACK: "Feedback"
 };
 
 export const USER_COUNT_ID = "61NC9qEvwcOWv3tD2r4i";
