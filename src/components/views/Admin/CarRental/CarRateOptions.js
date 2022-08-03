@@ -69,7 +69,7 @@ function CarRateOptions(props) {
     <>
       {options ?
         options.map(opt => (
-          <CarRateOptionLayout>
+          <CarRateOptionLayout key={opt.id}>
             <Typography component="div" variant="body1">{opt.duration}</Typography>
             <Typography component="div" variant="body1" color="green">₱{opt.rate}</Typography>
             <NumberCounter

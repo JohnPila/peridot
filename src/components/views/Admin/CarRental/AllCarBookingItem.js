@@ -159,7 +159,9 @@ function AllCarBookingItem(props) {
             padding: 0,
           }}>
             <Typography component="div" variant="body2" color="text.secondary">
-              <p dangerouslySetInnerHTML={{__html: data.description}}/>
+              <p>Transmission: {data.transmission}</p>
+              <p>Plate No: {data.plateNo}</p>
+              <p>Capacity: {data.passengerCapacity}</p>
             </Typography>
           </CardContent>
         </CardActionArea>

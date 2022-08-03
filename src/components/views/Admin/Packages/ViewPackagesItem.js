@@ -79,7 +79,7 @@ function ViewPackagesItem(props) {
         {images?.length > 0 ? 
           <CardMedia
             component={Carousel}
-            sx={{height: 200}}
+            sx={{maxHeight: 180}}
             indicatorContainerProps={{
               style: {
                 position: "absolute",
@@ -101,6 +101,7 @@ function ViewPackagesItem(props) {
         }
         <CardActionArea disabled={data.isDeleted} onClick={onSelectPackage}>
           <CardHeader
+            sx={{height: 150}}
             action={isAdmin &&
               <DropdownMenu style={{marginLeft: "10px"}}
                 options={[
@@ -117,8 +118,8 @@ function ViewPackagesItem(props) {
                 disabled={data.isDeleted}
               />
             }
-            title={data.name}
-            subheader={<div style={{ display: "flex", alignItems: "flex-start" }}>
+            title={(data.name.length) <35 ? data.name : data.name.substring(0, 35) + " ..." }
+            subheader={<div style={{ height: 50, display: "flex", alignItems: "flex-start" }}>
               {data.barangay.label}, {data.city.label} <LocationOnIcon sx={{fontSize: 18, ml: 0.2}} htmlColor="red" />
             </div>}
           />
