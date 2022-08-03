@@ -19,6 +19,9 @@ import BookingDetailsPackage from "./BookingDetailsPackage";
 import BookingDetailsAirportTransfer from "./BookingDetailsAirportTransfer";
 import BookingDetailsCarRental from "./BookingDetailsCarRental";
 import GeoapifyConfig from "../../../config/GeoapifyConfig";
+import Reviews from "../Admin/Packages/Reviews";
+import { addFeedback } from "../../../services/FeedbackService";
+
 
 export function BookingDetails(props) {
   const {
@@ -210,6 +213,31 @@ export function BookingDetails(props) {
       fieldProps: {
         multiline: true,
         placeholder: "What's the reason?",
+        maxRows: 5,
+      }
+    });
+  };
+  const handleFeedback = () => {
+    confirmDialog("Leave Feedback", "Let us know what you think", async (ok, message) => {
+      if (ok) {
+        try {
+          setIsSaving(true);
+          await addFeedback({
+            feedback: message,
+          });
+        } catch (error) {
+          console.error("Failed to cancel booking.", error);
+        } finally {
+          setIsSaving(false);
+        }
+      }
+    }, {
+      variant: DIALOG_TYPE_VARIANT.WARNING,
+      closeButtonTitle: "Close",
+      confirmButtonTitle: "Submit",
+      fieldProps: {
+        multiline: true,
+        placeholder: "Leave a Feedback",
         maxRows: 5,
       }
     });
@@ -588,13 +616,20 @@ export function BookingDetails(props) {
                 {![BOOKING_STATUS.CANCELLED, 
                   BOOKING_STATUS.DECLINED, 
                   BOOKING_STATUS.PENDING_CANCELLATION].includes(data.status) &&
-                  <FormButton sx={{width: "100%", mt: 1}} color="warning" 
-                    onClick={handleCancellation} disabled={isSaving}>
-                    Cancel Booking
-                  </FormButton>
+                  <>
+                    <FormButton sx={{width: "100%", mt: 1}} color="warning" 
+                      onClick={handleCancellation} disabled={isSaving}>
+                      Cancel Booking
+                    </FormButton>
+                    <FormButton sx={{width: "100%", mt: 1}} color="primary" 
+                      onClick={handleFeedback} disabled={isSaving}>
+                      Leave Feedback
+                    </FormButton>
+                </>  
                 }
               </>
             }
+            
           </CardContent>
 				</Card>
 			</Grid>

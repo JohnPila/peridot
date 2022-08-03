@@ -131,8 +131,6 @@ function PackageDetailsRightContent(props) {
       >
         Book Now
       </FormButton>
-    
-      <FeedbackForm></FeedbackForm>
     </Grid>
    
   );
