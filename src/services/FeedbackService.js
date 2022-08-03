@@ -19,7 +19,34 @@ export async function addFeedback(data) {
       throw err;
     }
   }
+
+  export async function getAllFeedback() {
+    try {
+        const q = query(FirebaseConfig.getCollectionRef(COLLECTIONS.FEEDBACK));
+        const result = await getDocs(q);
+        return result.docs.map(d => ({id: d.id, ...d.data()}));
+      } catch(err) {
+        console.error("Failed to all cars.", err.message);
+        throw err;
+      }
+  }
+  export async function listenAllFeedback(callback = () => {}) {
+    const q = query(FirebaseConfig.getCollectionRef(COLLECTIONS.FEEDBACK));
+    return onSnapshot(q, 
+      (query) => {
+        const feedback = [];
+        query.forEach((d) => {
+          feedback.push({id: d.id, ...d.data()});
+        });
+        callback(feedback);
+      });
+  }
+
   const defaults = {
-    addFeedback
+    addFeedback,
+    getAllFeedback,
+    listenAllFeedback
   };
+
+  
   export default defaults;
