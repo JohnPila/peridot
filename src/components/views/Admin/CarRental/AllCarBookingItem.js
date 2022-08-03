@@ -161,7 +161,7 @@ function AllCarBookingItem(props) {
             <Typography component="div" variant="body2" color="text.secondary">
               <p>Transmission: {data.transmission}</p>
               <p>Plate No: {data.plateNo}</p>
-              <p>Capacity: {data.passengerCapacity}</p>
+              <p>Capacity: {data.capacity}</p>
             </Typography>
           </CardContent>
         </CardActionArea>

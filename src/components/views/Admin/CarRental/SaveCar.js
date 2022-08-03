@@ -1,4 +1,4 @@
-import { Box, Grid, InputLabel, TextField } from "@mui/material";
+import { Box, Grid, InputLabel, TextField, RadioGroup, Radio, FormControl, FormLabel, FormControlLabel } from "@mui/material";
 import { useEffect, useState } from "react";
 import AppForm from "../../../common/AppForm";
 import FormButton from "../../../common/form/FormButton";
@@ -26,6 +26,7 @@ function SaveCar(props) {
   const [transmission, setTransmission] = useState("");
   const [fuel, setFuel] = useState("");
   const [plateNo, setPlateNo] = useState("");
+  const [capacity, setCapacity] = useState("4 seater");
   const [fullName, setFullName] = useState("");
   const [contactNo, setContactNo] = useState("");
   const [address, setAddress] = useState("");
@@ -61,6 +62,7 @@ function SaveCar(props) {
       setTransmission(data.transmission);
       setFuel(data.fuel);
       setPlateNo(data.plateNo);
+      setCapacity(data.capacity);
       setFullName(data.fullName);
       setContactNo(data.contactNo);
       setAddress(data.address);
@@ -92,6 +94,7 @@ function SaveCar(props) {
           transmission,
           fuel,
           plateNo,
+          capacity,
           fullName,
           contactNo,
           address,
@@ -108,6 +111,7 @@ function SaveCar(props) {
           fuel,
           plateNo,
           fullName,
+          capacity,
           contactNo,
           address,
           options: rateOptions,
@@ -263,6 +267,24 @@ function SaveCar(props) {
               fullWidth sx={{mb: 1}} value={plateNo} 
               helperText={error.plateNo}
               onChange={(e) => setValue("plateNo", e.target.value)} />
+          </Grid>
+          <Grid item xs={6} >
+            <FormControl>
+              <FormLabel id="capacity-radio-button-label">Passenger Capacity</FormLabel>
+              <RadioGroup 
+                row
+                sx={{mt: 1, columnGap: 8}}
+                aria-labelledby="capacity-radio-button-label"
+                value={capacity}
+                onChange={(e) => setCapacity(e.target.value)} >
+                <FormControlLabel value="4 seater" control={<Radio color="info"/>} 
+                  label="4 seater" />
+                <FormControlLabel value="6 seater" control={<Radio color="info"/>} 
+                  label="6 seater" />
+                <FormControlLabel value="15 seater" control={<Radio color="info"/>} 
+                  label="15 seater" />
+              </RadioGroup>
+            </FormControl>
           </Grid>
         </Grid>
         {/* <Typography variant="h4" gutterBottom sx={{ mt: 4, fontSize: 30 }}>

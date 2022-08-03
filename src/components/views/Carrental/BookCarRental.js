@@ -35,7 +35,6 @@ function BookCarRental() {
   const [TimeEnd, PickupTime] = useState(new Date());
   const [submitting, setSubmitting] = useState(false);
   const [driverOption, setDriverOption] = useState('with driver');
-  const [passengerCapacity, setPassengerCapacity] = useState('2 seater');
   // const [routeData, setRouteData] = useState(null);
   const [error, setError] = useState({
     DateEnd: "",
@@ -117,7 +116,6 @@ function BookCarRental() {
           DateEnd,
           TimeStart,
           TimeEnd,
-          passengerCapacity,
           driverOption,
         },
       },
@@ -194,26 +192,6 @@ function BookCarRental() {
                 </FormHelperText> 
               }
             </LocalizationProvider>
-          </Grid>
-          <Grid item xs={6}>
-            <FormControl>
-              <FormLabel id="capacity-radio-button-label">Passenger Capacity</FormLabel>
-              <RadioGroup 
-                row
-                sx={{mt: 3, columnGap: 10}}
-                aria-labelledby="capacity-radio-button-label"
-                value={passengerCapacity}
-                onChange={(e) => setPassengerCapacity(e.target.value)} >
-                <FormControlLabel value="2 seater" control={<Radio color="info"/>} 
-                  label="2 seater" />
-                <FormControlLabel value="4 seater" control={<Radio color="info"/>} 
-                  label="4 seater" />
-                <FormControlLabel value="6 seater" control={<Radio color="info"/>} 
-                  label="6 seater" />
-                <FormControlLabel value="above 6 seater" control={<Radio color="info"/>} 
-                  label="above 6 seater" />
-              </RadioGroup>
-            </FormControl>
           </Grid>
           <Grid item xs={6}>
             <FormControl>

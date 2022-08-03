@@ -37,7 +37,6 @@ function BookCarRental() {
   // const [timeEnd, PickupTime] = useState(new Date());
   const [submitting, setSubmitting] = useState(false);
   const [driverOption, setDriverOption] = useState('with driver');
-  const [passengerCapacity, setPassengerCapacity] = useState('4 seater');
   const [rateOptions, setRateOptions] = useState([]);
   // const [routeData, setRouteData] = useState(null);
   const [error, setError] = useState({
@@ -127,7 +126,6 @@ function BookCarRental() {
         data: {
           pickupDate,
           pickupTime,
-          passengerCapacity,
           driverOption,
           rateOptions: rateOptions.map((opt) => ({
             id: opt.id,
@@ -195,38 +193,7 @@ function BookCarRental() {
               }
             </LocalizationProvider>
           </Grid>
-          {/* <Grid item xs={6}>
-            <InputLabel sx={{mt: 1, mb: 1}}>Rental Time End *</InputLabel>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <TimePicker
-                value={timeEnd}
-                onChange={(v) => setValue("timeEnd", v)} 
-                renderInput={(params) => <TextField {...params} size="large" fullWidth />}
-              />
-              {error.timeEnd && 
-                <FormHelperText error>
-                  {error.timeEnd}
-                </FormHelperText> 
-              }
-            </LocalizationProvider>
-          </Grid> */}
           <Grid item xs={6}>
-            <FormControl>
-              <FormLabel id="capacity-radio-button-label">Passenger Capacity</FormLabel>
-              <RadioGroup 
-                row
-                sx={{mt: 3, columnGap: 10}}
-                aria-labelledby="capacity-radio-button-label"
-                value={passengerCapacity}
-                onChange={(e) => setPassengerCapacity(e.target.value)} >
-                <FormControlLabel value="4 seater" control={<Radio color="info"/>} 
-                  label="4 seater" />
-                <FormControlLabel value="6 seater" control={<Radio color="info"/>} 
-                  label="6 seater" />
-                <FormControlLabel value="15 seater" control={<Radio color="info"/>} 
-                  label="15 seater" />
-              </RadioGroup>
-            </FormControl>
           </Grid>
           <Grid item xs={6}>
             <FormControl>

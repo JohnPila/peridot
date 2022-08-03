@@ -52,7 +52,7 @@ function BookingDetailsCarRental(props) {
               <DriverIcon color="info" sx={{position: "relative", bottom: -4}} /> {carRentalDetails.driverOption}
             </Typography>
             {/* <Typography variant="body2">
-              <PeopleIcon color="error" sx={{position: "relative", bottom: -4}}/> {carRentalDetails.passengerCapacity}
+              <PeopleIcon color="error" sx={{position: "relative", bottom: -4}}/> {carRentalDetails.capacity}
             </Typography> */}
           </> :
           <>

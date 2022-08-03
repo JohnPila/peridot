@@ -215,7 +215,6 @@ function BookPay(props) {
       packageId: carId,
       pickupDate,
       pickupTime,
-      passengerCapacity,
       driverOption,
     } = stateData;
     const {booking, paymentDetails, otherData} = await addBooking(type, {
@@ -227,7 +226,6 @@ function BookPay(props) {
       status: getInitialPaymentStatus(),
       pickupDate,
       pickupTime,
-      passengerCapacity,
       driverOption,
     }, startPayment);
     setBookingId(booking.id);
