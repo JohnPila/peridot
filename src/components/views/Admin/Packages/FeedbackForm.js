@@ -1,19 +1,55 @@
-import React, {useRef} from "react";
-//import FirebaseConfig from '../../../config/FirebaseConfig';
+import React, {useState, useEffect} from "react";
+import db from "../../../../config/FirebaseConfig";
+import Button from "../../../common/Button";
+import { addDoc, collection } from "firebase/firestore";
+import { addFeedback } from "../../../../services/FeedbackService";
 
-export default function FeedbackForm(){
-  const messageRef = useRef();
+export default function FeedbackForm(props){
+  const [feedback, setFeedback] = useState("");
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(messageRef.current.value);
+    save();
   };
+
+  const save = async () => {
+    try {
+         await addFeedback({
+          feedback,
+        });
+      }
+     // navigate("/admin/packages");
+    catch (error) {
+      console.error("Failed to save package.", error);
+    } 
+  
+  };
+  // function handleChange(e){
+  //   feedback[e.target.id] = e.target.id;
+  //   setFeedback({...feedback,feedback});
+  // }
+  // const saveChange = async() =>{
+  //   await addDoc(collection(props.db,"Feedback"),{
+  //     message:feedback.message,
+  //   }).then(function(res){
+  //     alert("success");
+  //   }).catch(function(err){
+  //     alert("fail");
+  //   })
+
+  // }
+  
   return(
     <div>
-      <form onSubmit={handleSubmit}>
+      <form  >
         <label> Any Feedback?</label>
-        <input type = "text" ref = {messageRef}></input>
-        <button type = "submit">Send</button>
+        <input 
+         onChange={(e) => setFeedback(e.target.value)}
+          id = "message"
+          label = "Message"
+        >
+        </input>
+        <Button onClick={handleSubmit}>Send</Button>
       </form>
     </div>
   );

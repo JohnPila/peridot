@@ -35,6 +35,7 @@ import CarRental from './components/views/Carrental/CarRental'
 import SaveCar from './components/views/Admin/CarRental/SaveCar';
 import BookCarRental from './components/views/Admin/CarRental/BookCarRental';
 import ViewCar from './components/views/Admin/CarRental/ViewCar';
+import FeedbackForm from './components/views/Admin/Packages/FeedbackForm'
 
 function App() {
   return (
@@ -42,6 +43,7 @@ function App() {
       <ScrollToTop/>
       <Header/>
       <Routes>
+      <Route path="/feedbacks" element={<FeedbackForm />}/>
         <Route path="/" element={<Dashboard />}/>
         <Route path="/sign-up" element={<SignUp />}/>
         <Route path="/sign-in" element={<SignIn />}/>
