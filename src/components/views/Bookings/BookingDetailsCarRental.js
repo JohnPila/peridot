@@ -21,7 +21,7 @@ function BookingDetailsCarRental(props) {
   }, []);
 
   const getDetails = async () => {
-    const details = await getCar(data.id);
+    const details = await getCar(data.car);
     const images = await getImages(details.id, STORAGE_FOLDERS.CAR_RENTALS);
     details.thumbnail = images?.[0] || {
       url: "/images/peridotLogo.jpg",
@@ -46,18 +46,48 @@ function BookingDetailsCarRental(props) {
       <Grid item xs>
         {carRentalDetails ? 
           <>
-            <Typography variant="body2">
-              <DriverIcon color="info" sx={{position: "relative", bottom: -4}} /> {carRentalDetails.driverOption}
+            <Typography variant="body1">
+              {carRentalDetails.make} {carRentalDetails.model}
             </Typography>
-            {/* <Typography variant="body2">
-              <PeopleIcon color="error" sx={{position: "relative", bottom: -4}}/> {carRentalDetails.capacity}
-            </Typography> */}
+            <Typography variant="body2">
+              {carRentalDetails.transmission} {carRentalDetails.fuel}
+            </Typography>
           </> :
           <>
             <Skeleton animation="wave" width="80%" sx={{ height: 30 }} />
             <Skeleton animation="wave" width="60%" sx={{ height: 30 }} />
           </>
         }
+      </Grid>
+      <Grid item xs={12}>
+        <Grid container>
+          <Grid item xs={3} color="text.secondary">
+            {carRentalDetails ? 
+              <Typography variant="body2">Passenger Capacity</Typography> :
+              <Skeleton animation="wave" width="100%" />  
+            }
+          </Grid>
+          <Grid item xs={9} textAlign="right">
+            {carRentalDetails ? 
+              <Typography variant="body2">{carRentalDetails.capacity}</Typography> :
+              <Skeleton animation="wave" width="30%" sx={{ marginLeft: "auto" }} />  
+            }
+          </Grid>
+        </Grid>
+        <Grid container>
+          <Grid item xs={2} color="text.secondary">
+            {carRentalDetails ? 
+              <Typography variant="body2">Driver Option</Typography> :
+              <Skeleton animation="wave" width="100%" />  
+            }
+          </Grid>
+          <Grid item xs={10} textAlign="right">
+            {carRentalDetails ? 
+              <Typography variant="body2">{data.driverOption}</Typography> :
+              <Skeleton animation="wave" width="30%" sx={{ marginLeft: "auto" }} />  
+            }
+          </Grid>
+        </Grid>
       </Grid>
     </>
   );

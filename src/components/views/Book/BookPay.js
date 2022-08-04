@@ -129,8 +129,10 @@ function BookPay(props) {
               return acc;
             }, {})
             d.rateOptions = rateOptions.map((opt) => ({
-              ...optionsMap[opt.id],
-              ...opt,
+              id: opt.id, 
+              duration: optionsMap[opt.id].duration,
+              rate: optionsMap[opt.id].rate,
+              quantity: opt.quantity,
             }));
             setData(d);
             setTotalCost(rateOptions.reduce((acc, opt) => acc + (opt.rate * opt.quantity), 0));
@@ -216,6 +218,7 @@ function BookPay(props) {
       pickupDate,
       pickupTime,
       driverOption,
+      rateOptions,
     } = stateData;
     const {booking, paymentDetails, otherData} = await addBooking(type, {
       carId,
@@ -227,6 +230,7 @@ function BookPay(props) {
       pickupDate,
       pickupTime,
       driverOption,
+      rateOptions,
     }, startPayment);
     setBookingId(booking.id);
     handlePostBooking(booking.id, paymentDetails.id, otherData);

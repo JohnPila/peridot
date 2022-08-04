@@ -48,6 +48,9 @@ export function BookingDetails(props) {
         return (otherData && 
           Math.ceil(otherData.features[0].properties.distance / 1000) * 
           GeoapifyConfig.farePerKilometer + GeoapifyConfig.baseFare) || 0;
+      case BOOKING_TYPE.CAR_RENTAL:
+        return data.rateOptions
+          .reduce((acc, opt) => acc + (opt.quantity * opt.rate), 0);
       default:
         return 0;
     }
@@ -305,7 +308,10 @@ export function BookingDetails(props) {
       case BOOKING_TYPE.AIRPORT_TRANSFER:
         return <BookingDetailsAirportTransfer data={data} onRouteData={setOtherData} />
       case BOOKING_TYPE.CAR_RENTAL:
-        return <BookingDetailsCarRental data={data} onRouteData={setOtherData} />
+        if (!otherData) {
+          setOtherData(true);
+        }
+        return <BookingDetailsCarRental data={data} />
       default:
         return null;
     }
@@ -347,6 +353,20 @@ export function BookingDetails(props) {
             </Grid>
           </Fragment>
         );
+      case BOOKING_TYPE.CAR_RENTAL:
+        return data.rateOptions.map((opt, i) => (
+          <Fragment key={i}>
+            <Grid item xs={6} textAlign="left">
+              <Typography variant="body2">{opt.duration}</Typography>
+            </Grid>
+            <Grid item xs={4} textAlign="right">
+              <Typography variant="body2">x {opt.quantity} (₱{opt.rate})</Typography>
+            </Grid>
+            <Grid item xs={2} textAlign="right">
+              <Typography variant="body2">₱{opt.quantity * opt.rate}</Typography>
+            </Grid>
+          </Fragment>
+        ));
       default:
         return null;
     }

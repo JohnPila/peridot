@@ -194,13 +194,11 @@ function BookCarRental() {
             </LocalizationProvider>
           </Grid>
           <Grid item xs={6}>
-          </Grid>
-          <Grid item xs={6}>
             <FormControl>
               <FormLabel id="driver-radio-button-label">Driver Option</FormLabel>
               <RadioGroup 
                 row 
-                sx={{mt: 3, columnGap: 10}}
+                sx={{columnGap: 10}}
                 aria-labelledby="driver-radio-button-label"
                 value={driverOption}
                 onChange={(e) => setDriverOption(e.target.value)} >
@@ -211,6 +209,7 @@ function BookCarRental() {
               </RadioGroup>
             </FormControl>
           </Grid>
+          <Grid item xs={6} />
           <Grid item xs={6} />
           <Grid item xs={6}>
             <FormLabel id="capacity-radio-button-label">Rate Options *</FormLabel>
