@@ -377,9 +377,9 @@ export function BookingDetails(props) {
       case BOOKING_TYPE.PACKAGE:
         return formatDate(data.date.toDate());
       case BOOKING_TYPE.AIRPORT_TRANSFER:
-        return `${formatDate(data.pickupDate.toDate())} | ${formatTime(data.pickupTime)}`
+        return `${formatDate(data.pickupDate.toDate())} | ${formatTime(data.pickupTime.toDate())}`
       case BOOKING_TYPE.CAR_RENTAL:
-        return `${formatDate(data.pickupDate.toDate())} | ${formatTime(data.pickupTime)}`
+        return `${formatDate(data.pickupDate.toDate())} | ${formatTime(data.pickupTime.toDate())}`
       default:
         return null;
     }
