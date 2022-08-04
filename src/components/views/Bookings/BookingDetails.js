@@ -20,6 +20,7 @@ import BookingDetailsAirportTransfer from "./BookingDetailsAirportTransfer";
 import BookingDetailsCarRental from "./BookingDetailsCarRental";
 import GeoapifyConfig from "../../../config/GeoapifyConfig";
 import { addFeedback } from "../../../services/FeedbackService";
+import AddRating from "../Admin/Packages/AddRating";
 
 
 export function BookingDetails(props) {
@@ -218,6 +219,7 @@ export function BookingDetails(props) {
   };
   const handleFeedback = () => {
     confirmDialog("Leave Feedback", "Let us know what you think", async (ok, message) => {
+      <AddRating/>
       if (ok) {
         try {
           setIsSaving(true);

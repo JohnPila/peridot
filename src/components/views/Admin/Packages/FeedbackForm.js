@@ -1,19 +1,15 @@
 import React, {useState} from "react";
 import Button from "../../../common/Button";
 import { addFeedback } from "../../../../services/FeedbackService";
-import Rating from "semantic-ui-react/dist/commonjs/modules/Rating";
+
 
 export default function FeedbackForm(props){
   const [feedback, setFeedback] = useState("");
-  const [rating, setRating] = useState(0)
   const handleSubmit = (e) => {
     e.preventDefault();
     save();
   };
-  const handleRating = (rate: number) => {
-    setRating(rate)
-    // other logic
-  }
+
   const save = async () => {
     try {
          await addFeedback({
@@ -45,7 +41,6 @@ export default function FeedbackForm(props){
     <div>
       <form  >
         <label> Any Feedback?</label>
-        <Rating onClick={handleRating} ratingValue={rating} /* Available Props */ />
         <input 
          onChange={(e) => setFeedback(e.target.value)}
           id = "message"
