@@ -1,10 +1,8 @@
 import { CardMedia, Grid, Skeleton } from '@mui/material';
 import PropTypes from 'prop-types';
 import Typography from '../../common/Typography';
-import DriverIcon from '@mui/icons-material/BadgeSharp';
 import { useEffect, useState } from 'react';
 import { STORAGE_FOLDERS } from '../../../utils/constants';
-// import { getPackage } from '../../../services/PackageService';
 import { getImages } from '../../../services/FileService';
 import { getCar } from '../../../services/CarRentalService';
 

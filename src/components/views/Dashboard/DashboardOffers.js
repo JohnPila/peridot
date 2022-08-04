@@ -5,8 +5,6 @@ import Typography from '../../common/Typography';
 import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 import { Box } from '@mui/system';
 import CardContent from 'semantic-ui-react/dist/commonjs/views/Card/CardContent';
-import { CardActionArea } from '@mui/material';
-import { Button, Comment, Form, Header } from 'semantic-ui-react'
 import TestimonialCard from "material-testimonial-card";
 
 function DashboardOffers() {
