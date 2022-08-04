@@ -6,7 +6,7 @@ const Reviews = () => (
     <Header as='h3' dividing>
       Comments
     </Header>
-
+    
     <Comment>
       <Comment.Avatar src='https://react.semantic-ui.com/images/avatar/small/matt.jpg' />
       <Comment.Content>
