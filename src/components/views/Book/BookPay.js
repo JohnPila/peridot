@@ -11,7 +11,7 @@ import { getPackage } from '../../../services/PackageService';
 import { getPackageOption } from '../../../services/PackageOptionService';
 import PackageDetailsOptionSkeleton from '../Admin/Packages/PackageDetailsOptionSkeleton';
 import withLoggedUser from '../../hocs/withLoggedUser';
-import { BOOKING_STATUS, BOOKING_TYPE, PAYMENT_METHOD, PAYMENT_METHOD_LABEL } from '../../../utils/constants';
+import { BOOKING_STATUS, BOOKING_TYPE, PAYMENT_METHOD, PAYMENT_METHOD_LABEL, PERIDOT_EMAIL } from '../../../utils/constants';
 import GCashConfig from '../../../config/GCashConfig';
 import { addPaymentDetailsForCashUsingBatch, addPaymentDetailsForGCashUsingBatch, waitForPaymentTransaction } from '../../../services/PaymentDetailsService';
 import { addBooking, saveBooking } from '../../../services/BookingsService';
@@ -21,10 +21,12 @@ import { toLonLatArray } from '../../common/MapRoute';
 import { getRoute } from '../../../services/LocationService';
 import { getCar } from '../../../services/CarRentalService';
 import { getRateOptions } from '../../../services/CarRentalOptionService';
+import { sendBookingOrderNotification } from '../../../services/MailService';
 
 function BookPay(props) {
   const {
     loggedUser,
+    userEmail,
     info,
     type,
     data: stateData,
@@ -176,8 +178,7 @@ function BookPay(props) {
       packageId,
       bookingDate,
     } = stateData;
-    const {booking, paymentDetails, otherData} = await addBooking(type, {
-      packageId,
+    const bookingData = {
       date: bookingDate,
       fullName: `${info.firstName} ${info.lastName}`,
       address: info.address,
@@ -185,9 +186,18 @@ function BookPay(props) {
       specialRequests: info.specialRequests,
       status: getInitialPaymentStatus(),
       packageOptions: data.options,
+    };
+    const {booking, paymentDetails, otherData} = await addBooking(type, {
+      packageId,
+      ...bookingData,
     }, startPayment);
     setBookingId(booking.id);
-    handlePostBooking(booking.id, paymentDetails.id, otherData);
+    handlePostBooking({
+      id: booking.id,
+      type,
+      ...bookingData,
+      otherData: data,
+    }, paymentDetails.id, otherData);
   };
 
   const handlePayAirportTransfer = async () => {
@@ -197,7 +207,7 @@ function BookPay(props) {
       pickupLocation,
       dropoffLocation,
     } = stateData;
-    const {booking, paymentDetails, otherData} = await addBooking(type, {
+    const bookingData = {
       fullName: `${info.firstName} ${info.lastName}`,
       address: info.address,
       phoneNumber: info.phoneNumber,
@@ -207,9 +217,15 @@ function BookPay(props) {
       pickupTime,
       pickupLocation: pickupLocation.properties.place_id,
       dropoffLocation: dropoffLocation.properties.place_id,
-    }, startPayment);
+    };
+    const {booking, paymentDetails, otherData} = await addBooking(type, bookingData, startPayment);
     setBookingId(booking.id);
-    handlePostBooking(booking.id, paymentDetails.id, otherData);
+    handlePostBooking({
+      id: booking.id,
+      type,
+      ...bookingData,
+      otherData: data,
+    }, paymentDetails.id, otherData);
   };
 
   const handlePayCarRental = async () => {
@@ -218,10 +234,8 @@ function BookPay(props) {
       pickupDate,
       pickupTime,
       driverOption,
-      rateOptions,
     } = stateData;
-    const {booking, paymentDetails, otherData} = await addBooking(type, {
-      carId,
+    const bookingData = {
       fullName: `${info.firstName} ${info.lastName}`,
       address: info.address,
       phoneNumber: info.phoneNumber,
@@ -230,10 +244,19 @@ function BookPay(props) {
       pickupDate,
       pickupTime,
       driverOption,
-      rateOptions,
+      rateOptions: data.rateOptions,
+    };
+    const {booking, paymentDetails, otherData} = await addBooking(type, {
+      carId,
+      ...bookingData,
     }, startPayment);
     setBookingId(booking.id);
-    handlePostBooking(booking.id, paymentDetails.id, otherData);
+    handlePostBooking({
+      id: booking.id,
+      type,
+      ...bookingData,
+      otherData: data,
+    }, paymentDetails.id, otherData);
   };
 
   const startPayment = async (batch, bookingRef) => {
@@ -271,10 +294,12 @@ function BookPay(props) {
     }
   }
 
-  const handlePostBooking = (bookingId, paymentDetailsId, otherData) => {
+  const handlePostBooking = (bookingData, paymentDetailsId, otherData) => {
+    sendBookingOrderNotification(userEmail, bookingData.fullName, bookingData, false);
+    sendBookingOrderNotification(PERIDOT_EMAIL, "Admin", bookingData, true);
     switch (paymentMethod) {
       case PAYMENT_METHOD.GCASH:
-        waitForPaymentStatus(bookingId, paymentDetailsId);
+        waitForPaymentStatus(bookingData.id, paymentDetailsId);
         window.open(
           otherData.data.checkouturl,
           "_blank",
@@ -284,7 +309,7 @@ function BookPay(props) {
         break;
       case PAYMENT_METHOD.CASH:
         onNext({
-          id: bookingId,
+          id: bookingData.id,
           method: paymentMethod,
           result: {
             ...otherData,

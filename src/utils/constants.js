@@ -96,3 +96,5 @@ export const BOOKING_TYPE = {
   AIRPORT_TRANSFER: 2,
   CAR_RENTAL: 3,
 }
+
+export const PERIDOT_EMAIL = "peridottravelagency@gmail.com";

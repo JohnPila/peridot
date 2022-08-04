@@ -6,9 +6,9 @@ export default function withLoggedUser(Component) {
   function WithLoggedUser(props) {
     const loggedUser = useSelector(state => state.loggedUser.user);
     const isLoggedIn = useMemo(() => !!loggedUser, [loggedUser]);
-    const isAdmin = useMemo(() => !!loggedUser && 
-      ROLES.ADMIN === loggedUser.role, [loggedUser]);
-    const isEmailVerified = useMemo(() => !!loggedUser && loggedUser.emailVerified, [loggedUser]);
+    const isAdmin = useMemo(() => ROLES.ADMIN === loggedUser?.role, [loggedUser]);
+    const isEmailVerified = useMemo(() => !!loggedUser?.emailVerified, [loggedUser]);
+    const userEmail = useMemo(() => loggedUser?.email, [loggedUser]);
 
     return (
       <Component
@@ -16,6 +16,7 @@ export default function withLoggedUser(Component) {
         isLoggedIn={isLoggedIn}
         isAdmin={isAdmin}
         isEmailVerified={isEmailVerified}
+        userEmail={userEmail}
         {...props} 
       />
     );
