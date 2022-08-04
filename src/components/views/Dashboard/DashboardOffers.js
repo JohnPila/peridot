@@ -8,7 +8,6 @@ import CardContent from 'semantic-ui-react/dist/commonjs/views/Card/CardContent'
 import TestimonialCard from "material-testimonial-card";
 import Container from '@mui/system/Container';
 import { Grid } from '@mui/material';
-//import Carousel from 'react-material-ui-carousel/dist/components/Carousel';
 
 function DashboardOffers() {
   const unsubscribeRef = useRef(null);
@@ -29,10 +28,7 @@ function DashboardOffers() {
   };
 
   return (
-    <Container component="section" sx={{ mt: 10, flex:1,
-      flexDirection:'row',
-      alignItems:'center',
-      justifyContent:'center' }}>
+    <Container component="section" sx={{ mt: 10, display: 'flex' }}>
     <Grid container>
       <Grid item xs={12} md={6} sx={{ zIndex: 1 }}>
         <Box
@@ -44,7 +40,6 @@ function DashboardOffers() {
             px: 3,
           }}
         >
-
           <Box component="form" sx={{ maxWidth: 400 }}>
           <Card>
             <CardContent sx={{ flex: 1, height: "100%", display: "flex", flexDirection: "column" }}>
