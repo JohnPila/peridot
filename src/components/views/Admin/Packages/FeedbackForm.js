@@ -1,7 +1,5 @@
-import React, {useState, useEffect} from "react";
-import db from "../../../../config/FirebaseConfig";
+import React, {useState} from "react";
 import Button from "../../../common/Button";
-import { addDoc, collection } from "firebase/firestore";
 import { addFeedback } from "../../../../services/FeedbackService";
 import Rating from "semantic-ui-react/dist/commonjs/modules/Rating";
 

@@ -1,15 +1,12 @@
 import { Box, Grid, InputLabel, TextField } from "@mui/material";
 import { useEffect, useState } from "react";
 import AppForm from "../../../common/AppForm";
-import FormButton from "../../../common/form/FormButton";
 import Typography from "../../../common/Typography";
-import {STORAGE_FOLDERS} from "../../../../utils/constants";
-import ImageDropzone from "../../../common/ImageDropzone";
-import { deleteImages, getImages, getImagesAsFiles, uploadImages } from "../../../../services/FileService";
-import { useNavigate, useParams } from "react-router-dom";
+import { STORAGE_FOLDERS} from "../../../../utils/constants";
+import { getImages, getImagesAsFiles } from "../../../../services/FileService";
+import { useParams } from "react-router-dom";
 import { useSnackbar } from 'notistack';
-import SaveCarOptions from "./SaveCarOptions";
-import { addCar, getCar, saveCar } from "../../../../services/CarRentalService";
+import { getCar } from "../../../../services/CarRentalService";
 import { getRateOptions } from "../../../../services/CarRentalOptionService";
 
 function ViewCar() {
@@ -19,21 +16,20 @@ function ViewCar() {
 
   const { enqueueSnackbar } = useSnackbar();
   const {id: carId} = useParams();
-  const navigate  = useNavigate();
   const [vehicleType, setVehicleType] = useState("");
   const [make, setMake] = useState("");
   const [model, setModel] = useState("");
   const [transmission, setTransmission] = useState("");
   const [fuel, setFuel] = useState("");
   const [plateNo, setPlateNo] = useState("");
-  const [fullName, setFullName] = useState("");
-  const [contactNo, setContactNo] = useState("");
-  const [address, setAddress] = useState("");
+  const [setFullName] = useState("");
+  const [setContactNo] = useState("");
+  const [setAddress] = useState("");
   const [rateOptions, setRateOptions] = useState([]);
   const [oldImages, setOldImages] = useState([]);
-  const [images, setImages] = useState([]);
+  const [setImages] = useState([]);
   const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState({
+  const [error] = useState({
     vehicleType: "",
     make: "",
     model: "",

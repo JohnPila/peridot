@@ -19,7 +19,6 @@ import BookingDetailsPackage from "./BookingDetailsPackage";
 import BookingDetailsAirportTransfer from "./BookingDetailsAirportTransfer";
 import BookingDetailsCarRental from "./BookingDetailsCarRental";
 import GeoapifyConfig from "../../../config/GeoapifyConfig";
-import Reviews from "../Admin/Packages/Reviews";
 import { addFeedback } from "../../../services/FeedbackService";
 
 

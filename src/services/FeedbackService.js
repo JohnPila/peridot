@@ -1,4 +1,4 @@
-import { getDoc, getDocs, onSnapshot, query, updateDoc, where } from "firebase/firestore";
+import { getDocs, onSnapshot, query } from "firebase/firestore";
 import FirebaseConfig, { COLLECTIONS } from "../config/FirebaseConfig";
 import { getAuditFields } from "./BaseService";
 
