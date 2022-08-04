@@ -6,6 +6,8 @@ import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 import { Box } from '@mui/system';
 import CardContent from 'semantic-ui-react/dist/commonjs/views/Card/CardContent';
 import TestimonialCard from "material-testimonial-card";
+import Container from '@mui/system/Container';
+import { Grid } from '@mui/material';
 
 function DashboardOffers() {
   const unsubscribeRef = useRef(null);
@@ -26,22 +28,39 @@ function DashboardOffers() {
   };
 
   return (
-  
-     <Card>
-       <CardContent sx={{ flex: 1, height: "100%", display: "flex", flexDirection: "column" }}>
-       <Box sx={{ flex: 1, height: "100%" }}>
-         {feedback ? feedback.map((data) => (
-         <TestimonialCard
-             name={"John Smith"}
-             image={"/path/to/image.jpg"}
-             content={data.feedback}
-             //project={"Testimonial card"}
-         />
-        
-         )): <Typography> empty</Typography>}
-         </Box>
-       </CardContent>
-     </Card>
+    <Container component="section" sx={{ mt: 10, display: 'flex' }}>
+    <Grid container>
+      <Grid item xs={12} md={6} sx={{ zIndex: 1 }}>
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            bgcolor: 'warning.main',
+            py: 8,
+            px: 3,
+          }}
+        >
+          <Box component="form" sx={{ maxWidth: 400 }}>
+          <Card>
+            <CardContent sx={{ flex: 1, height: "100%", display: "flex", flexDirection: "column" }}>
+            <Box sx={{ flex: 1, height: "100%" }}>
+              {feedback ? feedback.map((data) => (
+            <TestimonialCard
+                  name={"John Smith"}
+                  //image={"/path/to/image.jpg"}
+                  content={data.feedback}
+                  project={"Testimonial card"}
+              />
+            
+              )): <Typography> empty</Typography>}
+          </Box>
+        </CardContent>
+      </Card>
+          </Box>
+        </Box>
+      </Grid>
+    </Grid>
+  </Container>
     // <Container component="section" sx={{ mt: 10, display: 'flex' }}>
     //   <Grid container>
     //   {feedback ? feedback.map((data) => (
