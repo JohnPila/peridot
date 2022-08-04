@@ -6,9 +6,6 @@ import Card from 'semantic-ui-react/dist/commonjs/views/Card';
 import { Box } from '@mui/system';
 import CardContent from 'semantic-ui-react/dist/commonjs/views/Card/CardContent';
 import TestimonialCard from "material-testimonial-card";
-import TextField from '../../common/TextField';
-import Button from '../../common/Button';
-import { getAllFeedback} from '../../../services/FeedbackService';
 import Container from '@mui/system/Container';
 import { Grid } from '@mui/material';
 
