@@ -2,7 +2,7 @@ import DashboardBanner from "./DashboardBanner";
 import DashboardCategories from "./DashboardCategories";
 import DashboardValues from "./DashboardValues";
 import DashboardGuide from "./DashboardGuide";
-// import DashboardOffers from "./DashboardOffers";
+import DashboardOffers from "./DashboardOffers";
 
 export default function Dashboard() {
   return (
@@ -11,7 +11,7 @@ export default function Dashboard() {
       <DashboardValues/>
       <DashboardCategories/>
       <DashboardGuide/>
-      {/* <DashboardOffers/> */}
+      <DashboardOffers/>
     </>
   );
 }
