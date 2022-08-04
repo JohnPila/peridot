@@ -92,7 +92,7 @@ function AllCarBookingItem(props) {
     // if ("circle" === e.target.tagName) {
     //   return;
     // }
-    navigate(data.id + "/view");
+    navigate(data.id);
   }
 
   return (

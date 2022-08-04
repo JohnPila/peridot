@@ -1,45 +1,20 @@
-import { Box, Grid, InputLabel, TextField } from "@mui/material";
+import { CardMedia, Grid, Skeleton } from "@mui/material";
 import { useEffect, useState } from "react";
-import AppForm from "../../../common/AppForm";
 import Typography from "../../../common/Typography";
 import { STORAGE_FOLDERS} from "../../../../utils/constants";
-import { getImages, getImagesAsFiles } from "../../../../services/FileService";
-import { useParams } from "react-router-dom";
-import { useSnackbar } from 'notistack';
+import { getImages } from "../../../../services/FileService";
+import { useNavigate, useParams } from "react-router-dom";
 import { getCar } from "../../../../services/CarRentalService";
 import { getRateOptions } from "../../../../services/CarRentalOptionService";
+import Carousel from "react-material-ui-carousel";
 
-function ViewCar() {
-//   const {
-//     isEdit = false,
-//   } = props;
-
-  const { enqueueSnackbar } = useSnackbar();
+function ViewCar(props) {
+  const {
+    containerProps = {},
+  } = props;
   const {id: carId} = useParams();
-  const [vehicleType, setVehicleType] = useState("");
-  const [make, setMake] = useState("");
-  const [model, setModel] = useState("");
-  const [transmission, setTransmission] = useState("");
-  const [fuel, setFuel] = useState("");
-  const [plateNo, setPlateNo] = useState("");
-  const [setFullName] = useState("");
-  const [setContactNo] = useState("");
-  const [setAddress] = useState("");
-  const [rateOptions, setRateOptions] = useState([]);
-  const [oldImages, setOldImages] = useState([]);
-  const [setImages] = useState([]);
-  const [submitting, setSubmitting] = useState(false);
-  const [error] = useState({
-    vehicleType: "",
-    make: "",
-    model: "",
-    transmission: "",
-    fuel: "",
-    plateNo: "",
-    fullName: "",
-    contactNo: "",
-    address: "",
-  });
+  const navigate = useNavigate();
+  const [data, setData] = useState(null);
 
   /* eslint-disable react-hooks/exhaustive-deps */
   useEffect(() => {
@@ -51,106 +26,55 @@ function ViewCar() {
   const getCarDetails = async () => {
     try {
       const data = await getCar(carId);
-      setVehicleType(data.vehicleType);
-      setMake(data.make);
-      setModel(data.model);
-      setTransmission(data.transmission);
-      setFuel(data.fuel);
-      setPlateNo(data.plateNo);
-      setFullName(data.fullName);
-      setContactNo(data.contactNo);
-      setAddress(data.address);
-      setImages(await getImagesAsFiles(carId, STORAGE_FOLDERS.CAR_RENTALS));
-      setOldImages(await getImages(carId, STORAGE_FOLDERS.CAR_RENTALS));
-      setRateOptions(await getRateOptions(carId));
+      data.rateOptions = await getRateOptions(carId);
+      data.images = await getImages(carId, STORAGE_FOLDERS.CAR_RENTALS);
+      setData(data);
     } catch (error) {
-      enqueueSnackbar("Failed to get car details! ERR: " + error.message, {variant: "error"});
-    } finally {
-      setSubmitting(false);
+      navigate("/errors/404", {replace: true})
     }
   }
 
   return (
-    <AppForm containerProps={{maxWidth: "xl"}}>
-      <Typography variant="h3" gutterBottom marked="center" align="center">
-        View Car
-      </Typography>
-      <Typography variant="h4" gutterBottom sx={{ mt: 6, fontSize: 30 }}>
-        Car Unit Information
-      </Typography>
-      <Box component="form" noValidate>
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <InputLabel sx={{mt: 1, mb: 1}}>Vehicle Type *</InputLabel>
-            <TextField error={!!error.vehicleType} autoFocus disabled={submitting} size="large" 
-              fullWidth sx={{mb: 1}} value={vehicleType} 
-              helperText={error.vehicleType}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <InputLabel sx={{mt: 1, mb: 1}}>Make *</InputLabel>
-            <TextField error={!!error.make} autoFocus disabled={submitting} size="large" 
-              fullWidth sx={{mb: 1}} value={make} 
-              helperText={error.make}
-            />
-          </Grid>
-        </Grid>
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <InputLabel sx={{mt: 1, mb: 1}}>Model *</InputLabel>
-            <TextField error={!!error.model} autoFocus disabled={submitting} size="large" 
-              fullWidth sx={{mb: 1}} value={model} 
-              helperText={error.model}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <InputLabel sx={{mt: 1, mb: 1}}>Transmission *</InputLabel>
-            <TextField error={!!error.transmission} autoFocus disabled={submitting} size="large" 
-              fullWidth sx={{mb: 1}} value={transmission} 
-              helperText={error.transmission}
-            />
-          </Grid>
-        </Grid>
-        <Grid container spacing={2}>
-          <Grid item xs={6}>
-            <InputLabel sx={{mt: 1, mb: 1}}>Fuel *</InputLabel>
-            <TextField error={!!error.fuel} autoFocus disabled={submitting} size="large" 
-              fullWidth sx={{mb: 1}} value={fuel} 
-              helperText={error.fuel}
-            />
-          </Grid>
-          <Grid item xs={6}>
-            <InputLabel sx={{mt: 1, mb: 1}}>Plate No. *</InputLabel>
-            <TextField error={!!error.plateNo} autoFocus disabled={submitting} size="large" 
-              fullWidth sx={{mb: 1}} value={plateNo} 
-              helperText={error.plateNo}
-            />
-          </Grid>
-        </Grid>
-        {oldImages.map((img, index) => (
-            <img key={index} src={img.url} alt={img.name} width="50%" />
-        ))}
-        <InputLabel sx={{mt: 1, mb: 1}}>Rate Options *</InputLabel>
-        {rateOptions.map((option, index) => (
-            <Grid container spacing={1} sx={{mb: index === rateOptions.length - 1 ? 0 : 1}} key={index}>
-            <Grid item xs>
-                <TextField fullWidth label="Duration"
-                variant="outlined" value={option.duration}
-                InputProps={{readOnly: true}} />
-            </Grid>
-            {!option.subOptions &&
-                <Grid item xs={2}>
-                <TextField fullWidth label="Rate"
-                    variant="outlined" type="number" value={option.rate} 
-                    InputProps={{readOnly: true}} />
-                </Grid>
-            }
-            <Grid item xs={12}>
-            </Grid>
-            </Grid>
-        ))}
-      </Box>
-    </AppForm>
+    <Grid item xs={7} paddingRight={2} {...containerProps}>
+      {data ? 
+        <>
+          {0 === data.images.length ? 
+            <CardMedia
+              component="img"
+              sx={{ height: 400 }}
+              image="/images/peridotLogo.jpg"
+            /> : 
+            <Carousel sx={{height: 400}}
+              indicatorContainerProps={{
+                style: {
+                  position: "absolute",
+                  zIndex: 10,
+                  bottom: "10px",
+                }
+              }}
+            >
+              {data.images.map((img, index) => (
+                <img key={index} src={img.url} alt={img.name} width="100%" />
+              ))}
+            </Carousel>
+          }
+          <div style={{textAlign: "center"}}>
+            <Typography sx={{mt: 2}} variant="h2">{data.make} {data.model}</Typography>
+            <Typography variant="h6" sx={{top: "-4px", position: "relative"}}>{data.transmission}</Typography>
+            <Typography variant="body1" sx={{top: "-4px", position: "relative"}}>{data.vehicleType} | {data.fuel} | {data.plateNo}</Typography>
+          </div>
+        </> :
+        <>
+          <Skeleton sx={{ height: 200 }} animation="wave" variant="rectangular" />
+          <Skeleton sx={{ mt: 2 }} height={60} animation="wave" width="80%" />
+          <Skeleton height={40} animation="wave" width="50%" />
+          <br/>
+          <Skeleton height={30} animation="wave" />
+          <Skeleton height={30} animation="wave" />
+          <Skeleton height={30} animation="wave" width="90%"/>
+        </>
+      }
+    </Grid>
   );
 }
 

@@ -12,6 +12,7 @@ import { getPackage } from '../../../../services/PackageService';
 function PackageDetailsLeftContent(props) {
   const {
     packageId,
+    containerProps = {},
   } = props;
 
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ function PackageDetailsLeftContent(props) {
   }, []);
 
   return (
-    <Grid item xs={7} paddingRight={2}>
+    <Grid item xs={7} paddingRight={2} {...containerProps}>
       {data ? 
         <>
           {0 === data.images.length ? 

@@ -64,7 +64,7 @@ function App() {
         <Route path="/admin/car-rentals" element={<CarRental/>}>
           <Route path="" element={<AllCarBooking/>}/>
           <Route path="add" element={<SaveCar/>}/>
-          <Route path=":id/view" element={<ViewCar/>}/>
+          <Route path=":id" element={<ViewCar/>}/>
           <Route path=":id/edit" element={<SaveCar isEdit/>}/>
         </Route>
         <Route path="/packages" element={<Packages/>}>
