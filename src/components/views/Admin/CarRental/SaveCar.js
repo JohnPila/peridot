@@ -27,9 +27,6 @@ function SaveCar(props) {
   const [fuel, setFuel] = useState("");
   const [plateNo, setPlateNo] = useState("");
   const [capacity, setCapacity] = useState("4 seater");
-  const [fullName, setFullName] = useState("");
-  const [contactNo, setContactNo] = useState("");
-  const [address, setAddress] = useState("");
   const [rateOptions, setRateOptions] = useState([]);
   const [oldImages, setOldImages] = useState([]);
   const [images, setImages] = useState([]);
@@ -41,9 +38,6 @@ function SaveCar(props) {
     transmission: "",
     fuel: "",
     plateNo: "",
-    fullName: "",
-    contactNo: "",
-    address: "",
   });
 
   /* eslint-disable react-hooks/exhaustive-deps */
@@ -63,9 +57,6 @@ function SaveCar(props) {
       setFuel(data.fuel);
       setPlateNo(data.plateNo);
       setCapacity(data.capacity);
-      setFullName(data.fullName);
-      setContactNo(data.contactNo);
-      setAddress(data.address);
       setImages(await getImagesAsFiles(carId, STORAGE_FOLDERS.CAR_RENTALS));
       setOldImages(await getImages(carId, STORAGE_FOLDERS.CAR_RENTALS));
       setRateOptions(await getRateOptions(carId));
@@ -95,9 +86,6 @@ function SaveCar(props) {
           fuel,
           plateNo,
           capacity,
-          fullName,
-          contactNo,
-          address,
           options: rateOptions,
         });
         await deleteImages(oldImages, `${STORAGE_FOLDERS.CAR_RENTALS}/${carId}`);
@@ -110,10 +98,7 @@ function SaveCar(props) {
           transmission,
           fuel,
           plateNo,
-          fullName,
           capacity,
-          contactNo,
-          address,
           options: rateOptions,
         });
         await uploadImages(images, `${STORAGE_FOLDERS.CAR_RENTALS}/${carRef.id}`);
@@ -145,15 +130,6 @@ function SaveCar(props) {
     }
     if (!plateNo) {
       errMsg.plateNo = "Plate no. is required.";
-    }
-    if (!fullName) {
-      errMsg.fullName = "Full name is required.";
-    }
-    if (!contactNo) {
-      errMsg.contactNo = "Contact no. is required.";
-    }
-    if (!address) {
-      errMsg.address = "Address is required.";
     }
     if (!rateOptions.length) {
       errMsg.rateOptions = "At least 1 rate option is required.";
@@ -190,18 +166,6 @@ function SaveCar(props) {
       case "plateNo":
         setPlateNo(value);
         setError((err) => ({...err, plateNo: ""}));
-        break;
-      case "fullName":
-        setFullName(value);
-        setError((err) => ({...err, fullName: ""}));
-        break;
-      case "contactNo":
-        setContactNo(value);
-        setError((err) => ({...err, contactNo: ""}));
-        break;
-      case "address":
-        setAddress(value);
-        setError((err) => ({...err, address: ""}));
         break;
       case "rateOptions":
         setRateOptions(value);
@@ -287,24 +251,6 @@ function SaveCar(props) {
             </FormControl>
           </Grid>
         </Grid>
-        {/* <Typography variant="h4" gutterBottom sx={{ mt: 4, fontSize: 30 }}>
-          Driver Information
-        </Typography>
-        <InputLabel sx={{mt: 1, mb: 1}}>Full Name *</InputLabel>
-        <TextField error={!!error.fullName} autoFocus disabled={submitting} size="large" 
-          fullWidth sx={{mb: 1}} value={fullName} 
-          helperText={error.fullName}
-          onChange={(e) => setValue("fullName", e.target.value)} />
-        <InputLabel sx={{mt: 1, mb: 1}}>Contact No. *</InputLabel>
-        <TextField error={!!error.contactNo} autoFocus disabled={submitting} size="large" 
-          fullWidth sx={{mb: 1}} value={contactNo} 
-          helperText={error.contactNo}
-          onChange={(e) => setValue("contactNo", e.target.value)} />
-        <InputLabel sx={{mt: 1, mb: 1}}>Address *</InputLabel>
-        <TextField error={!!error.address} autoFocus disabled={submitting} size="large" 
-          fullWidth sx={{mb: 1}} value={address} 
-          helperText={error.address}
-          onChange={(e) => setValue("address", e.target.value)} /> */}
         <InputLabel sx={{mt: 1, mb: 1}}>Images</InputLabel>
         <ImageDropzone key={oldImages?.length}
           value={images}
