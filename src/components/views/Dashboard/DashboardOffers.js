@@ -51,6 +51,7 @@ function DashboardOffers() {
             <Box sx={{ flex: 1, height: "100%" }}>
               {feedback ? feedback.map((data) => (
             <TestimonialCard
+                  //key={data.id}
                   name={"John Smith"}
                   //image={"/path/to/image.jpg"}
                   content={data.feedback}

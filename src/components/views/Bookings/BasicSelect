@@ -1,0 +1,34 @@
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import { Select } from '@mui/material';
+
+export default function BasicSelect() {
+
+  const handleChange = (event) => {
+    //setAge(event.target.value);
+  };
+
+  return (
+    <Box sx={{ minWidth: 120 }}>
+      <FormControl fullWidth>
+        <InputLabel >Age</InputLabel>
+        <Select
+l          
+          id="demo-simple-select"
+          //value={status}
+          label="Status"
+          onChange={handleChange}
+        >
+          <MenuItem value={10}>Paid</MenuItem>
+          <MenuItem value={20}>Cancelled</MenuItem>
+          <MenuItem value={30}>Verification Payments</MenuItem>
+          <MenuItem value={40}>Complete</MenuItem>
+
+        </Select>
+      </FormControl>
+    </Box>
+  );
+}

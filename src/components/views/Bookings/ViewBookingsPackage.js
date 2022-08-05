@@ -29,6 +29,7 @@ function ViewBookingsPackage(props) {
         bookings.length > 0 ?
           bookings.map(booking => (
           <Grid item md={6} sm={12} xs={12} key={booking.id}>
+            
             <ViewBookingsItem data={booking} />
           </Grid>
           )) :
