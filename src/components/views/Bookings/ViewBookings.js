@@ -4,7 +4,7 @@ import Typography from "../../common/Typography";
 import ViewBookingsAirportTransfer from "./ViewBookingsAirportTransfer";
 import ViewBookingsPackage from "./ViewBookingsPackage";
 import ViewBookingsCarRental from "./ViewBookingsCarRental";
-import BasicSelect from "./BasicSelect";
+import OptionSelect from "./OptionSelect";
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -43,14 +43,17 @@ function ViewBookings(props) {
   return (
     <>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        
         <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
           <Tab label="Tour Packages" {...a11yProps(0)} />
           <Tab label="Airport Transfer" {...a11yProps(1)} />
           <Tab label="Car Rental" {...a11yProps(2)} />
         </Tabs>
+        <OptionSelect/> 
       </Box>
+      
       <TabPanel value={value} index={0}>
-        <ViewBookingsPackage />
+      <ViewBookingsPackage /> 
       </TabPanel>
       <TabPanel value={value} index={1}>
         <ViewBookingsAirportTransfer />
