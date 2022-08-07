@@ -36,7 +36,6 @@ import SaveCar from './components/views/Admin/CarRental/SaveCar';
 import BookCarRental from './components/views/Admin/CarRental/BookCarRental';
 import ViewCar from './components/views/Admin/CarRental/ViewCar';
 import FeedbackForm from './components/views/Admin/Packages/FeedbackForm'
-import OptionSelect from './components/views/Bookings/OptionSelect';
 
 function App() {
   return (
@@ -46,7 +45,6 @@ function App() {
       <Routes>
       <Route path="/feedbacks" element={<FeedbackForm />}/>
         <Route path="/" element={<Dashboard />}/>
-        <Route path="/Select" element={<OptionSelect />}/>
         <Route path="/sign-up" element={<SignUp />}/>
         <Route path="/sign-in" element={<SignIn />}/>
         <Route path="/contact-us" element={<ContactUs />}/>
